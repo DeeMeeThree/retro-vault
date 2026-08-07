@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>RETRO_VAULT | Collection</title>
+    <script src="script.js"></script>
+    <script src="tailwindcss-3.4.17.js"></script>
+    <script id="tailwind-config" src="tailwind.js"></script>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body class="font-body-md crt-flicker antialiased selection:bg-neon-pink selection:text-surface-deep">
+<!-- Scanline Overlay -->
+<div class="fixed inset-0 z-50 scanlines mix-blend-overlay"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-40 bg-surface/70 backdrop-blur-xl border-b border-glass-border shadow-[0_4px_20px_rgba(0,255,255,0.15)]">
+    <div class="flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
+        <a class="font-display-lg text-headline-lg tracking-tighter drop-shadow-[0_0_10px_rgba(0,255,255,0.8)] italic -skew-x-12"
+           href="index.html">
+            RETRO_VAULT
+        </a>
+        <nav class="hidden md:flex gap-lg items-center">
+            <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+               href="#">Collection</a>
+            <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+               href="hardware.html">Hardware</a>
+        </nav>
+    </div>
+</header>
+<!-- Main Content: Interactive Vault -->
+<main class="max-w-container-max mx-auto px-md md:px-lg py-xl pt-[120px] relative z-10">
+    <!-- Controls -->
+    <div class="flex flex-col gap-md mb-xl">
+        <div class="flex flex-col md:flex-row justify-between items-center bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border">
+            <div class="font-headline-lg text-headline-lg text-electric-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)] mb-md md:mb-0">
+                ARCHIVE_BASE_DE_DONNÉES
+            </div>
+            <div class="flex gap-sm flex-wrap">
+                <button class="sort-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                        data-sort="title">
+                    Trier: Titre
+                </button>
+                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
+                        data-sort="year">
+                    Trier: Année
+                </button>
+                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
+                        data-sort="console">
+                    Trier: Console
+                </button>
+                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
+                        data-sort="type">
+                    Trier: Type
+                </button>
+            </div>
+        </div>
+        <div class="w-full">
+            <label for="search-input"></label><input class="w-full bg-surface-container/60 backdrop-blur-md border border-glass-border rounded-xl p-md text-on-surface focus:border-electric-cyan focus:outline-none focus:ring-1 focus:ring-electric-cyan transition-colors font-label-caps text-label-caps"
+                                                     id="search-input" placeholder="RECHERCHER PAR TITRE..." type="text"/>
+        </div>
+    </div>
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-lg" id="games-grid"></div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xl bg-surface-container-lowest border-t border-glass-border z-10 relative">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl max-w-container-max mx-auto gap-md">
+        <div class="font-headline-lg text-headline-lg text-secondary italic">
+            RETRO_VAULT
+        </div>
+        <div class="font-label-caps text-label-caps text-neon-pink">
+            © 2026 RETRO_VAULT ARCHIVE. ALL RIGHTS RESERVED.
+        </div>
+    </div>
+</footer>
+<script>
+    document.getElementById('search-input').addEventListener('input', filterAndSortData);
+
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const sortBy = e.target.dataset.sort;
+            if (currentSort === sortBy) {
+                sortDesc = !sortDesc;
+            } else {
+                currentSort = sortBy;
+                sortDesc = false;
+            }
+
+            document.querySelectorAll('.sort-btn').forEach(b => {
+                b.classList.remove('border-electric-cyan', 'text-electric-cyan');
+                b.classList.add('border-glass-border', 'text-on-surface-variant');
+            });
+            e.target.classList.remove('border-glass-border', 'text-on-surface-variant');
+            e.target.classList.add('border-electric-cyan', 'text-electric-cyan');
+
+            filterAndSortData();
+        });
+    });
+
+    // Initialize with CSV from fetch
+    fetch('database_archive.csv')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(csvText => {
+            gamesData = parseCSV(csvText.trim()).slice(1); // Remove header row if present, assuming slice(1) handles it as in original
+            filterAndSortData();
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des données CSV:', error);
+            document.getElementById('games-grid').innerHTML = '<div class="col-span-full text-center text-neon-pink font-label-caps">Erreur lors du chargement des données. Assurez-vous que database_archive.csv est présent.</div>';
+        });
+</script>
+</body>
+</html>

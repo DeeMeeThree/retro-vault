@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en" style="">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>RETRO_VAULT</title>
+    <script src="tailwindcss-3.4.17.js"></script>
+    <script id="tailwind-config" src="tailwind.js"></script>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body class="bg-background text-on-surface min-h-screen relative overflow-x-hidden crt-flicker selection:bg-surface-variant selection:text-white">
+<!-- Ambient Background Effects -->
+<div class="fixed inset-0 scanlines"></div>
+<div class="fixed inset-0 ambient-glow-pink pointer-events-none -z-10"></div>
+<div class="fixed inset-0 ambient-glow-cyan pointer-events-none -z-10"></div>
+<div class="fixed inset-0 grid-bg pointer-events-none -z-10"
+     style="transform: perspective(500px) rotateX(60deg) translate(-9.1875px, 1.19048px);"></div>
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full z-40 bg-surface/70 backdrop-blur-xl border-b border-glass-border shadow-[0_4px_20px_rgba(0,255,255,0.15)]">
+    <div class="flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
+        <a class="font-display-lg text-headline-lg tracking-tighter drop-shadow-[0_0_10px_rgba(255,0,255,0.8)] italic -skew-x-12"
+           href="index.html">
+            RETRO_VAULT
+        </a>
+        <nav class="hidden md:flex gap-lg items-center">
+            <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+               href="collection.html">Collection</a>
+            <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+               href="hardware.html">Hardware</a>
+        </nav>
+    </div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[100px] pb-xl px-md md:px-lg max-w-container-max mx-auto relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-187px)]">
+    <!-- Hero Section -->
+    <section class="text-center mb-xl w-full max-w-4xl mx-auto flex flex-col items-center justify-center py-xl">
+        <h1 class="font-display-lg text-[60px] md:text-display-lg text-on-surface mb-md uppercase italic transform -skew-x-12 tracking-tight">
+            Archive<br/>The Future
+        </h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mt-sm">
+            Préservation des artefacts numériques d'une époque révolue. Entrez dans le musée de référence du matériel et des logiciels rétro haute fidélité.
+        </p>
+    </section>
+    <!-- Portals Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-lg w-full max-w-5xl mx-auto relative z-20">
+        <!-- Collection Portal -->
+        <a class="group relative glass-panel rounded-xl overflow-hidden aspect-[4/3] md:aspect-[3/4] flex flex-col justify-end p-lg transition-transform duration-500 hover:-translate-y-2 hover:neon-shadow-pink"
+           href="collection.html">
+            <div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>
+            <!-- Background Image Container -->
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                     data-alt="A macro shot of a stylized, futuristic game cartridge heavily inspired by 1980s retro-futurism. The cartridge is constructed of dark, smoked translucent plastic with sharp, angular edges, glowing with internal neon pink light. The setting is a dark, cinematic studio environment with a glassmorphic aesthetic. High-contrast lighting highlights the metallic contacts and subtle circuit board textures visible through the casing."
+                     style="background-image: url('images/cartridge.jpg')"></div>
+            </div>
+            <div class="relative z-20 transform transition-transform duration-500 group-hover:translate-y-[-8px]">
+                <h2 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface mb-xs uppercase italic tracking-tighter group-hover:text-primary transition-colors duration-300">
+                    Collection
+                </h2>
+                <p class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[16px]">folder_open</span>
+                    Explore Software Archive
+                </p>
+            </div>
+            <!-- Hover Accent Line -->
+            <div class="absolute bottom-0 left-0 w-full h-[4px] bg-primary-fixed transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20"></div>
+        </a>
+        <!-- Hardware Portal -->
+        <a class="group relative glass-panel rounded-xl overflow-hidden aspect-[4/3] md:aspect-[3/4] flex flex-col justify-end p-lg transition-transform duration-500 hover:-translate-y-2 hover:neon-shadow-cyan"
+           href="hardware.html">
+            <div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>
+            <!-- Background Image Container -->
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                     data-alt="A sleek, highly detailed 3D render of a futuristic retro gaming console resting on a dark glass surface. The console features matte black geometric panels, chrome accents, and glowing cyan LED status indicators. The environment is a deep, atmospheric void characteristic of modern glassmorphic UI design, illuminated by dramatic cyan rim lighting that reflects off the console's surfaces."
+                     style="background-image: url('images/console.jpg')"></div>
+            </div>
+            <div class="relative z-20 transform transition-transform duration-500 group-hover:translate-y-[-8px]">
+                <h2 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface mb-xs uppercase italic tracking-tighter group-hover:text-primary transition-colors duration-300">
+                    Hardware
+                </h2>
+                <p class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[16px]">memory</span>
+                    Inspect Physical Tech
+                </p>
+            </div>
+            <!-- Hover Accent Line -->
+            <div class="absolute bottom-0 left-0 w-full h-[4px] bg-secondary-fixed transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20"></div>
+        </a>
+    </section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full mt-xl bg-surface-container-lowest border-t border-glass-border z-10 relative">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl max-w-container-max mx-auto gap-md">
+        <div class="font-headline-lg text-headline-lg text-secondary italic">
+            RETRO_VAULT
+        </div>
+        <div class="font-label-caps text-label-caps text-neon-pink">
+            © 2026 RETRO_VAULT ARCHIVE. ALL RIGHTS RESERVED.
+        </div>
+    </div>
+</footer>
+<script>
+    // Simple parallax effect for background grid based on mouse movement
+    document.addEventListener('mousemove', (e) => {
+        const grid = document.querySelector('.grid-bg');
+        if (grid) {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 10;
+            grid.style.transform = `perspective(500px) rotateX(60deg) translate(${x}px, ${y}px)`;
+        }
+    });
+</script>
+</body>
+</html>
