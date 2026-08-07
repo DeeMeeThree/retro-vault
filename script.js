@@ -15,7 +15,7 @@ function parseCSV(str) {
             row.push(val);
             val = "";
         } else if (char === '\n' && !inQuotes) {
-            row.push(val);
+            row.push(val.replace(/\r$/, ''));
             if (row.length > 0) rows.push(row);
             row = [];
             val = "";
@@ -35,7 +35,7 @@ function renderCards(data) {
     const defaultImg = 'cover_ps1';
 
     grid.innerHTML = data.map((cols) => {
-        if (cols.length < 6) return '';
+        if (cols.length < 8) return '';
         const title = cols[0];
         const year = cols[1];
         const type = cols[2];
@@ -45,7 +45,9 @@ function renderCards(data) {
         const img = cols[6] ? cols[6].trim() : defaultImg;
         const pathToImg = `images/covers/${img}.png`;
         const linkIGN = cols[7];
+        const classIGN = cols[7] === "" ? "hidden": "";
         const linkMetaCritic = cols[8];
+        const classMetaCritic = cols[8] === "" ? "hidden" : "";
 
         return `
             <div class="flip-card h-[450px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped')">
@@ -75,8 +77,8 @@ function renderCards(data) {
                                 ${desc}
                             </p>
                             <div class="flex gap-2 mb-3 text-xs flex-wrap">
-                                <a class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank">Metacritic ${mark}</a>
-                                <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank">IGN</a>
+                                <a class="inline-flex items-center gap-1.5 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"> ${mark}</a>
+                                <a class="inline-flex items-center border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank">IGN</a>
                             </div>
                         </div>
                     </div>
