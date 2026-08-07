@@ -37,21 +37,26 @@
                 ARCHIVE_BASE_DE_DONNÉES
             </div>
             <div class="flex gap-sm flex-wrap">
-                <button class="sort-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                <label for="console-filter"></label><select id="console-filter" class="bg-surface-container border border-glass-border rounded-md px-md py-sm text-on-surface font-label-caps text-label-caps uppercase focus:border-neon-pink focus:ring-1 focus:ring-neon-pink outline-none cursor-pointer">
+                    <option value="">Toutes</option>
+                    <option value="SEGA">SEGA</option>
+                    <option value="PS1">PS1</option>
+                    <option value="PS2">PS2</option>
+                    <option value="PS3">PS3</option>
+                    <option value="PS4">PS4</option>
+                    <option value="PS5">PS5</option>
+                </select>
+                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
                         data-sort="title">
                     Trier: Titre
                 </button>
-                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
+                <button class="sort-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                         data-sort="year">
                     Trier: Année
                 </button>
                 <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
-                        data-sort="console">
-                    Trier: Console
-                </button>
-                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
-                        data-sort="type">
-                    Trier: Type
+                        data-sort="note">
+                    Trier: Note Metacritic
                 </button>
             </div>
         </div>
@@ -76,6 +81,7 @@
 </footer>
 <script>
     document.getElementById('search-input').addEventListener('input', filterAndSortData);
+    document.getElementById('console-filter').addEventListener('change', filterAndSortData);
 
     document.querySelectorAll('.sort-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {

@@ -1,5 +1,5 @@
 let gamesData = [];
-let currentSort = 'title';
+let currentSort = 'year';
 let sortDesc = false;
 
 function parseCSV(str) {
@@ -40,9 +40,12 @@ function renderCards(data) {
         const year = cols[1];
         const type = cols[2];
         const desc = cols[3];
+        const mark = cols[4];
         const consoleName = cols[5] ? cols[5].trim() : '';
         const img = cols[6] ? cols[6].trim() : defaultImg;
         const pathToImg = `images/covers/${img}.png`;
+        const linkIGN = cols[7];
+        const linkMetaCritic = cols[8];
 
         return `
             <div class="flip-card h-[450px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped')">
@@ -71,6 +74,10 @@ function renderCards(data) {
                             <p class="text-gray-300 flex-grow text-sm overflow-y-auto custom-scrollbar pr-2 leading-relaxed">
                                 ${desc}
                             </p>
+                            <div class="flex gap-2 mb-3 text-xs flex-wrap">
+                                <a class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank">Metacritic ${mark}</a>
+                                <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank">IGN</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,10 +88,13 @@ function renderCards(data) {
 
 function filterAndSortData() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const consoleFilter = document.getElementById('console-filter').value.toLowerCase();
 
     let filteredData = gamesData.filter(cols => {
-        if (cols.length < 6) return false;
-        return cols[0].toLowerCase().includes(searchTerm);
+        if(cols.length < 6) return false;
+        const titleMatch = cols[0].toLowerCase().includes(searchTerm);
+        const consoleMatch = consoleFilter === '' || (cols[5] && cols[5].toLowerCase().includes(consoleFilter));
+        return titleMatch && consoleMatch;
     });
 
     filteredData.sort((a, b) => {
@@ -95,12 +105,9 @@ function filterAndSortData() {
         } else if (currentSort === 'year') {
             valA = parseInt(a[1]);
             valB = parseInt(b[1]);
-        } else if (currentSort === 'console') {
-            valA = a[5];
-            valB = b[5];
-        } else if (currentSort === 'type') {
-            valA = a[2];
-            valB = b[2];
+        } else if (currentSort === 'note') {
+            valA = a[4];
+            valB = b[4];
         }
 
         let comparison;
