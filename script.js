@@ -32,7 +32,7 @@ function parseCSV(str) {
 
 function renderCards(data) {
     const grid = document.getElementById('games-grid');
-    const defaultImg = 'cover_ps1';
+    const defaultImg = 'ps1';
 
     grid.innerHTML = data.map((cols) => {
         if (cols.length < 8) return '';
@@ -43,7 +43,7 @@ function renderCards(data) {
         const mark = cols[4];
         const consoleName = cols[5] ? cols[5].trim() : '';
         const img = cols[6] ? cols[6].trim() : defaultImg;
-        const pathToImg = `images/covers/${img}.png`;
+        const pathToImg = `images/covers/${img}.webp`;
         const linkIGN = cols[7];
         const classIGN = cols[7] === "" ? "hidden": "";
         const linkMetaCritic = cols[8];
