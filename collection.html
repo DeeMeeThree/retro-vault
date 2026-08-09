@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html class="dark" lang="fr">
 <head>
     <meta charset="utf-8"/>
@@ -20,12 +19,28 @@
            href="index.html">
             RETRO_VAULT
         </a>
-        <nav class="hidden md:flex gap-lg items-center">
-            <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
-               href="#">Collection</a>
-            <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
-               href="hardware.html">Hardware</a>
-        </nav>
+        <div>
+            <div class="hidden sm:flex items-center gap-9">
+                <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+                   href="#">Collection</a>
+                <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+                   href="hardware.html">Hardware</a>
+            </div>
+
+            <div class="flex flex-1 justify-end items-center gap-4 md:gap-8">
+                <button class="sm:hidden text-white flex items-center justify-center" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+            <!-- Mobile Menu Overlay -->
+            <div class="absolute top-full left-0 right-0 bg-[#2a1631] border-b border-[#40204b] shadow-xl hidden sm:hidden flex-col"
+                 id="mobile-menu">
+                <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-medium py-4 px-6 border-b border-[#40204b] hover:bg-[#40204b] transition-colors"
+                   href="#">Collection</a>
+                <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-[#40204b] transition-colors"
+                   href="hardware.html">Hardware</a>
+            </div>
+        </div>
     </div>
 </header>
 <!-- Main Content: Interactive Vault -->
@@ -34,18 +49,19 @@
     <div class="flex flex-col gap-md mb-xl">
         <div class="flex flex-col md:flex-row justify-between items-center bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border">
             <div class="font-headline-lg text-headline-lg text-electric-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)] mb-md md:mb-0">
-                ARCHIVE_BASE_DE_DONNÉES
+                ARCHIVE_DONNÉES
             </div>
             <div class="flex gap-sm flex-wrap">
-                <label for="console-filter"></label><select id="console-filter" class="bg-surface-container border border-glass-border rounded-md px-md py-sm text-on-surface font-label-caps text-label-caps uppercase focus:border-neon-pink focus:ring-1 focus:ring-neon-pink outline-none cursor-pointer">
-                    <option value="">Toutes</option>
-                    <option value="SEGA">SEGA</option>
-                    <option value="PS1">PS1</option>
-                    <option value="PS2">PS2</option>
-                    <option value="PS3">PS3</option>
-                    <option value="PS4">PS4</option>
-                    <option value="PS5">PS5</option>
-                </select>
+                <label for="console-filter"></label><select id="console-filter"
+                                                            class="bg-surface-container border border-glass-border rounded-md px-md py-sm text-on-surface font-label-caps text-label-caps uppercase focus:border-neon-pink focus:ring-1 focus:ring-neon-pink outline-none cursor-pointer">
+                <option value="">Toutes</option>
+                <option value="SEGA">SEGA</option>
+                <option value="PS1">PS1</option>
+                <option value="PS2">PS2</option>
+                <option value="PS3">PS3</option>
+                <option value="PS4">PS4</option>
+                <option value="PS5">PS5</option>
+            </select>
                 <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
                         data-sort="title">
                     Trier: Titre
@@ -61,8 +77,9 @@
             </div>
         </div>
         <div class="w-full">
-            <label for="search-input"></label><input class="w-full bg-surface-container/60 backdrop-blur-md border border-glass-border rounded-xl p-md text-on-surface focus:border-electric-cyan focus:outline-none focus:ring-1 focus:ring-electric-cyan transition-colors font-label-caps text-label-caps"
-                                                     id="search-input" placeholder="RECHERCHER PAR TITRE..." type="text"/>
+            <label for="search-input"></label><input
+                class="w-full bg-surface-container/60 backdrop-blur-md border border-glass-border rounded-xl p-md text-on-surface focus:border-electric-cyan focus:outline-none focus:ring-1 focus:ring-electric-cyan transition-colors font-label-caps text-label-caps"
+                id="search-input" placeholder="RECHERCHER PAR TITRE..." type="text"/>
         </div>
     </div>
     <!-- Grid -->
@@ -80,6 +97,25 @@
     </div>
 </footer>
 <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if(mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            }
+        });
+    }
+
     document.getElementById('search-input').addEventListener('input', filterAndSortData);
     document.getElementById('console-filter').addEventListener('change', filterAndSortData);
 

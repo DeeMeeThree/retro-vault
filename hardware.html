@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>RETRO_VAULT | Hardware</title>
+    <script src="script.js"></script>
     <script src="tailwindcss-3.4.17.js"></script>
     <script id="tailwind-config" src="tailwind.js"></script>
     <link href="style.css" rel="stylesheet"/>
-    <link href="style.css" rel="stylesheet"/>
 </head>
 <body class="font-body-md crt-flicker antialiased selection:bg-neon-pink selection:text-surface-deep">
-<div class="scanlines"></div>
+<!-- Scanline Overlay -->
+<div class="fixed inset-0 z-50 scanlines mix-blend-overlay"></div>
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-40 bg-surface/70 backdrop-blur-xl border-b border-glass-border shadow-[0_4px_20px_rgba(0,255,255,0.15)]">
     <div class="flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
@@ -18,15 +19,31 @@
            href="index.html">
             RETRO_VAULT
         </a>
-        <nav class="hidden md:flex gap-lg items-center">
-            <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
-               href="collection.html">Collection</a>
-            <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
-               href="#">Hardware</a>
-        </nav>
+        <div>
+            <div class="hidden sm:flex items-center gap-9">
+                <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+                   href="collection.html">Collection</a>
+                <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+                   href="#">Hardware</a>
+            </div>
+
+            <div class="flex flex-1 justify-end items-center gap-4 md:gap-8">
+                <button class="sm:hidden text-white flex items-center justify-center" id="mobile-menu-btn">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+            <!-- Mobile Menu Overlay -->
+            <div class="absolute top-full left-0 right-0 bg-[#2a1631] border-b border-[#40204b] shadow-xl hidden sm:hidden flex-col"
+                 id="mobile-menu">
+                <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-[#40204b] transition-colors"
+                   href="collection.html">Collection</a>
+                <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-medium py-4 px-6 border-b border-[#40204b] hover:bg-[#40204b] transition-colors"
+                   href="#">Hardware</a>
+            </div>
+        </div>
     </div>
 </header>
-<main class="max-w-container-max mx-auto px-lg md:px-xl py-xl md:py-[80px]">
+<main class="max-w-container-max mx-auto px-md md:px-lg py-xl pt-[120px] relative z-10">
     <!-- Header Section -->
     <header class="mb-xl md:mb-[80px] text-center md:text-left relative z-10">
         <h1 class="font-display-lg text-display-lg text-secondary italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
@@ -269,7 +286,25 @@
         </div>
     </div>
 </footer>
+<script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
 
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            }
+        });
+    }
+</script>
 </body>
 </html>
