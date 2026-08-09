@@ -50,7 +50,7 @@ function renderCards(data) {
         const classMetaCritic = cols[8] === "" ? "hidden" : "";
 
         return `
-            <div class="flip-card h-[450px] w-full cursor-pointer group" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card h-[500px] w-full xxs:w-[75%] xs:w-[60%] sm:w-full justify-self-center cursor-pointer group" onclick="this.classList.toggle('flipped')">
                 <div class="flip-card-inner relative w-full h-full">
                     <!-- Front -->
                     <div class="flip-card-front bg-[#1a1a1a] overflow-hidden group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)] transition-all duration-300 border border-gray-700">

@@ -2,6 +2,10 @@ tailwind.config = {
     darkMode: "class",
     theme: {
         extend: {
+            screens: {
+                xxs: '420px',
+                xs: '540px',
+            },
             "colors": {
                 "surface-dim": "#1a0f1f",
                 "on-primary-fixed-variant": "#810081",
