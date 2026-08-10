@@ -60,7 +60,7 @@ function renderCards(data) {
                     <!-- Front -->
                     <div class="flip-card-front bg-[#1a1a1a] overflow-hidden group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)] transition-all duration-300 border border-gray-700">
                         <div class="plastic-sheen"></div>
-                        <div class="h-full w-full bg-cover bg-center relative" style="background-image: url('${pathToImg}')"></div>
+                        <div class="h-full w-full bg-contain bg-no-repeat bg-center relative" style="background-image: url('${pathToImg}')"></div>
                         <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
                             <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Space Grotesk', sans-serif;">${title}</div>
                             <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Space Grotesk', sans-serif;">${consoleName}</div>
