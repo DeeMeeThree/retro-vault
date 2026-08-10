@@ -62,6 +62,7 @@
                 <option value="PS4">PS4</option>
                 <option value="PS5">PS5</option>
             </select>
+                <span class="hidden md:inline-block w-px self-stretch bg-glass-border my-1"></span>
                 <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
                         data-sort="title">
                     Trier: Titre
@@ -73,6 +74,15 @@
                 <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
                         data-sort="note">
                     Trier: Note Metacritic
+                </button>
+                <span class="hidden md:inline-block w-px self-stretch bg-glass-border my-1"></span>
+                <button class="view-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                        data-view="grid">
+                    Vue: Cartes
+                </button>
+                <button class="view-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
+                        data-view="list">
+                    Vue: Liste
                 </button>
             </div>
         </div>
@@ -101,7 +111,7 @@
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    if(mobileMenuBtn && mobileMenu) {
+    if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
             mobileMenu.classList.toggle('flex');
@@ -118,6 +128,19 @@
 
     document.getElementById('search-input').addEventListener('input', filterAndSortData);
     document.getElementById('console-filter').addEventListener('change', filterAndSortData);
+
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const view = e.target.dataset.view;
+            document.querySelectorAll('.view-btn').forEach(b => {
+                b.classList.remove('border-electric-cyan', 'text-electric-cyan');
+                b.classList.add('border-glass-border', 'text-on-surface-variant');
+            });
+            e.target.classList.remove('border-glass-border', 'text-on-surface-variant');
+            e.target.classList.add('border-electric-cyan', 'text-electric-cyan');
+            setView(view);
+        });
+    });
 
     document.querySelectorAll('.sort-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {

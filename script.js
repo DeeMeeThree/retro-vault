@@ -1,6 +1,7 @@
 let gamesData = [];
 let currentSort = 'year';
 let sortDesc = false;
+let currentView = 'grid';
 
 function parseCSV(str) {
     const rows = [];
@@ -31,6 +32,10 @@ function parseCSV(str) {
 }
 
 function renderCards(data) {
+    if (currentView === 'list') {
+        renderList(data);
+        return;
+    }
     const grid = document.getElementById('games-grid');
     const defaultImg = 'ps1';
 
@@ -91,6 +96,58 @@ function renderCards(data) {
             </div>
             `;
     }).join('');
+}
+
+function renderList(data) {
+    const grid = document.getElementById('games-grid');
+    const defaultImg = 'ps1';
+
+    grid.innerHTML = data.map((cols) => {
+        if (cols.length < 8) return '';
+        const title = cols[0];
+        const year = cols[1];
+        const type = cols[2];
+        const desc = cols[3];
+        const mark = cols[4];
+        const consoleName = cols[5] ? cols[5].trim() : '';
+        const img = cols[6] ? cols[6].trim() : defaultImg;
+        const pathToImg = `images/covers/${img}.webp`;
+        const linkIGN = cols[7];
+        const classIGN = cols[7] === "" ? "hidden" : "";
+        const linkMetaCritic = cols[8];
+        const classMetaCritic = cols[8] === "" ? "hidden" : "";
+
+        return `
+            <div class="group flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300">
+                <img src="${pathToImg}" alt="${title}" loading="lazy" class="h-20 w-14 object-cover object-top rounded bg-[#1a1a1a] shrink-0"/>
+                <div class="flex-1 min-w-0">
+                    <div class="font-bold text-white text-base tracking-wide leading-tight truncate" style="font-family: 'Space Grotesk', sans-serif;">${title}</div>
+                    <div class="text-sm text-on-surface-variant mt-1">
+                        <span class="text-electric-cyan">${year}</span> · ${consoleName} · ${type}
+                    </div>
+                    <p class="text-gray-400 text-xs mt-1 leading-relaxed line-clamp-2">${desc}</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0 flex-wrap justify-end">
+                    <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs">${mark}</span>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener">Metacritic</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener">IGN</a>
+                </div>
+            </div>
+            `;
+    }).join('');
+}
+
+function setView(view) {
+    currentView = view;
+    const grid = document.getElementById('games-grid');
+    if (view === 'list') {
+        grid.classList.remove('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg');
+        grid.classList.add('flex', 'flex-col', 'gap-md');
+    } else {
+        grid.classList.remove('flex', 'flex-col', 'gap-md');
+        grid.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg');
+    }
+    filterAndSortData();
 }
 
 function filterAndSortData() {
