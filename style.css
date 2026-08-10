@@ -195,44 +195,119 @@ body {
 	transform: scale(1.05);
 }
 .flip-card {
-	perspective: 1500px; /* Enhanced perspective for thicker box feel */
+	position: relative;
+	perspective: 2200px; /* Deeper perspective for a stronger 3D feel */
 }
+
+/* Dynamic ground shadow: shrinks & darkens while the card turns edge-on */
+.flip-card::before {
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: -28px;
+	width: 88%;
+	height: 60px;
+	transform: translateX(-50%);
+	background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.35) 45%, transparent 72%);
+	filter: blur(8px);
+	z-index: -1;
+	pointer-events: none;
+	transition: transform 2.5s cubic-bezier(0.3, 1.1, 0.4, 1), opacity 2.5s cubic-bezier(0.3, 1.1, 0.4, 1), width 2.5s cubic-bezier(0.3, 1.1, 0.4, 1);
+}
+.flip-card.flipped::before {
+	width: 55%;
+	opacity: 0.5;
+	transform: translateX(-50%) translateY(-4px) scaleY(0.7);
+}
+
 .flip-card-inner {
-	transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smoother, bouncier transition */
+	transition: transform 2.5s cubic-bezier(0.3, 1.1, 0.4, 1); /* Slow flip so the 3D effect is fully visible */
 	transform-style: preserve-3d;
 	position: relative;
+	will-change: transform;
 }
 .flip-card.flipped .flip-card-inner {
 	transform: rotateY(180deg);
 }
 
-/* 3D Box Effect */
-.flip-card-inner::after {
-	content: '';
+/* 3D Box Edges — spine on the left, plain edges on right/top/bottom */
+.flip-card-spine,
+.flip-card-edge {
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 30px;
-	height: 100%;
-	background: #222;
-	transform-origin: left;
-	transform: translateZ(15px) rotateY(-90deg);
-	box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-	border-radius: 4px 0 0 4px;
+	pointer-events: none;
 }
 
-.flip-card-inner::before {
+/* Left spine (real game-case spine) */
+.flip-card-spine {
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 100%;
+	transform-origin: left center;
+	transform: translateZ(-20px) rotateY(-90deg);
+	background: linear-gradient(90deg, #9fb6b6 0%, #d9ecec 25%, #ffffff 50%, #c2dcdc 75%, #8fa8a8 100%);
+	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.35);
+	border-radius: 6px 0 0 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.flip-card-spine::before {
 	content: '';
 	position: absolute;
+	inset: 0;
+	background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 2px, transparent 2px 4px);
+}
+.flip-card-spine span {
+	color: rgba(0, 40, 40, 0.85);
+	font-size: 9px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	padding: 8px 0;
+	font-family: 'Space Grotesk', sans-serif;
+	font-weight: 700;
+}
+
+/* Right edge */
+.flip-card-edge-right {
 	top: 0;
 	right: 0;
-	width: 30px;
+	width: 40px;
 	height: 100%;
-	background: #1a1a1a;
-	transform-origin: right;
-	transform: translateZ(15px) rotateY(90deg);
-	box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-	border-radius: 0 4px 4px 0;
+	transform-origin: right center;
+	transform: translateZ(-20px) rotateY(90deg);
+	background: linear-gradient(90deg, #a5bcbc 0%, #dfecec 50%, #9db2b2 100%);
+	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.3);
+	border-radius: 0 6px 6px 0;
+}
+
+/* Top edge */
+.flip-card-edge-top {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 40px;
+	transform-origin: top center;
+	transform: translateZ(20px) rotateX(-90deg);
+	background: linear-gradient(180deg, #dfecec 0%, #a5bcbc 100%);
+	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.3);
+	border-radius: 6px 6px 0 0;
+}
+
+/* Bottom edge */
+.flip-card-edge-bottom {
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 40px;
+	transform-origin: bottom center;
+	transform: translateZ(20px) rotateX(90deg);
+	background: linear-gradient(180deg, #a5bcbc 0%, #8fa8a8 100%);
+	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.35);
+	border-radius: 0 0 6px 6px;
 }
 
 .flip-card-front, .flip-card-back {
@@ -244,14 +319,14 @@ body {
 	width: 100%;
 	height: 100%;
 	border-radius: 8px; /* PS5 case rounded corners */
-	box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+	box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.12), inset 2px 2px 10px rgba(255,255,255,0.06);
 }
 
 .flip-card-front {
-	transform: translateZ(15px);
+	transform: translateZ(20px);
 }
 
-/* Plastic sheen overlay */
+/* Plastic sheen overlay with a moving gloss sweep */
 .plastic-sheen {
 	position: absolute;
 	top: 0;
@@ -261,13 +336,59 @@ body {
 	background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.05) 100%);
 	pointer-events: none;
 	border-radius: 8px;
+	overflow: hidden;
 	z-index: 10;
 }
+.plastic-sheen::after {
+	content: '';
+	position: absolute;
+	top: -15%;
+	bottom: -15%;
+	left: 0;
+	width: 45%;
+	background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.22) 45%, rgba(255,255,255,0.02) 70%, transparent 100%);
+	transform: translateX(-160%) skewX(-18deg);
+	animation: none;
+	pointer-events: none;
+}
+@keyframes sheen-sweep {
+	0% { transform: translateX(-160%) skewX(-18deg); }
+	55%, 100% { transform: translateX(320%) skewX(-18deg); }
+}
 
+/* Gloss sweep only runs while a card is hovered */
+.flip-card:hover .plastic-sheen::after {
+	animation: sheen-sweep 6s ease-in-out infinite;
+}
+.flip-card:hover .flip-card-back .plastic-sheen::after {
+	animation: sheen-sweep 7s ease-in-out infinite;
+	animation-delay: -2.5s;
+}
+
+/* Disc tray hint on the case interior */
 .flip-card-back {
-	transform: rotateY(180deg) translateZ(15px);
+	transform: rotateY(180deg) translateZ(20px);
 	background: #111; /* Dark plastic back */
-}   
+}
+.flip-card-back::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 260px;
+	height: 260px;
+	transform: translate(-50%, -50%);
+	background:
+		radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 27%, transparent 28%),
+		radial-gradient(circle at 50% 50%, transparent 0%, transparent 20%, rgba(0,0,0,0.45) 21%, transparent 44%),
+		radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 60%);
+	border-radius: 50%;
+	pointer-events: none;
+	z-index: 0;
+}
+.flip-card-back .plastic-sheen::after {
+	background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0.01) 70%, transparent 100%);
+}
 .grid-bg {
 	background-image: 
 		linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
