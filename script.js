@@ -71,15 +71,15 @@ function renderCards(data) {
                         <div class="plastic-sheen"></div>
                         <div class="h-full w-full bg-contain bg-no-repeat bg-center relative" style="background-image: url('${pathToImg}')"></div>
                         <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
-                            <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne';">${title}</div>
-                            <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne';">${consoleName}</div>
+                            <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
+                            <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
                         </div>
                     </div>
                     <!-- Back -->
                     <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm">
                         <div class="plastic-sheen"></div>
                         <div class="bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
-                            <h3 class="font-bold text-lg truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)] select-none" title="${title}">${title}</h3>
+                            <h3 class="font-bold text-lg select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
                         </div>
                         <div class="p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
                             <div class="flex gap-2 mb-3 text-xs flex-wrap">
@@ -130,7 +130,7 @@ function renderList(data) {
             <div class="group flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300">
                 <img src="${pathToImg}" alt="${title}" loading="lazy" class="h-20 w-14 object-cover object-top rounded bg-[#1a1a1a] shrink-0"/>
                 <div class="flex-1 min-w-0">
-                    <div class="font-bold text-white text-base tracking-wide leading-tight truncate" style="font-family: 'Soehne';">${title}</div>
+                    <div class="font-bold text-white text-base tracking-wide leading-tight truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
                     <div class="text-sm text-on-surface-variant mt-1">
                         <span class="text-electric-cyan">${year}</span> · ${consoleName} · ${type}
                     </div>
