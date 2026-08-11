@@ -53,6 +53,8 @@ function renderCards(data) {
         const classIGN = cols[7] === "" ? "hidden": "";
         const linkMetaCritic = cols[8];
         const classMetaCritic = cols[8] === "" ? "hidden" : "";
+        const linkJVC = cols[9];
+        const classJVC = cols[9] === "" ? "hidden" : "";
 
         return `
             <div class="flip-card h-[500px] w-full xxs:w-[75%] xs:w-[60%] sm:w-full justify-self-center cursor-pointer group" onclick="this.classList.toggle('flipped')">
@@ -87,8 +89,9 @@ function renderCards(data) {
                                 ${desc}
                             </p>
                             <div class="flex gap-2 mb-3 text-xs flex-wrap">
-                                <a class="inline-flex items-center gap-1.5 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"> ${mark}</a>
-                                <a class="inline-flex items-center border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank">IGN</a>
+                                <a class="inline-flex items-center gap-1.5 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
+                                <a class="inline-flex items-center border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/></a>
+                                <a class="inline-flex items-center border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/></a>
                             </div>
                         </div>
                     </div>
@@ -116,6 +119,8 @@ function renderList(data) {
         const classIGN = cols[7] === "" ? "hidden" : "";
         const linkMetaCritic = cols[8];
         const classMetaCritic = cols[8] === "" ? "hidden" : "";
+        const linkJVC = cols[9];
+        const classJVC = cols[9] === "" ? "hidden" : "";
 
         return `
             <div class="group flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300">
@@ -128,9 +133,9 @@ function renderList(data) {
                     <p class="text-gray-400 text-xs mt-1 leading-relaxed line-clamp-2">${desc}</p>
                 </div>
                 <div class="flex items-center gap-2 shrink-0 flex-wrap justify-end">
-                    <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs">${mark}</span>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener">Metacritic</a>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener">IGN</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/></a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classJVC}" href="${linkJVC}" target="_blank" rel="noopener"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/></a>
                 </div>
             </div>
             `;
