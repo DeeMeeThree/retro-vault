@@ -153,6 +153,19 @@ body {
 	transform: rotateY(180deg);
 }
 
+/* Drag-to-flip: follow the pointer, vertical scroll preserved */
+.flip-card {
+	touch-action: pan-y;
+}
+.flip-card.dragging {
+	cursor: grabbing;
+	user-select: none;
+	-webkit-user-select: none;
+}
+.flip-card.dragging .flip-card-inner {
+	transition: none;
+}
+
 /* 3D Box Edges — spine on the left, plain edges on right/top/bottom */
 .flip-card-spine,
 .flip-card-edge {

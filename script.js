@@ -59,7 +59,7 @@ function renderCards(data) {
         const markJVC = cols[10];
 
         return `
-            <div class="flip-card h-[500px] w-full xxs:w-[75%] xs:w-[60%] sm:w-full justify-self-center cursor-pointer group" onclick="this.classList.toggle('flipped')">
+            <div class="flip-card h-[500px] w-full xxs:w-[75%] xs:w-[60%] sm:w-full justify-self-center cursor-pointer group">
                 <div class="flip-card-inner relative w-full h-full">
                     <!-- 3D Box Edges -->
                     <div class="flip-card-spine"><span>${title}</span></div>
@@ -194,4 +194,74 @@ function filterAndSortData() {
     });
 
     renderCards(filteredData);
+}
+
+function initCardDrag() {
+    const grid = document.getElementById('games-grid');
+    if (!grid) return;
+
+    let activeCard = null;
+    let startX = 0;
+    let startY = 0;
+    let startRot = 0;
+    let moved = false;
+
+    grid.addEventListener('pointerdown', (e) => {
+        const card = e.target.closest('.flip-card');
+        if (!card || e.target.closest('a')) return;
+
+        activeCard = card;
+        startX = e.clientX;
+        startY = e.clientY;
+        moved = false;
+        startRot = card.classList.contains('flipped') ? 180 : 0;
+
+        card.classList.add('dragging');
+        card.setPointerCapture(e.pointerId);
+    });
+
+    grid.addEventListener('pointermove', (e) => {
+        if (!activeCard) return;
+
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (!moved && Math.hypot(dx, dy) > 6) {
+            moved = true;
+            e.preventDefault();
+        }
+        if (!moved) return;
+
+        const width = activeCard.offsetWidth || 1;
+        const rot = startRot + (dx / width) * 180;
+        const inner = activeCard.querySelector('.flip-card-inner');
+        if (inner) inner.style.transform = `rotateY(${rot}deg)`;
+    });
+
+    const release = (e) => {
+        if (!activeCard) return;
+        const card = activeCard;
+        activeCard = null;
+
+        const inner = card.querySelector('.flip-card-inner');
+        card.classList.remove('dragging');
+
+        if (moved) {
+            const dx = e.clientX - startX;
+            const width = card.offsetWidth || 1;
+            const rot = startRot + (dx / width) * 180;
+            const target = Math.round(rot / 180) * 180;
+            const flipped = ((target % 360) + 360) % 360 === 180;
+            card.classList.toggle('flipped', flipped);
+        } else {
+            card.classList.toggle('flipped');
+        }
+
+        if (inner) {
+            inner.style.transition = '';
+            inner.style.transform = '';
+        }
+    };
+
+    grid.addEventListener('pointerup', release);
+    grid.addEventListener('pointercancel', release);
 }
