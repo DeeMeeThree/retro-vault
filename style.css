@@ -393,15 +393,44 @@ body {
 
 /* Mobile Menu */
 #mobile-menu {
-	transition: opacity 0.3s ease, transform 0.3s ease;
-}
-#mobile-menu.hidden {
 	opacity: 0;
 	pointer-events: none;
 	transform: translateY(-10px);
+	transition: opacity 0.3s ease, transform 0.3s ease;
 }
-#mobile-menu:not(.hidden) {
+#mobile-menu.menu-open {
 	opacity: 1;
 	pointer-events: auto;
 	transform: translateY(0);
+}
+
+/* Hamburger -> X animation */
+#mobile-menu-btn.open .ham-line:nth-child(1) {
+	transform: translateY(7px) rotate(45deg);
+}
+#mobile-menu-btn.open .ham-line:nth-child(2) {
+	opacity: 0;
+}
+#mobile-menu-btn.open .ham-line:nth-child(3) {
+	transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Options panel (mobile): hidden behind the gear button, animated like the menu */
+#options-panel {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(-10px);
+	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+#options-panel.options-open {
+	opacity: 1;
+	pointer-events: auto;
+	transform: translateY(0);
+}
+@media (min-width: 640px) {
+	#options-panel {
+		opacity: 1;
+		pointer-events: auto;
+		transform: none;
+	}
 }

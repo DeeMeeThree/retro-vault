@@ -28,8 +28,10 @@
             </div>
 
             <div class="flex flex-1 justify-end items-center gap-4 md:gap-8">
-                <button class="sm:hidden text-white flex items-center justify-center" id="mobile-menu-btn">
-                    <span class="material-symbols-outlined text-2xl">menu</span>
+                <button class="sm:hidden text-white flex flex-col items-center justify-center gap-[5px] p-1" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false">
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
                 </button>
             </div>
             <!-- Mobile Menu Overlay -->
@@ -292,16 +294,42 @@
     const mobileMenu = document.getElementById('mobile-menu');
 
     if (mobileMenuBtn && mobileMenu) {
+        let closeTimer = null;
+
+        const openMenu = () => {
+            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('flex');
+            requestAnimationFrame(() => {
+                mobileMenu.classList.add('menu-open');
+            });
+            mobileMenuBtn.classList.add('open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeMenu = () => {
+            mobileMenu.classList.remove('menu-open');
+            mobileMenuBtn.classList.remove('open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            closeTimer = setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                closeTimer = null;
+            }, 300);
+        };
+
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('flex');
+            if (mobileMenu.classList.contains('menu-open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('flex');
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && mobileMenu.classList.contains('menu-open')) {
+                closeMenu();
             }
         });
     }

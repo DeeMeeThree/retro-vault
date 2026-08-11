@@ -28,8 +28,10 @@
             </div>
 
             <div class="flex flex-1 justify-end items-center gap-4 md:gap-8">
-                <button class="sm:hidden text-white flex items-center justify-center" id="mobile-menu-btn">
-                    <span class="material-symbols-outlined text-2xl">menu</span>
+                <button class="sm:hidden text-white flex flex-col items-center justify-center gap-[5px] p-1" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false">
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
                 </button>
             </div>
             <!-- Mobile Menu Overlay -->
@@ -47,43 +49,61 @@
 <main class="max-w-container-max mx-auto px-md md:px-lg py-xl pt-[120px] relative z-10">
     <!-- Controls -->
     <div class="flex flex-col gap-md mb-xl">
-        <div class="flex flex-col md:flex-row justify-between items-center bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border">
-            <div class="font-headline-lg text-headline-lg text-electric-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)] mb-md md:mb-0">
-                ARCHIVE_DONNÉES
+        <div class="bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border flex flex-col md:flex-row justify-between items-center gap-md">
+            <div class="flex flex-col items-center gap-sm w-full md:flex-row md:w-auto">
+                <div class="font-headline-lg text-headline-lg text-electric-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">
+                    ARCHIVE_DONNÉES
+                </div>
+                <button id="options-btn"
+                        class="sm:hidden text-electric-cyan border border-glass-border rounded-md p-sm hover:bg-electric-cyan/10 transition-colors"
+                        aria-label="Options" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
             </div>
-            <div class="flex gap-sm flex-wrap">
-                <label for="console-filter"></label><select id="console-filter"
-                                                            class="bg-surface-container border border-glass-border rounded-md px-md py-sm text-on-surface font-label-caps text-label-caps uppercase focus:border-neon-pink focus:ring-1 focus:ring-neon-pink outline-none cursor-pointer">
-                <option value="">Toutes</option>
-                <option value="SEGA">SEGA</option>
-                <option value="PS1">PS1</option>
-                <option value="PS2">PS2</option>
-                <option value="PS3">PS3</option>
-                <option value="PS4">PS4</option>
-                <option value="PS5">PS5</option>
-            </select>
-                <span class="hidden md:inline-block w-px self-stretch bg-glass-border my-1"></span>
-                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
-                        data-sort="title">
-                    Trier: Titre
-                </button>
-                <button class="sort-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
-                        data-sort="year">
-                    Trier: Année
-                </button>
-                <button class="sort-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
-                        data-sort="note">
-                    Trier: Note Metacritic
-                </button>
-                <span class="hidden md:inline-block w-px self-stretch bg-glass-border my-1"></span>
-                <button class="view-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
-                        data-view="grid">
-                    Vue: Cartes
-                </button>
-                <button class="view-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
-                        data-view="list">
-                    Vue: Liste
-                </button>
+            <div id="options-panel" class="hidden sm:grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-md justify-end">
+                <label for="console-filter" class="font-label-caps text-label-caps text-on-surface-variant uppercase">Console</label>
+                <select id="console-filter"
+                        class="bg-surface-container border border-glass-border rounded-md px-md py-sm text-on-surface font-label-caps text-label-caps uppercase focus:border-neon-pink focus:ring-1 focus:ring-neon-pink outline-none cursor-pointer">
+                    <option value="">Toutes</option>
+                    <option value="SEGA">Megadrive II</option>
+                    <option value="PS1">PS1</option>
+                    <option value="PS2">PS2</option>
+                    <option value="PS3">PS3</option>
+                    <option value="PS4">PS4</option>
+                    <option value="PS5">PS5</option>
+                </select>
+                <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Trier</span>
+                <div class="flex gap-sm flex-wrap">
+                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
+                            data-sort="title">
+                        Titre
+                        <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
+                    </button>
+                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                            data-sort="year">
+                        Année
+                        <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
+                    </button>
+                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
+                            data-sort="note">
+                        Note Metacritic
+                        <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
+                    </button>
+                </div>
+                <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Vue</span>
+                <div class="flex gap-sm flex-wrap">
+                    <button class="view-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                            data-view="grid">
+                        Cartes
+                    </button>
+                    <button class="view-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
+                            data-view="list">
+                        Liste
+                    </button>
+                </div>
             </div>
         </div>
         <div class="w-full">
@@ -112,16 +132,83 @@
     const mobileMenu = document.getElementById('mobile-menu');
 
     if (mobileMenuBtn && mobileMenu) {
+        let closeTimer = null;
+
+        const openMenu = () => {
+            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('flex');
+            requestAnimationFrame(() => {
+                mobileMenu.classList.add('menu-open');
+            });
+            mobileMenuBtn.classList.add('open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeMenu = () => {
+            mobileMenu.classList.remove('menu-open');
+            mobileMenuBtn.classList.remove('open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            closeTimer = setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                closeTimer = null;
+            }, 300);
+        };
+
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('flex');
+            if (mobileMenu.classList.contains('menu-open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('flex');
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && mobileMenu.classList.contains('menu-open')) {
+                closeMenu();
+            }
+        });
+    }
+
+    const optionsBtn = document.getElementById('options-btn');
+    const optionsPanel = document.getElementById('options-panel');
+
+    if (optionsBtn && optionsPanel) {
+        let optionsTimer = null;
+
+        const openOptions = () => {
+            if (optionsTimer) { clearTimeout(optionsTimer); optionsTimer = null; }
+            optionsPanel.classList.remove('hidden');
+            optionsPanel.classList.add('grid');
+            requestAnimationFrame(() => {
+                optionsPanel.classList.add('options-open');
+            });
+            optionsBtn.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeOptions = () => {
+            optionsPanel.classList.remove('options-open');
+            optionsBtn.setAttribute('aria-expanded', 'false');
+            optionsTimer = setTimeout(() => {
+                optionsPanel.classList.add('hidden');
+                optionsPanel.classList.remove('grid');
+                optionsTimer = null;
+            }, 300);
+        };
+
+        optionsBtn.addEventListener('click', () => {
+            if (optionsPanel.classList.contains('options-open')) {
+                closeOptions();
+            } else {
+                openOptions();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!optionsBtn.contains(e.target) && !optionsPanel.contains(e.target) && optionsPanel.classList.contains('options-open')) {
+                closeOptions();
             }
         });
     }
@@ -142,9 +229,20 @@
         });
     });
 
+    function updateSortArrows() {
+        document.querySelectorAll('.sort-arrow').forEach(arrow => {
+            arrow.classList.add('hidden');
+        });
+        const active = document.querySelector(`.sort-btn[data-sort="${currentSort}"] .sort-arrow`);
+        if (active) {
+            active.textContent = sortDesc ? '▼' : '▲';
+            active.classList.remove('hidden');
+        }
+    }
+
     document.querySelectorAll('.sort-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const sortBy = e.target.dataset.sort;
+        btn.addEventListener('click', () => {
+            const sortBy = btn.dataset.sort;
             if (currentSort === sortBy) {
                 sortDesc = !sortDesc;
             } else {
@@ -156,12 +254,15 @@
                 b.classList.remove('border-electric-cyan', 'text-electric-cyan');
                 b.classList.add('border-glass-border', 'text-on-surface-variant');
             });
-            e.target.classList.remove('border-glass-border', 'text-on-surface-variant');
-            e.target.classList.add('border-electric-cyan', 'text-electric-cyan');
+            btn.classList.remove('border-glass-border', 'text-on-surface-variant');
+            btn.classList.add('border-electric-cyan', 'text-electric-cyan');
 
+            updateSortArrows();
             filterAndSortData();
         });
     });
+
+    updateSortArrows();
 
     // Initialize with CSV from fetch
     fetch('database_archive.csv')
