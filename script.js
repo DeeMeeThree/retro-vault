@@ -132,14 +132,14 @@ function renderList(data) {
                 <div class="flex-1 min-w-0">
                     <div class="font-bold text-white text-base tracking-wide leading-tight truncate">${title}</div>
                     <div class="text-sm text-on-surface-variant mt-1">
-                        <span class="text-electric-cyan">${year}</span> Â· ${consoleName} Â· ${type}
+                        <span class="text-electric-cyan">${year}</span> · ${consoleName} · ${type}
                     </div>
                     <p class="text-gray-400 text-xs mt-1 leading-relaxed line-clamp-2">${desc}</p>
                 </div>
-                <div class="flex items-center gap-2 shrink-0 flex-wrap justify-end">
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classJVC}" href="${linkJVC}" target="_blank" rel="noopener"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
+                <div class="flex flex-col items-stretch gap-1 shrink-0">
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors justify-center inline-flex items-center gap-1 ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors justify-center inline-flex items-center gap-1 ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors justify-center inline-flex items-center gap-1 ${classJVC}" href="${linkJVC}" target="_blank" rel="noopener"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
                 </div>
             </div>
             `;
