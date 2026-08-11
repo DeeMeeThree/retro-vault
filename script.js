@@ -79,15 +79,15 @@ function renderCards(data) {
                     <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm">
                         <div class="plastic-sheen"></div>
                         <div class="bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
-                            <h3 class="font-bold text-lg truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
+                            <h3 class="font-bold text-lg truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)] select-none" title="${title}">${title}</h3>
                         </div>
                         <div class="p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
                             <div class="flex gap-2 mb-3 text-xs flex-wrap">
-                                <span class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm">${year}</span>
-                                <span class="border border-neon-pink text-neon-pink px-2 py-1 rounded-sm">${consoleName}</span>
-                                <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm">${type}</span>
+                                <span class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm select-none">${year}</span>
+                                <span class="border border-neon-pink text-neon-pink px-2 py-1 rounded-sm select-none">${consoleName}</span>
+                                <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm select-none">${type}</span>
                             </div>
-                            <p class="text-gray-300 flex-grow text-sm overflow-y-auto custom-scrollbar pr-2 leading-relaxed">
+                            <p class="text-gray-300 flex-grow text-sm leading-relaxed select-none">
                                 ${desc}
                             </p>
                             <div class="flex gap-2 mb-3 text-xs flex-wrap">
@@ -262,6 +262,24 @@ function initCardDrag() {
         }
     };
 
+    const cancel = () => {
+        if (!activeCard) return;
+        const card = activeCard;
+        activeCard = null;
+
+        const inner = card.querySelector('.flip-card-inner');
+        card.classList.remove('dragging');
+        if (inner) {
+            inner.style.transition = '';
+            inner.style.transform = '';
+        }
+        if (moved) {
+            card.classList.toggle('flipped', startRot === 180);
+        } else {
+            card.classList.toggle('flipped');
+        }
+    };
+
     grid.addEventListener('pointerup', release);
-    grid.addEventListener('pointercancel', release);
+    grid.addEventListener('pointercancel', cancel);
 }
