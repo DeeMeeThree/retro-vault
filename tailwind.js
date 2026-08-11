@@ -79,26 +79,26 @@ tailwind.config = {
             },
             "fontFamily": {
                 "headline-lg": [
-                    "anybody"
+                    "sans-serif"
                 ],
                 "data-point": [
-                    "jetbrainsMono"
+                    "sans-serif"
                 ],
                 "body-lg": [
                     "Soehne",
                     "sans-serif"
                 ],
                 "headline-xl": [
-                    "anybody"
+                    "sans-serif"
                 ],
                 "display-lg": [
-                    "anybody"
+                    "sans-serif"
                 ],
                 "label-caps": [
-                    "jetbrainsMono"
+                    "sans-serif"
                 ],
                 "headline-lg-mobile": [
-                    "anybody"
+                    "sans-serif"
                 ],
                 "body-md": [
                     "Soehne",
