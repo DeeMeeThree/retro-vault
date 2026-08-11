@@ -85,7 +85,8 @@ tailwind.config = {
                     "jetbrainsMono"
                 ],
                 "body-lg": [
-                    "hankenGrotesk"
+                    "Soehne",
+                    "sans-serif"
                 ],
                 "headline-xl": [
                     "anybody"
@@ -100,7 +101,8 @@ tailwind.config = {
                     "anybody"
                 ],
                 "body-md": [
-                    "hankenGrotesk"
+                    "Soehne",
+                    "sans-serif"
                 ]
             },
             "fontSize": {
