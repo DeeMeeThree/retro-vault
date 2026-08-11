@@ -40,21 +40,21 @@ function renderCards(data) {
     const defaultImg = 'ps1';
 
     grid.innerHTML = data.map((cols) => {
-        if (cols.length < 8) return '';
+        if (cols.length < 10) return '';
         const title = cols[0];
         const year = cols[1];
         const type = cols[2];
         const desc = cols[3];
-        const mark = cols[4];
-        const consoleName = cols[5] ? cols[5].trim() : '';
-        const img = cols[6] ? cols[6].trim() : defaultImg;
+        const mark = cols[9];
+        const consoleName = cols[4] ? cols[4].trim() : '';
+        const img = cols[5] ? cols[5].trim() : defaultImg;
         const pathToImg = `images/covers/${img}.webp`;
-        const linkIGN = cols[7];
-        const classIGN = cols[7] === "" ? "hidden": "";
-        const linkMetaCritic = cols[8];
-        const classMetaCritic = cols[8] === "" ? "hidden" : "";
-        const linkJVC = cols[9];
-        const classJVC = cols[9] === "" ? "hidden" : "";
+        const linkIGN = cols[6];
+        const classIGN = cols[6] === "" ? "hidden": "";
+        const linkMetaCritic = cols[7];
+        const classMetaCritic = cols[7] === "" ? "hidden" : "";
+        const linkJVC = cols[8];
+        const classJVC = cols[8] === "" ? "hidden" : "";
 
         return `
             <div class="flip-card h-[500px] w-full xxs:w-[75%] xs:w-[60%] sm:w-full justify-self-center cursor-pointer group" onclick="this.classList.toggle('flipped')">
@@ -106,21 +106,21 @@ function renderList(data) {
     const defaultImg = 'ps1';
 
     grid.innerHTML = data.map((cols) => {
-        if (cols.length < 8) return '';
+        if (cols.length < 10) return '';
         const title = cols[0];
         const year = cols[1];
         const type = cols[2];
         const desc = cols[3];
-        const mark = cols[4];
-        const consoleName = cols[5] ? cols[5].trim() : '';
-        const img = cols[6] ? cols[6].trim() : defaultImg;
+        const mark = cols[9];
+        const consoleName = cols[4] ? cols[4].trim() : '';
+        const img = cols[5] ? cols[5].trim() : defaultImg;
         const pathToImg = `images/covers/${img}.webp`;
-        const linkIGN = cols[7];
-        const classIGN = cols[7] === "" ? "hidden" : "";
-        const linkMetaCritic = cols[8];
-        const classMetaCritic = cols[8] === "" ? "hidden" : "";
-        const linkJVC = cols[9];
-        const classJVC = cols[9] === "" ? "hidden" : "";
+        const linkIGN = cols[6];
+        const classIGN = cols[6] === "" ? "hidden" : "";
+        const linkMetaCritic = cols[7];
+        const classMetaCritic = cols[7] === "" ? "hidden" : "";
+        const linkJVC = cols[8];
+        const classJVC = cols[8] === "" ? "hidden" : "";
 
         return `
             <div class="group flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300">
@@ -160,9 +160,9 @@ function filterAndSortData() {
     const consoleFilter = document.getElementById('console-filter').value.toLowerCase();
 
     let filteredData = gamesData.filter(cols => {
-        if(cols.length < 6) return false;
+        if(cols.length < 10) return false;
         const titleMatch = cols[0].toLowerCase().includes(searchTerm);
-        const consoleMatch = consoleFilter === '' || (cols[5] && cols[5].toLowerCase().includes(consoleFilter));
+        const consoleMatch = consoleFilter === '' || (cols[4] && cols[4].toLowerCase().includes(consoleFilter));
         return titleMatch && consoleMatch;
     });
 
@@ -175,8 +175,8 @@ function filterAndSortData() {
             valA = parseInt(a[1]);
             valB = parseInt(b[1]);
         } else if (currentSort === 'note') {
-            valA = a[4];
-            valB = b[4];
+            valA = a[9];
+            valB = b[9];
         }
 
         let comparison;

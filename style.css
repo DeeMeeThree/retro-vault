@@ -158,10 +158,6 @@ body {
 	opacity: 0.5;
 }
 
-.crt-flicker {
-	animation: flicker 0.15s infinite alternate;
-}
-
 @keyframes flicker {
 	0% { opacity: 0.98; }
 	100% { opacity: 1; }
