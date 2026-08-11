@@ -10,8 +10,12 @@
     <link href="style.css" rel="stylesheet"/>
 </head>
 <body class="font-body-md antialiased selection:bg-neon-pink selection:text-surface-deep">
-<!-- Scanline Overlay -->
-<div class="fixed inset-0 z-50 scanlines mix-blend-overlay"></div>
+<!-- Scanline Overlay --><!-- Ambient Background Effects -->
+<div class="fixed inset-0 scanlines"></div>
+<div class="fixed inset-0 ambient-glow-pink pointer-events-none -z-10"></div>
+<div class="fixed inset-0 ambient-glow-cyan pointer-events-none -z-10"></div>
+<div class="fixed inset-0 grid-bg pointer-events-none -z-10"
+     style="transform: perspective(500px) rotateX(60deg) translate(-9.1875px, 1.19048px);"></div>
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-40 bg-surface/70 backdrop-blur-xl border-b border-glass-border shadow-[0_4px_20px_rgba(0,255,255,0.15)]">
     <div class="flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
