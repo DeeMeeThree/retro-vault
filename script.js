@@ -40,21 +40,23 @@ function renderCards(data) {
     const defaultImg = 'ps1';
 
     grid.innerHTML = data.map((cols) => {
-        if (cols.length < 10) return '';
+        if (cols.length < 12) return '';
         const title = cols[0];
         const year = cols[1];
         const type = cols[2];
         const desc = cols[3];
-        const mark = cols[9];
+        const mark = cols[11];
         const consoleName = cols[4] ? cols[4].trim() : '';
         const img = cols[5] ? cols[5].trim() : defaultImg;
         const pathToImg = `images/covers/${img}.webp`;
         const linkIGN = cols[6];
         const classIGN = cols[6] === "" ? "hidden": "";
-        const linkMetaCritic = cols[7];
-        const classMetaCritic = cols[7] === "" ? "hidden" : "";
-        const linkJVC = cols[8];
-        const classJVC = cols[8] === "" ? "hidden" : "";
+        const markIGN = cols[7];
+        const linkMetaCritic = cols[8];
+        const classMetaCritic = cols[8] === "" ? "hidden" : "";
+        const linkJVC = cols[9];
+        const classJVC = cols[9] === "" ? "hidden" : "";
+        const markJVC = cols[10];
 
         return `
             <div class="flip-card h-[500px] w-full xxs:w-[75%] xs:w-[60%] sm:w-full justify-self-center cursor-pointer group" onclick="this.classList.toggle('flipped')">
@@ -69,8 +71,8 @@ function renderCards(data) {
                         <div class="plastic-sheen"></div>
                         <div class="h-full w-full bg-contain bg-no-repeat bg-center relative" style="background-image: url('${pathToImg}')"></div>
                         <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
-                            <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Space Grotesk', sans-serif;">${title}</div>
-                            <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Space Grotesk', sans-serif;">${consoleName}</div>
+                            <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate">${title}</div>
+                            <div class="font-bold text-white/80 text-sm uppercase tracking-widest">${consoleName}</div>
                         </div>
                     </div>
                     <!-- Back -->
@@ -89,9 +91,9 @@ function renderCards(data) {
                                 ${desc}
                             </p>
                             <div class="flex gap-2 mb-3 text-xs flex-wrap">
-                                <a class="inline-flex items-center gap-1.5 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
-                                <a class="inline-flex items-center border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/></a>
-                                <a class="inline-flex items-center border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/></a>
+                                <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
+                                <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
+                                    <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
                             </div>
                         </div>
                     </div>
@@ -106,36 +108,38 @@ function renderList(data) {
     const defaultImg = 'ps1';
 
     grid.innerHTML = data.map((cols) => {
-        if (cols.length < 10) return '';
+        if (cols.length < 12) return '';
         const title = cols[0];
         const year = cols[1];
         const type = cols[2];
         const desc = cols[3];
-        const mark = cols[9];
+        const mark = cols[11];
         const consoleName = cols[4] ? cols[4].trim() : '';
         const img = cols[5] ? cols[5].trim() : defaultImg;
         const pathToImg = `images/covers/${img}.webp`;
         const linkIGN = cols[6];
         const classIGN = cols[6] === "" ? "hidden" : "";
-        const linkMetaCritic = cols[7];
-        const classMetaCritic = cols[7] === "" ? "hidden" : "";
-        const linkJVC = cols[8];
-        const classJVC = cols[8] === "" ? "hidden" : "";
+        const markIGN = cols[7];
+        const linkMetaCritic = cols[8];
+        const classMetaCritic = cols[8] === "" ? "hidden" : "";
+        const linkJVC = cols[9];
+        const classJVC = cols[9] === "" ? "hidden" : "";
+        const markJVC = cols[10];
 
         return `
             <div class="group flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300">
                 <img src="${pathToImg}" alt="${title}" loading="lazy" class="h-20 w-14 object-cover object-top rounded bg-[#1a1a1a] shrink-0"/>
                 <div class="flex-1 min-w-0">
-                    <div class="font-bold text-white text-base tracking-wide leading-tight truncate" style="font-family: 'Space Grotesk', sans-serif;">${title}</div>
+                    <div class="font-bold text-white text-base tracking-wide leading-tight truncate">${title}</div>
                     <div class="text-sm text-on-surface-variant mt-1">
-                        <span class="text-electric-cyan">${year}</span> · ${consoleName} · ${type}
+                        <span class="text-electric-cyan">${year}</span> Â· ${consoleName} Â· ${type}
                     </div>
                     <p class="text-gray-400 text-xs mt-1 leading-relaxed line-clamp-2">${desc}</p>
                 </div>
                 <div class="flex items-center gap-2 shrink-0 flex-wrap justify-end">
                     <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/></a>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classJVC}" href="${linkJVC}" target="_blank" rel="noopener"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/></a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors ${classJVC}" href="${linkJVC}" target="_blank" rel="noopener"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
                 </div>
             </div>
             `;
@@ -160,7 +164,7 @@ function filterAndSortData() {
     const consoleFilter = document.getElementById('console-filter').value.toLowerCase();
 
     let filteredData = gamesData.filter(cols => {
-        if(cols.length < 10) return false;
+        if(cols.length < 12) return false;
         const titleMatch = cols[0].toLowerCase().includes(searchTerm);
         const consoleMatch = consoleFilter === '' || (cols[4] && cols[4].toLowerCase().includes(consoleFilter));
         return titleMatch && consoleMatch;
@@ -175,8 +179,8 @@ function filterAndSortData() {
             valA = parseInt(a[1]);
             valB = parseInt(b[1]);
         } else if (currentSort === 'note') {
-            valA = a[9];
-            valB = b[9];
+            valA = a[11];
+            valB = b[11];
         }
 
         let comparison;
