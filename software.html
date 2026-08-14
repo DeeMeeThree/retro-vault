@@ -57,7 +57,7 @@
     <div class="flex flex-col gap-md mb-xl">
         <div class="relative z-20 bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border flex flex-col md:flex-row justify-between items-center gap-md">
             <div class="flex flex-row items-center justify-between gap-sm w-full md:w-auto">
-                <div class="flex-1 min-w-0 truncate font-display-lg text-headline-lg text-white italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
+                <div class="flex-1 min-w-0 truncate pr-2 font-display-lg text-headline-lg text-white italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
                     SOFTWARE
                 </div>
                 <button id="options-btn"
@@ -112,17 +112,27 @@
                     <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="title">
                         Titre
-                        <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
+                        <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
                     <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="year">
                         Année
-                        <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
+                        <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
                     <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="note">
-                        Note Metacritic
-                        <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
+                        Metacritic
+                        <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
+                    </button>
+                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                            data-sort="ign">
+                        IGN
+                        <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
+                    </button>
+                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                            data-sort="jvc">
+                        JVC
+                        <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
                 </div>
                 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Vue</span>
@@ -301,12 +311,16 @@
 
     function updateSortArrows() {
         document.querySelectorAll('.sort-arrow').forEach(arrow => {
-            arrow.classList.add('hidden');
+            arrow.classList.add('invisible');
+            arrow.classList.remove('rotate-180');
         });
         const active = document.querySelector(`.sort-btn[data-sort="${currentSort}"] .sort-arrow`);
         if (active) {
-            active.textContent = sortDesc ? '▼' : '▲';
-            active.classList.remove('hidden');
+            active.textContent = '▲';
+            active.classList.remove('invisible');
+            if (sortDesc) {
+                active.classList.add('rotate-180');
+            }
         }
     }
 

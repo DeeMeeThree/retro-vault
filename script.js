@@ -241,8 +241,14 @@ function filterAndSortData() {
             valA = parseInt(a[1]);
             valB = parseInt(b[1]);
         } else if (currentSort === 'note') {
-            valA = a[11];
-            valB = b[11];
+            valA = numVal(a[11]);
+            valB = numVal(b[11]);
+        } else if (currentSort === 'ign') {
+            valA = numVal(a[7]);
+            valB = numVal(b[7]);
+        } else if (currentSort === 'jvc') {
+            valA = numVal(a[10]);
+            valB = numVal(b[10]);
         }
 
         let comparison;
@@ -256,6 +262,11 @@ function filterAndSortData() {
     });
 
     renderCards(filteredData);
+}
+
+function numVal(v) {
+    const n = parseFloat(v);
+    return isNaN(n) ? -Infinity : n;
 }
 
 function initCardDrag() {
