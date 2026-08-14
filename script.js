@@ -218,6 +218,9 @@ function initCardDrag() {
 
         card.classList.add('dragging');
         card.setPointerCapture(e.pointerId);
+
+        const inner = card.querySelector('.flip-card-inner');
+        if (inner) inner.style.transition = '';
     });
 
     grid.addEventListener('pointermove', (e) => {
@@ -252,13 +255,18 @@ function initCardDrag() {
             const target = Math.round(rot / 180) * 180;
             const flipped = ((target % 360) + 360) % 360 === 180;
             card.classList.toggle('flipped', flipped);
+            if (inner) {
+                const tgt = flipped ? 180 : 0;
+                const k = Math.round((rot - tgt) / 360);
+                inner.style.transition = '';
+                inner.style.transform = `rotateY(${tgt + 360 * k}deg)`;
+            }
         } else {
             card.classList.toggle('flipped');
-        }
-
-        if (inner) {
-            inner.style.transition = '';
-            inner.style.transform = '';
+            if (inner) {
+                inner.style.transition = '';
+                inner.style.transform = `rotateY(${card.classList.contains('flipped') ? 180 : 0}deg)`;
+            }
         }
     };
 
