@@ -148,6 +148,26 @@ body {
 	perspective: 2200px; /* Deeper perspective for a stronger 3D feel */
 }
 
+/* Card aspect ratio per console — matches the actual cover ratio */
+.flip-card.ratio-ps1 {
+	aspect-ratio: 1 / 1;
+}
+.flip-card.ratio-ps2 {
+	aspect-ratio: 0.71 / 1;
+}
+.flip-card.ratio-ps3 {
+	aspect-ratio: 0.87 / 1;
+}
+.flip-card.ratio-ps4 {
+	aspect-ratio: 0.80 / 1;
+}
+.flip-card.ratio-ps5 {
+	aspect-ratio: 0.80 / 1;
+}
+.flip-card.ratio-sega {
+	aspect-ratio: 0.73 / 1;
+}
+
 /* Dynamic ground shadow: shrinks & darkens while the card turns edge-on */
 .flip-card::before {
 	content: '';
@@ -350,6 +370,52 @@ body {
 }
 .flip-card-back .plastic-sheen::after {
 	background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0.01) 70%, transparent 100%);
+}
+
+/* Description on the card back: full text by default, clamped with
+   ellipsis + down-arrow toggle only when it overflows (small cards) */
+.desc-clamp {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+.desc-wrap {
+	position: relative;
+}
+.desc-container {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+}
+.desc-wrap.expanded .desc-container {
+	overflow: auto;
+}
+.desc-toggle {
+	position: absolute;
+	bottom: 6px;
+	right: 6px;
+	z-index: 30;
+	width: 26px;
+	height: 26px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 9999px;
+	background: rgba(15, 5, 20, 0.75);
+	border: 1px solid rgba(0, 255, 255, 0.4);
+	color: #00ffff;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+.desc-toggle:hover {
+	background: #00ffff;
+	color: #000;
+}
+.desc-toggle svg {
+	transition: transform 0.3s ease;
+}
+.desc-wrap.expanded .desc-toggle svg {
+	transform: rotate(180deg);
 }
 .grid-bg {
 	background-image: 

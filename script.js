@@ -58,8 +58,11 @@ function renderCards(data) {
         const classJVC = cols[9] === "" ? "hidden" : "";
         const markJVC = cols[10];
 
+        const ratioClass = 'ratio-' + consoleName.toLowerCase();
+
         return `
-            <div class="flip-card h-[500px] w-full xxs:w-[75%] xs:w-[60%] sm:w-full justify-self-center cursor-pointer group">
+            <div class="w-full xxs:w-[75%] xs:w-[60%] sm:w-full flex items-center justify-center justify-self-center">
+                <div class="flip-card w-full cursor-pointer group ${ratioClass}">
                 <div class="flip-card-inner relative w-full h-full">
                     <!-- 3D Box Edges -->
                     <div class="flip-card-spine"><span>${title}</span></div>
@@ -87,9 +90,16 @@ function renderCards(data) {
                                 <span class="border border-neon-pink text-neon-pink px-2 py-1 rounded-sm select-none">${consoleName}</span>
                                 <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm select-none">${type}</span>
                             </div>
-                            <p class="text-gray-300 flex-grow text-sm leading-relaxed select-none">
-                                ${desc}
-                            </p>
+                            <div class="relative flex-grow min-h-0 desc-wrap">
+                                <div class="desc-container custom-scrollbar overflow-hidden absolute inset-0">
+                                    <p class="text-gray-300 text-sm leading-relaxed select-none desc-text">
+                                        ${desc}
+                                    </p>
+                                </div>
+                                <button type="button" class="desc-toggle hidden" aria-label="Déplier la description">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </button>
+                            </div>
                             <div class="flex gap-2 mb-3 text-xs flex-wrap">
                                 <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
                                 <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
@@ -99,8 +109,60 @@ function renderCards(data) {
                     </div>
                 </div>
             </div>
+            </div>
             `;
     }).join('');
+
+    requestAnimationFrame(() => requestAnimationFrame(initDescToggles));
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => initDescToggles());
+    }
+}
+
+function initDescToggles() {
+    if (!window.__descResizeBound) {
+        window.__descResizeBound = true;
+        window.addEventListener('resize', initDescToggles);
+    }
+    document.querySelectorAll('.desc-wrap').forEach((wrap) => {
+        const container = wrap.querySelector('.desc-container');
+        const btn = wrap.querySelector('.desc-toggle');
+        const p = wrap.querySelector('.desc-text');
+        if (!container || !btn || !p) return;
+        wrap.classList.remove('expanded');
+        container.scrollTop = 0;
+        p.classList.remove('desc-clamp');
+        p.style.webkitLineClamp = '';
+
+        const clientH = container.clientHeight;
+        if (clientH < 20) return;
+
+        if (p.scrollHeight <= clientH + 2) return;
+
+        const lineHeight = parseFloat(getComputedStyle(p).lineHeight) || 23;
+        const lines = Math.max(2, Math.floor(clientH / lineHeight));
+        wrap._lines = lines;
+        p.classList.add('desc-clamp');
+        p.style.webkitLineClamp = String(lines);
+        btn.classList.remove('hidden');
+
+        if (!btn.dataset.bound) {
+            btn.dataset.bound = '1';
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const expanded = wrap.classList.toggle('expanded');
+                btn.setAttribute('aria-expanded', String(expanded));
+                if (expanded) {
+                    p.classList.remove('desc-clamp');
+                    p.style.webkitLineClamp = '';
+                } else {
+                    p.classList.add('desc-clamp');
+                    p.style.webkitLineClamp = String(wrap._lines);
+                    container.scrollTop = 0;
+                }
+            });
+        }
+    });
 }
 
 function renderList(data) {
@@ -208,7 +270,7 @@ function initCardDrag() {
 
     grid.addEventListener('pointerdown', (e) => {
         const card = e.target.closest('.flip-card');
-        if (!card || e.target.closest('a')) return;
+        if (!card || e.target.closest('a') || e.target.closest('.desc-toggle')) return;
 
         activeCard = card;
         startX = e.clientX;
