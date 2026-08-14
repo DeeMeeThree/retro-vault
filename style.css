@@ -476,7 +476,27 @@ body {
 
 /* Filters button: active state while the panel is open */
 #options-btn[aria-expanded="true"] {
+	color: #00FFFF;
 	border-color: rgba(0, 255, 255, 0.6);
-	background: rgba(0, 255, 255, 0.1);
+	background: transparent;
 	box-shadow: 0 0 12px rgba(0, 255, 255, 0.25);
+}
+/* Attention (hover/focus): filled electric blue, black text — wins over active */
+#options-btn:hover {
+	color: #000;
+	background: #00FFFF;
+	border-color: #00FFFF;
+}
+
+/* Console dropdown (custom): bar active while the list is open */
+#console-filter-btn[aria-expanded="true"] {
+	color: #00FFFF;
+	border-color: rgba(0, 255, 255, 0.6);
+	background: transparent;
+}
+/* Attention (hover/focus): filled electric blue, black text — wins over active */
+#console-filter-btn:hover {
+	color: #000;
+	background: #00FFFF;
+	border-color: #00FFFF;
 }

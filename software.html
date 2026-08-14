@@ -55,13 +55,13 @@
 <main class="max-w-container-max mx-auto px-md md:px-lg py-xl pt-[120px] relative z-10">
     <!-- Controls -->
     <div class="flex flex-col gap-md mb-xl">
-        <div class="bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border flex flex-col md:flex-row justify-between items-center gap-md">
+        <div class="relative z-20 bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border flex flex-col md:flex-row justify-between items-center gap-md">
             <div class="flex flex-row items-center justify-between gap-sm w-full md:w-auto">
                 <div class="flex-1 min-w-0 truncate font-display-lg text-headline-lg text-white italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
                     SOFTWARE
                 </div>
                 <button id="options-btn"
-                        class="md:hidden inline-flex items-center gap-sm rounded-full border border-glass-border bg-surface-container px-md py-sm text-electric-cyan font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.25)] transition-all"
+                        class="md:hidden inline-flex items-center gap-sm rounded-full border border-glass-border bg-surface-container px-md py-sm text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_12px_rgba(0,255,255,0.25)] transition-all"
                         aria-label="Filtres" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                         <line x1="4" y1="21" x2="4" y2="14"></line>
@@ -78,9 +78,27 @@
                 </button>
             </div>
             <div id="options-panel" class="hidden md:grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-md justify-end">
-                <label for="console-filter" class="font-label-caps text-label-caps text-on-surface-variant uppercase">Console</label>
-                <select id="console-filter"
-                        class="bg-surface-container border border-glass-border rounded-md px-md py-sm text-on-surface font-label-caps text-label-caps uppercase focus:border-neon-pink focus:ring-1 focus:ring-neon-pink outline-none cursor-pointer">
+                <label for="console-filter-btn" class="font-label-caps text-label-caps text-on-surface-variant uppercase">Console</label>
+                <div class="relative">
+                    <button type="button" id="console-filter-btn"
+                            class="inline-flex items-center justify-between gap-md min-w-[140px] bg-transparent border border-glass-border rounded px-md py-sm text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black transition-all cursor-pointer"
+                            aria-haspopup="listbox" aria-expanded="false">
+                        <span id="console-filter-label">Toutes</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div id="console-filter-options" class="absolute z-30 left-0 mt-1 rounded bg-surface-container border border-glass-border shadow-xl overflow-hidden hidden w-max max-w-full">
+                        <button type="button" data-console="" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-electric-cyan hover:bg-electric-cyan hover:text-black transition-colors">Toutes</button>
+                        <button type="button" data-console="SEGA" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">Megadrive II</button>
+                        <button type="button" data-console="PS1" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS1</button>
+                        <button type="button" data-console="PS2" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS2</button>
+                        <button type="button" data-console="PS3" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS3</button>
+                        <button type="button" data-console="PS4" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS4</button>
+                        <button type="button" data-console="PS5" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS5</button>
+                    </div>
+                </div>
+                <select id="console-filter" class="hidden">
                     <option value="">Toutes</option>
                     <option value="SEGA">Megadrive II</option>
                     <option value="PS1">PS1</option>
@@ -91,7 +109,7 @@
                 </select>
                 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Trier</span>
                 <div class="flex gap-sm flex-wrap">
-                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:text-electric-cyan transition-all"
+                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="title">
                         Titre
                         <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
@@ -101,7 +119,7 @@
                         Année
                         <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
                     </button>
-                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
+                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="note">
                         Note Metacritic
                         <span class="sort-arrow hidden text-[10px] leading-none">▲</span>
@@ -113,7 +131,7 @@
                             data-view="grid">
                         Cartes
                     </button>
-                    <button class="view-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-neon-pink hover:text-neon-pink transition-all"
+                    <button class="view-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-view="list">
                         Liste
                     </button>
@@ -228,6 +246,42 @@
     }
 
     initCardDrag();
+
+    const consoleFilterBtn = document.getElementById('console-filter-btn');
+    const consoleFilterOptions = document.getElementById('console-filter-options');
+    const consoleFilterLabel = document.getElementById('console-filter-label');
+
+    if (consoleFilterBtn && consoleFilterOptions) {
+        consoleFilterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = !consoleFilterOptions.classList.contains('hidden');
+            consoleFilterOptions.classList.toggle('hidden', isOpen);
+            consoleFilterBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        consoleFilterOptions.querySelectorAll('.console-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.getElementById('console-filter').value = option.dataset.console;
+                consoleFilterLabel.textContent = option.textContent.trim();
+                consoleFilterOptions.querySelectorAll('.console-option').forEach(o => {
+                    o.classList.remove('text-electric-cyan');
+                    o.classList.add('text-on-surface-variant');
+                });
+                option.classList.remove('text-on-surface-variant');
+                option.classList.add('text-electric-cyan');
+                consoleFilterOptions.classList.add('hidden');
+                consoleFilterBtn.setAttribute('aria-expanded', 'false');
+                filterAndSortData();
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!consoleFilterBtn.contains(e.target) && !consoleFilterOptions.contains(e.target) && !consoleFilterOptions.classList.contains('hidden')) {
+                consoleFilterOptions.classList.add('hidden');
+                consoleFilterBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
 
     document.getElementById('search-input').addEventListener('input', filterAndSortData);
     document.getElementById('console-filter').addEventListener('change', filterAndSortData);
