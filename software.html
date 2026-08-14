@@ -77,7 +77,8 @@
                     Filtres
                 </button>
             </div>
-            <div id="options-panel" class="hidden md:grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-md justify-end">
+            <div id="options-panel" class="overflow-hidden">
+                <div class="grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-md justify-end min-h-0">
                 <label for="console-filter-btn" class="font-label-caps text-label-caps text-on-surface-variant uppercase">Console</label>
                 <div class="relative">
                     <button type="button" id="console-filter-btn"
@@ -88,15 +89,6 @@
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </button>
-                    <div id="console-filter-options" class="absolute z-30 left-0 mt-1 rounded bg-surface-container border border-glass-border shadow-xl overflow-hidden hidden w-max max-w-full">
-                        <button type="button" data-console="" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-electric-cyan hover:bg-electric-cyan hover:text-black transition-colors">Toutes</button>
-                        <button type="button" data-console="SEGA" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">Megadrive II</button>
-                        <button type="button" data-console="PS1" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS1</button>
-                        <button type="button" data-console="PS2" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS2</button>
-                        <button type="button" data-console="PS3" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS3</button>
-                        <button type="button" data-console="PS4" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS4</button>
-                        <button type="button" data-console="PS5" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS5</button>
-                    </div>
                 </div>
                 <select id="console-filter" class="hidden">
                     <option value="">Toutes</option>
@@ -146,6 +138,7 @@
                         Liste
                     </button>
                 </div>
+                </div>
             </div>
         </div>
         <div class="w-full">
@@ -157,6 +150,16 @@
     <!-- Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-lg" id="games-grid"></div>
 </main>
+<!-- Console dropdown: direct child of body so position:fixed escapes filtered/transformed ancestors -->
+<div id="console-filter-options" class="hidden rounded bg-surface-container border border-glass-border shadow-xl overflow-hidden w-max max-w-full">
+    <button type="button" data-console="" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-electric-cyan hover:bg-electric-cyan hover:text-black transition-colors">Toutes</button>
+    <button type="button" data-console="SEGA" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">Megadrive II</button>
+    <button type="button" data-console="PS1" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS1</button>
+    <button type="button" data-console="PS2" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS2</button>
+    <button type="button" data-console="PS3" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS3</button>
+    <button type="button" data-console="PS4" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS4</button>
+    <button type="button" data-console="PS5" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-on-surface-variant hover:bg-electric-cyan hover:text-black transition-colors">PS5</button>
+</div>
 <!-- Footer -->
 <footer class="w-full mt-xl bg-surface-container-lowest border-t border-glass-border z-10 relative">
     <div class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl max-w-container-max mx-auto gap-md">
@@ -218,12 +221,7 @@
     const optionsPanel = document.getElementById('options-panel');
 
     if (optionsBtn && optionsPanel) {
-        let optionsTimer = null;
-
         const openOptions = () => {
-            if (optionsTimer) { clearTimeout(optionsTimer); optionsTimer = null; }
-            optionsPanel.classList.remove('hidden');
-            optionsPanel.classList.add('grid');
             requestAnimationFrame(() => {
                 optionsPanel.classList.add('options-open');
             });
@@ -233,11 +231,6 @@
         const closeOptions = () => {
             optionsPanel.classList.remove('options-open');
             optionsBtn.setAttribute('aria-expanded', 'false');
-            optionsTimer = setTimeout(() => {
-                optionsPanel.classList.add('hidden');
-                optionsPanel.classList.remove('grid');
-                optionsTimer = null;
-            }, 300);
         };
 
         optionsBtn.addEventListener('click', () => {
@@ -262,15 +255,31 @@
     const consoleFilterLabel = document.getElementById('console-filter-label');
 
     if (consoleFilterBtn && consoleFilterOptions) {
+        const openConsoleOptions = () => {
+            const rect = consoleFilterBtn.getBoundingClientRect();
+            consoleFilterOptions.style.top = Math.round(rect.bottom + 4) + 'px';
+            consoleFilterOptions.style.left = Math.round(rect.left) + 'px';
+            consoleFilterOptions.classList.remove('hidden');
+            consoleFilterBtn.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeConsoleOptions = () => {
+            consoleFilterOptions.classList.add('hidden');
+            consoleFilterBtn.setAttribute('aria-expanded', 'false');
+        };
+
         consoleFilterBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isOpen = !consoleFilterOptions.classList.contains('hidden');
-            consoleFilterOptions.classList.toggle('hidden', isOpen);
-            consoleFilterBtn.setAttribute('aria-expanded', String(!isOpen));
+            if (consoleFilterOptions.classList.contains('hidden')) {
+                openConsoleOptions();
+            } else {
+                closeConsoleOptions();
+            }
         });
 
         consoleFilterOptions.querySelectorAll('.console-option').forEach(option => {
-            option.addEventListener('click', () => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
                 document.getElementById('console-filter').value = option.dataset.console;
                 consoleFilterLabel.textContent = option.textContent.trim();
                 consoleFilterOptions.querySelectorAll('.console-option').forEach(o => {
@@ -279,17 +288,23 @@
                 });
                 option.classList.remove('text-on-surface-variant');
                 option.classList.add('text-electric-cyan');
-                consoleFilterOptions.classList.add('hidden');
-                consoleFilterBtn.setAttribute('aria-expanded', 'false');
+                closeConsoleOptions();
                 filterAndSortData();
             });
         });
 
         document.addEventListener('click', (e) => {
             if (!consoleFilterBtn.contains(e.target) && !consoleFilterOptions.contains(e.target) && !consoleFilterOptions.classList.contains('hidden')) {
-                consoleFilterOptions.classList.add('hidden');
-                consoleFilterBtn.setAttribute('aria-expanded', 'false');
+                closeConsoleOptions();
             }
+        });
+
+        document.addEventListener('scroll', () => {
+            if (!consoleFilterOptions.classList.contains('hidden')) closeConsoleOptions();
+        }, { capture: true, passive: true });
+
+        window.addEventListener('resize', () => {
+            if (!consoleFilterOptions.classList.contains('hidden')) closeConsoleOptions();
         });
     }
 

@@ -522,23 +522,27 @@ body {
 	transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Options panel (mobile): hidden behind the gear button, animated like the menu */
+/* Options panel (mobile): height animated so the container border grows smoothly */
 #options-panel {
+	display: grid;
+	grid-template-rows: 0fr;
 	opacity: 0;
+	visibility: hidden;
 	pointer-events: none;
-	transform: translateY(-10px);
-	transition: opacity 0.3s ease, transform 0.3s ease;
+	transition: grid-template-rows 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 #options-panel.options-open {
+	grid-template-rows: 1fr;
 	opacity: 1;
+	visibility: visible;
 	pointer-events: auto;
-	transform: translateY(0);
 }
 @media (min-width: 768px) {
 	#options-panel {
+		grid-template-rows: 1fr;
 		opacity: 1;
+		visibility: visible;
 		pointer-events: auto;
-		transform: none;
 	}
 }
 
@@ -561,6 +565,11 @@ body {
 	color: #00FFFF;
 	border-color: rgba(0, 255, 255, 0.6);
 	background: transparent;
+}
+/* Console dropdown list: fixed so it escapes the overflow-hidden panel */
+#console-filter-options {
+	position: fixed;
+	z-index: 50;
 }
 /* Attention (hover/focus): filled electric blue, black text — wins over active */
 #console-filter-btn:hover {
