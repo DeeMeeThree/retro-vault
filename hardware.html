@@ -18,7 +18,7 @@
      style="transform: perspective(500px) rotateX(60deg) translate(-9.1875px, 1.19048px);"></div>
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-40 bg-surface/70 backdrop-blur-xl border-b border-glass-border shadow-[0_4px_20px_rgba(0,255,255,0.15)]">
-    <div class="flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
+    <div class="relative flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
         <a class="font-display-lg text-headline-lg tracking-tighter drop-shadow-[0_0_10px_rgba(255,0,255,0.8)] italic -skew-x-12"
            href="index.html">
             RETRO_VAULT
@@ -38,14 +38,14 @@
                     <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
                 </button>
             </div>
-            <!-- Mobile Menu Overlay -->
-            <div class="absolute top-full left-0 right-0 bg-[#2a1631] border-b border-[#40204b] shadow-xl hidden sm:hidden flex-col"
-                 id="mobile-menu">
-                <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-[#40204b] transition-colors"
-                   href="collection.html">Collection</a>
-                <a class="text-neon-pink border-b-2 border-neon-pink pb-1 font-medium py-4 px-6 border-b border-[#40204b] hover:bg-[#40204b] transition-colors"
-                   href="#">Hardware</a>
-            </div>
+        </div>
+        <!-- Mobile Menu Overlay -->
+        <div class="absolute top-full right-lg min-w-[220px] bg-surface/70 backdrop-blur-xl border border-glass-border rounded-b-xl shadow-xl overflow-hidden hidden sm:hidden flex-col"
+             id="mobile-menu">
+            <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
+               href="collection.html">Collection</a>
+            <a class="text-neon-pink border-b-2 border-neon-pink pb-1 font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
+               href="#">Hardware</a>
         </div>
     </div>
 </header>
