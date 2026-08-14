@@ -8,8 +8,10 @@
     <script src="tailwindcss-3.4.17.js"></script>
     <script id="tailwind-config" src="tailwind.js"></script>
     <link href="style.css" rel="stylesheet"/>
+    <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
 </head>
-<body class="font-body-md antialiased selection:bg-neon-pink selection:text-surface-deep">
+<body class="font-body-md antialiased min-w-[320px] overflow-x-hidden selection:bg-neon-pink selection:text-surface-deep">
 <!-- Scanline Overlay --><!-- Ambient Background Effects -->
 <div class="fixed inset-0 scanlines"></div>
 <div class="fixed inset-0 ambient-glow-pink pointer-events-none -z-10"></div>
@@ -26,7 +28,7 @@
         <div>
             <div class="hidden sm:flex items-center gap-9">
                 <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-electric-cyan hover:drop-shadow-[0_0_8px_#00FFFF] transition-all duration-300"
-                   href="collection.html">Collection</a>
+                   href="software.html">Software</a>
                 <a class="text-neon-pink border-b-2 border-neon-pink pb-1 font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
                    href="#">Hardware</a>
             </div>
@@ -43,7 +45,7 @@
         <div class="absolute top-full right-lg min-w-[220px] bg-surface/70 backdrop-blur-xl border border-glass-border rounded-b-xl shadow-xl overflow-hidden hidden sm:hidden flex-col"
              id="mobile-menu">
             <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
-               href="collection.html">Collection</a>
+               href="software.html">Software</a>
             <a class="text-neon-pink border-b-2 border-neon-pink pb-1 font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
                href="#">Hardware</a>
         </div>
@@ -288,7 +290,7 @@
             RETRO_VAULT
         </div>
         <div class="font-label-caps text-label-caps text-neon-pink">
-            © 2026 RETRO_VAULT ARCHIVE. ALL RIGHTS RESERVED.
+            © 2026 RETRO_VAULT ARCHIVE. NO RIGHTS RESERVED.
         </div>
     </div>
 </footer>

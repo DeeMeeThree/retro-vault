@@ -4,7 +4,7 @@
 	font-style: normal;
 	font-weight: 100 700;
 }
-/* Söhne — body text (hardware + collection) */
+/* Söhne — body text (hardware + software) */
 @font-face {
 	font-family: 'Soehne';
 	font-style: normal;
@@ -466,10 +466,17 @@ body {
 	pointer-events: auto;
 	transform: translateY(0);
 }
-@media (min-width: 640px) {
+@media (min-width: 768px) {
 	#options-panel {
 		opacity: 1;
 		pointer-events: auto;
 		transform: none;
 	}
+}
+
+/* Filters button: active state while the panel is open */
+#options-btn[aria-expanded="true"] {
+	border-color: rgba(0, 255, 255, 0.6);
+	background: rgba(0, 255, 255, 0.1);
+	box-shadow: 0 0 12px rgba(0, 255, 255, 0.25);
 }

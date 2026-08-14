@@ -8,8 +8,10 @@
     <script src="tailwindcss-3.4.17.js"></script>
     <script id="tailwind-config" src="tailwind.js"></script>
     <link href="style.css" rel="stylesheet"/>
+    <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
 </head>
-<body class="bg-background text-on-surface min-h-screen relative overflow-x-hidden crt-flicker selection:bg-surface-variant selection:text-white">
+<body class="bg-background text-on-surface min-h-screen relative min-w-[320px] overflow-x-hidden crt-flicker selection:bg-surface-variant selection:text-white">
 <!-- Ambient Background Effects -->
 <div class="fixed inset-0 scanlines"></div>
 <div class="fixed inset-0 ambient-glow-pink pointer-events-none -z-10"></div>
@@ -25,7 +27,7 @@
         </a>
         <nav class="hidden md:flex gap-lg items-center">
             <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-electric-cyan hover:drop-shadow-[0_0_8px_#00FFFF] transition-all duration-300"
-               href="collection.html">Collection</a>
+               href="software.html">Software</a>
             <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
                href="hardware.html">Hardware</a>
         </nav>
@@ -44,9 +46,9 @@
     </section>
     <!-- Portals Grid -->
     <section class="grid grid-cols-1 md:grid-cols-2 gap-lg w-full max-w-5xl mx-auto relative z-20">
-        <!-- Collection Portal -->
+        <!-- Software Portal -->
         <a class="group relative glass-panel rounded-xl overflow-hidden aspect-[4/3] md:aspect-[3/4] flex flex-col justify-end p-lg transition-transform duration-500 hover:-translate-y-2 hover:neon-shadow-cyan"
-           href="collection.html">
+           href="software.html">
             <div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>
             <!-- Background Image Container -->
             <div class="absolute inset-0 z-0">
@@ -56,7 +58,7 @@
             </div>
             <div class="relative z-20 transform transition-transform duration-500 group-hover:translate-y-[-8px]">
                 <h2 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface mb-xs uppercase italic tracking-tighter group-hover:text-electric-cyan transition-colors duration-300">
-                    Collection
+                    Software
                 </h2>
                 <p class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-xs">
                     <span class="material-symbols-outlined text-[16px]">folder_open >
@@ -97,7 +99,7 @@
             RETRO_VAULT
         </div>
         <div class="font-label-caps text-label-caps text-neon-pink">
-            © 2026 RETRO_VAULT ARCHIVE. ALL RIGHTS RESERVED.
+            © 2026 RETRO_VAULT ARCHIVE. NO RIGHTS RESERVED.
         </div>
     </div>
 </footer>

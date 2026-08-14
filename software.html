@@ -3,13 +3,15 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>RETRO_VAULT | Collection</title>
+    <title>RETRO_VAULT | Software</title>
     <script src="script.js"></script>
     <script src="tailwindcss-3.4.17.js"></script>
     <script id="tailwind-config" src="tailwind.js"></script>
     <link href="style.css" rel="stylesheet"/>
+    <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
 </head>
-<body class="font-body-md antialiased selection:bg-neon-pink selection:text-surface-deep">
+<body class="font-body-md antialiased min-w-[320px] overflow-x-hidden selection:bg-neon-pink selection:text-surface-deep">
 <!-- Scanline Overlay -->
 <div class="fixed inset-0 scanlines"></div>
 <div class="fixed inset-0 ambient-glow-pink pointer-events-none -z-10"></div>
@@ -26,7 +28,7 @@
         <div>
             <div class="hidden sm:flex items-center gap-9">
                 <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:drop-shadow-[0_0_8px_#00FFFF] transition-all duration-300"
-                   href="#">Collection</a>
+                   href="#">Software</a>
                 <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
                    href="hardware.html">Hardware</a>
             </div>
@@ -43,7 +45,7 @@
         <div class="absolute top-full right-lg min-w-[220px] bg-surface/70 backdrop-blur-xl border border-glass-border rounded-b-xl shadow-xl overflow-hidden hidden sm:hidden flex-col"
              id="mobile-menu">
             <a class="text-electric-cyan border-b-2 border-electric-cyan pb-1 font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
-               href="#">Collection</a>
+               href="#">Software</a>
             <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
                href="hardware.html">Hardware</a>
         </div>
@@ -54,20 +56,28 @@
     <!-- Controls -->
     <div class="flex flex-col gap-md mb-xl">
         <div class="bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border flex flex-col md:flex-row justify-between items-center gap-md">
-            <div class="flex flex-col items-center gap-sm w-full md:flex-row md:w-auto">
-                <div class="font-headline-lg text-headline-lg text-electric-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">
-                    ARCHIVE_DONNÉES
+            <div class="flex flex-row items-center justify-between gap-sm w-full md:w-auto">
+                <div class="flex-1 min-w-0 truncate font-display-lg text-headline-lg text-white italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
+                    SOFTWARE
                 </div>
                 <button id="options-btn"
-                        class="sm:hidden text-electric-cyan border border-glass-border rounded-md p-sm hover:bg-electric-cyan/10 transition-colors"
-                        aria-label="Options" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        class="md:hidden inline-flex items-center gap-sm rounded-full border border-glass-border bg-surface-container px-md py-sm text-electric-cyan font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.25)] transition-all"
+                        aria-label="Filtres" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                        <line x1="4" y1="21" x2="4" y2="14"></line>
+                        <line x1="4" y1="10" x2="4" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="3"></line>
+                        <line x1="20" y1="21" x2="20" y2="16"></line>
+                        <line x1="20" y1="12" x2="20" y2="3"></line>
+                        <line x1="1" y1="14" x2="7" y2="14"></line>
+                        <line x1="9" y1="8" x2="15" y2="8"></line>
+                        <line x1="17" y1="16" x2="23" y2="16"></line>
                     </svg>
+                    Filtres
                 </button>
             </div>
-            <div id="options-panel" class="hidden sm:grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-md justify-end">
+            <div id="options-panel" class="hidden md:grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-md justify-end">
                 <label for="console-filter" class="font-label-caps text-label-caps text-on-surface-variant uppercase">Console</label>
                 <select id="console-filter"
                         class="bg-surface-container border border-glass-border rounded-md px-md py-sm text-on-surface font-label-caps text-label-caps uppercase focus:border-neon-pink focus:ring-1 focus:ring-neon-pink outline-none cursor-pointer">
@@ -126,7 +136,7 @@
             RETRO_VAULT
         </div>
         <div class="font-label-caps text-label-caps text-neon-pink">
-            © 2026 RETRO_VAULT ARCHIVE. ALL RIGHTS RESERVED.
+            © 2026 RETRO_VAULT ARCHIVE. NO RIGHTS RESERVED.
         </div>
     </div>
 </footer>
