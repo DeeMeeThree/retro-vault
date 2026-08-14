@@ -146,6 +146,8 @@ body {
 .flip-card {
 	position: relative;
 	perspective: 2200px; /* Deeper perspective for a stronger 3D feel */
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 /* Card aspect ratio per console — matches the actual cover ratio */
