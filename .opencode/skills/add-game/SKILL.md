@@ -1,6 +1,9 @@
 ---
 name: add-game
-description: Use when the user wants to add a new game to the retro-games collection. Triggers on phrases like "add a game", "add [game name]", "new game", "add [game] for [platform]". Handles everything: cover art, scores, description, CSV entry.
+description: >
+  Use when the user wants to add a new game to the retro-games collection.
+  Triggers on "add a game", "add [game name]", "new game", "add [game] for [platform]".
+  Handles cover art, scores, description, and CSV entry.
 ---
 
 # Add Game to Retro-Games Collection
