@@ -278,6 +278,8 @@ function initCardDrag() {
     let startY = 0;
     let startRot = 0;
     let moved = false;
+    const flipStates = new Map();
+    const FLIP_DELAY = 400;
 
     grid.addEventListener('pointerdown', (e) => {
         const card = e.target.closest('.flip-card');
@@ -287,7 +289,8 @@ function initCardDrag() {
         startX = e.clientX;
         startY = e.clientY;
         moved = false;
-        startRot = card.classList.contains('flipped') ? 180 : 0;
+        const state = flipStates.get(card) || 0;
+        startRot = state === 1 ? 180 : 0;
 
         card.classList.add('dragging');
         card.setPointerCapture(e.pointerId);
@@ -303,6 +306,7 @@ function initCardDrag() {
         const dy = e.clientY - startY;
         if (!moved && Math.hypot(dx, dy) > 6) {
             moved = true;
+            if (activeCard._flipTimer) { clearTimeout(activeCard._flipTimer); activeCard._flipTimer = null; }
             e.preventDefault();
         }
         if (!moved) return;
@@ -327,18 +331,74 @@ function initCardDrag() {
             const rot = startRot + (dx / width) * 180;
             const target = Math.round(rot / 180) * 180;
             const flipped = ((target % 360) + 360) % 360 === 180;
-            card.classList.toggle('flipped', flipped);
+            const newState = flipped ? 1 : 0;
+            flipStates.set(card, newState);
+            card.classList.toggle('flipped', newState === 1);
+            card.classList.remove('flipped-v');
             if (inner) {
                 const tgt = flipped ? 180 : 0;
                 const k = Math.round((rot - tgt) / 360);
                 inner.style.transition = '';
                 inner.style.transform = `rotateY(${tgt + 360 * k}deg)`;
+                card._flipCount = (tgt + 360 * k) / 180;
             }
         } else {
-            card.classList.toggle('flipped');
-            if (inner) {
-                inner.style.transition = '';
-                inner.style.transform = `rotateY(${card.classList.contains('flipped') ? 180 : 0}deg)`;
+            if (card._flipTimer) {
+                clearTimeout(card._flipTimer);
+                card._flipTimer = null;
+                if (inner) {
+                    const st = flipStates.get(card) || 0;
+                    if (st === 1) {
+                        inner.style.transition = 'none';
+                        inner.style.transform = 'rotateY(180deg)';
+                    }
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            inner.style.transition = '';
+                            inner.style.transform = st === 1 ? 'rotateY(180deg) rotateX(-360deg)' : 'rotateX(360deg)';
+                            const onEnd = (ev) => {
+                                if (ev.propertyName !== 'transform') return;
+                                inner.removeEventListener('transitionend', onEnd);
+                                inner.style.transition = 'none';
+                                inner.style.transform = st === 1 ? 'rotateY(180deg)' : '';
+                                card._flipCount = st === 1 ? 1 : 0;
+                                requestAnimationFrame(() => {
+                                    requestAnimationFrame(() => {
+                                        inner.style.transition = '';
+                                    });
+                                });
+                            };
+                            inner.addEventListener('transitionend', onEnd);
+                        });
+                    });
+                }
+            } else {
+                card._flipTimer = setTimeout(() => {
+                    card._flipTimer = null;
+                    card._flipCount = (card._flipCount || 0) + 1;
+                    const st = flipStates.get(card) || 0;
+                    flipStates.set(card, st === 0 ? 1 : 0);
+                    card.classList.toggle('flipped', st === 0);
+                    card.classList.remove('flipped-v');
+                    if (inner) {
+                        inner.style.transition = '';
+                        inner.style.transform = `rotateY(${card._flipCount * 180}deg)`;
+                        const onEnd = (ev) => {
+                            if (ev.propertyName !== 'transform') return;
+                            inner.removeEventListener('transitionend', onEnd);
+                            const newState = flipStates.get(card) || 0;
+                            inner.style.transition = 'none';
+                            inner.style.transform = newState === 1 ? 'rotateY(180deg)' : '';
+                            card._flipCount = newState === 1 ? 1 : 0;
+                            requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                    inner.style.transition = '';
+                                });
+                            });
+                        };
+                        inner.addEventListener('transitionend', onEnd);
+                    }
+                }, FLIP_DELAY);
             }
         }
     };
@@ -355,9 +415,8 @@ function initCardDrag() {
             inner.style.transform = '';
         }
         if (moved) {
-            card.classList.toggle('flipped', startRot === 180);
-        } else {
-            card.classList.toggle('flipped');
+            const state = flipStates.get(card) || 0;
+            card.classList.toggle('flipped', state === 1);
         }
     };
 

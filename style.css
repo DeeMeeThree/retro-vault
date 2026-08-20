@@ -190,6 +190,11 @@ body {
 	opacity: 0.5;
 	transform: translateX(-50%) translateY(-4px) scaleY(0.7);
 }
+.flip-card.flipped-v::before {
+	width: 88%;
+	opacity: 0.4;
+	transform: translateX(-50%) translateY(8px) scaleY(1.2);
+}
 
 .flip-card-inner {
 	transition: transform 2.5s cubic-bezier(0.3, 1.1, 0.4, 1); /* Slow flip so the 3D effect is fully visible */
@@ -199,6 +204,9 @@ body {
 }
 .flip-card.flipped .flip-card-inner {
 	transform: rotateY(180deg);
+}
+.flip-card.flipped-v .flip-card-inner {
+	transform: rotateX(180deg);
 }
 
 /* Drag-to-flip: follow the pointer, vertical scroll preserved */
