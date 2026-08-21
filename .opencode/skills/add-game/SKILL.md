@@ -95,7 +95,7 @@ If the game's cover aspect ratio significantly differs from the default ratio fo
 
 ## Step 5: Add to CSV
 
-Append a new line to `C:/Users/incor/WebstormProjects/retro-games/database_archive.csv`.
+Insert a new line in `C:/Users/incor/WebstormProjects/retro-games/database_archive.csv`.
 
 CSV format (12 columns, no header row for new entries):
 ```
@@ -103,7 +103,9 @@ Titre,Année de sortie,Type de jeu,Description,Console,Cover,Lien IGN,Note IGN,L
 ```
 
 Rules:
-- The file currently has a header row + game rows. Append AFTER the last game row.
+- **IMPORTANT — group by console**: do NOT blindly append at the end of the file. Locate the existing block of rows with the same Console tag (all PS1 rows together, all PS2 rows together, all PS3 rows together, etc.) and insert the new row inside that block.
+- Within a console block, insert the row at its chronological position (rows are sorted by release year, oldest first).
+- If you notice orphaned rows for that console sitting outside their block (e.g. appended at the end of the file after other consoles), point it out to the user before moving them.
 - Fields containing commas must be wrapped in double quotes.
 - Description is the only field likely to contain commas — always wrap it in quotes.
 - Cover column: just the filename slug WITHOUT the `.webp` extension.
@@ -118,7 +120,7 @@ Crash Bandicoot,1996,Action,"Sorti en 1996 sur PS1, Crash Bandicoot est un platf
 
 After adding the entry:
 1. Confirm the webp file exists in `images/covers/`
-2. Confirm the CSV line was appended correctly (read last 2 lines to verify)
+2. Confirm the CSV line was inserted in the correct console block (read the rows before and after to verify)
 3. Report back to the user with a summary: game name, platform, scores found, cover filename
 
 ## Notes
