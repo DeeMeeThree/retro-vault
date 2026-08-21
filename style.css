@@ -183,7 +183,7 @@ body {
 	filter: blur(8px);
 	z-index: -1;
 	pointer-events: none;
-	transition: transform 2.5s cubic-bezier(0.3, 1.1, 0.4, 1), opacity 2.5s cubic-bezier(0.3, 1.1, 0.4, 1), width 2.5s cubic-bezier(0.3, 1.1, 0.4, 1);
+	transition: transform 1.5s cubic-bezier(0.175, 0.885, 1, 1), opacity 1.5s cubic-bezier(0.175, 0.885, 1, 1), width 1.5s cubic-bezier(0.175, 0.885, 1, 1);
 }
 .flip-card.flipped::before {
 	width: 55%;
@@ -197,7 +197,7 @@ body {
 }
 
 .flip-card-inner {
-	transition: transform 2.5s cubic-bezier(0.3, 1.1, 0.4, 1); /* Slow flip so the 3D effect is fully visible */
+	transition: transform 1.5s cubic-bezier(0.175, 0.885, 1, 1); /* Slow flip so the 3D effect is fully visible */
 	transform-style: preserve-3d;
 	position: relative;
 	will-change: transform;
@@ -220,6 +220,15 @@ body {
 }
 .flip-card.dragging .flip-card-inner {
 	transition: none;
+}
+
+/* Card locked while a flip animation is running: no interaction until it ends */
+.flip-card.animating {
+	cursor: progress;
+}
+.flip-card.animating a,
+.flip-card.animating .desc-toggle {
+	pointer-events: none;
 }
 
 /* 3D Box Edges — spine on the left, plain edges on right/top/bottom */
@@ -329,7 +338,7 @@ body {
 	pointer-events: none;
 	border-radius: 8px;
 	overflow: hidden;
-	z-index: 10;
+	z-index: 21;
 }
 .plastic-sheen::after {
 	content: '';
@@ -479,14 +488,14 @@ body {
 	width: 8px;
 }
 ::-webkit-scrollbar-track {
-	background: theme('colors.background');
+	background: #564052;
 }
 ::-webkit-scrollbar-thumb {
-	background: theme('colors.surface-variant');
+	background: #3d3042;
 	border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: theme('colors.outline');
+	background: #a4899d;
 }
 /* Custom Scrollbar for Card Backs */
 .custom-scrollbar::-webkit-scrollbar {

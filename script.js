@@ -79,7 +79,7 @@ function renderCards(data) {
                         </div>
                     </div>
                     <!-- Back -->
-                    <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm">
+                    <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)]">
                         <div class="plastic-sheen"></div>
                         <div class="bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
                             <h3 class="font-bold text-lg select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
@@ -280,10 +280,34 @@ function initCardDrag() {
     let moved = false;
     const flipStates = new Map();
     const FLIP_DELAY = 400;
+    const FLIP_DURATION = 2500;
+
+    // Locks the card until the flip animation is fully done (input ignored meanwhile)
+    const lockDuringFlip = (card, inner) => {
+        card._animating = true;
+        card.classList.add('animating');
+        let finished = false;
+        const unlock = () => {
+            if (finished) return;
+            finished = true;
+            card._animating = false;
+            card.classList.remove('animating');
+            inner.removeEventListener('transitionend', onEnd);
+            clearTimeout(card._lockFallback);
+        };
+        const onEnd = (ev) => {
+            if (ev.target !== inner || ev.propertyName !== 'transform') return;
+            unlock();
+        };
+        inner.addEventListener('transitionend', onEnd);
+        clearTimeout(card._lockFallback);
+        card._lockFallback = setTimeout(unlock, FLIP_DURATION + 300);
+    };
 
     grid.addEventListener('pointerdown', (e) => {
         const card = e.target.closest('.flip-card');
         if (!card || e.target.closest('a') || e.target.closest('.desc-toggle')) return;
+        if (card._animating) return;
 
         activeCard = card;
         startX = e.clientX;
@@ -338,9 +362,10 @@ function initCardDrag() {
             if (inner) {
                 const tgt = flipped ? 180 : 0;
                 const k = Math.round((rot - tgt) / 360);
-                inner.style.transition = '';
+                inner.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.085)';
                 inner.style.transform = `rotateY(${tgt + 360 * k}deg)`;
                 card._flipCount = (tgt + 360 * k) / 180;
+                lockDuringFlip(card, inner);
             }
         } else {
             if (card._flipTimer) {
@@ -356,6 +381,7 @@ function initCardDrag() {
                         requestAnimationFrame(() => {
                             inner.style.transition = '';
                             inner.style.transform = st === 1 ? 'rotateY(180deg) rotateX(-360deg)' : 'rotateX(360deg)';
+                            lockDuringFlip(card, inner);
                             const onEnd = (ev) => {
                                 if (ev.propertyName !== 'transform') return;
                                 inner.removeEventListener('transitionend', onEnd);
@@ -383,6 +409,7 @@ function initCardDrag() {
                     if (inner) {
                         inner.style.transition = '';
                         inner.style.transform = `rotateY(${card._flipCount * 180}deg)`;
+                        lockDuringFlip(card, inner);
                         const onEnd = (ev) => {
                             if (ev.propertyName !== 'transform') return;
                             inner.removeEventListener('transitionend', onEnd);
@@ -411,12 +438,13 @@ function initCardDrag() {
         const inner = card.querySelector('.flip-card-inner');
         card.classList.remove('dragging');
         if (inner) {
-            inner.style.transition = '';
+            inner.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.085)';
             inner.style.transform = '';
         }
         if (moved) {
             const state = flipStates.get(card) || 0;
             card.classList.toggle('flipped', state === 1);
+            if (inner) lockDuringFlip(card, inner);
         }
     };
 
