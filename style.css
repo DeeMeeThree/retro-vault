@@ -217,9 +217,11 @@ body {
 	cursor: grabbing;
 	user-select: none;
 	-webkit-user-select: none;
+	touch-action: none;
 }
-.flip-card.dragging .flip-card-inner {
+.flip-card.dragging.flip-card .flip-card-inner {
 	transition: none;
+	transform: rotateY(var(--rot, 0deg));
 }
 
 /* Card locked while a flip animation is running: no interaction until it ends */

@@ -274,6 +274,8 @@ function initCardDrag() {
     if (!grid) return;
 
     let activeCard = null;
+    let activeInner = null;
+    let activeWidth = 1;
     let startX = 0;
     let startY = 0;
     let startRot = 0;
@@ -310,6 +312,8 @@ function initCardDrag() {
         if (card._animating) return;
 
         activeCard = card;
+        activeInner = card.querySelector('.flip-card-inner');
+        activeWidth = card.offsetWidth || 1;
         startX = e.clientX;
         startY = e.clientY;
         moved = false;
@@ -319,8 +323,11 @@ function initCardDrag() {
         card.classList.add('dragging');
         card.setPointerCapture(e.pointerId);
 
-        const inner = card.querySelector('.flip-card-inner');
-        if (inner) inner.style.transition = '';
+        if (activeInner) {
+            activeInner.style.transition = '';
+            activeInner.style.transform = '';
+            activeInner.style.setProperty('--rot', startRot + 'deg');
+        }
     });
 
     grid.addEventListener('pointermove', (e) => {
@@ -335,24 +342,22 @@ function initCardDrag() {
         }
         if (!moved) return;
 
-        const width = activeCard.offsetWidth || 1;
-        const rot = startRot + (dx / width) * 180;
-        const inner = activeCard.querySelector('.flip-card-inner');
-        if (inner) inner.style.transform = `rotateY(${rot}deg)`;
+        const rot = startRot + (dx / activeWidth) * 180;
+        if (activeInner) activeInner.style.setProperty('--rot', rot + 'deg');
     });
 
     const release = (e) => {
         if (!activeCard) return;
         const card = activeCard;
+        const inner = activeInner;
         activeCard = null;
+        activeInner = null;
 
-        const inner = card.querySelector('.flip-card-inner');
         card.classList.remove('dragging');
 
         if (moved) {
             const dx = e.clientX - startX;
-            const width = card.offsetWidth || 1;
-            const rot = startRot + (dx / width) * 180;
+            const rot = startRot + (dx / activeWidth) * 180;
             const target = Math.round(rot / 180) * 180;
             const flipped = ((target % 360) + 360) % 360 === 180;
             const newState = flipped ? 1 : 0;
@@ -362,6 +367,7 @@ function initCardDrag() {
             if (inner) {
                 const tgt = flipped ? 180 : 0;
                 const k = Math.round((rot - tgt) / 360);
+                inner.style.removeProperty('--rot');
                 inner.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.085)';
                 inner.style.transform = `rotateY(${tgt + 360 * k}deg)`;
                 card._flipCount = (tgt + 360 * k) / 180;
@@ -433,11 +439,13 @@ function initCardDrag() {
     const cancel = () => {
         if (!activeCard) return;
         const card = activeCard;
+        const inner = activeInner;
         activeCard = null;
+        activeInner = null;
 
-        const inner = card.querySelector('.flip-card-inner');
         card.classList.remove('dragging');
         if (inner) {
+            inner.style.removeProperty('--rot');
             inner.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.085)';
             inner.style.transform = '';
         }
