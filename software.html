@@ -57,8 +57,9 @@
     <div class="flex flex-col gap-md mb-xl">
         <div class="relative z-20 bg-surface-container/60 backdrop-blur-md p-lg rounded-xl border border-glass-border flex flex-col md:flex-row justify-between items-center gap-md">
             <div class="flex flex-row items-center justify-between gap-sm w-full md:w-auto">
-                <div class="flex-1 min-w-0 truncate pr-2 font-display-lg text-headline-lg text-white italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
-                    SOFTWARE
+                <div class="flex-1 min-w-0 pr-2">
+                    <span class="font-display-lg text-headline-lg text-white italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] truncate block">SOFTWARE</span>
+                    <span id="game-count" class="block font-label-caps text-label-caps text-on-surface-variant/70"></span>
                 </div>
                 <button id="options-btn"
                         class="md:hidden inline-flex items-center gap-sm rounded-full border border-glass-border bg-surface-container px-md py-sm text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_12px_rgba(0,255,255,0.25)] transition-all"
@@ -127,17 +128,6 @@
                         <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
                 </div>
-                <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Vue</span>
-                <div class="flex gap-sm flex-wrap">
-                    <button class="view-btn px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
-                            data-view="grid">
-                        Cartes
-                    </button>
-                    <button class="view-btn px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
-                            data-view="list">
-                        Liste
-                    </button>
-                </div>
                 </div>
             </div>
         </div>
@@ -150,6 +140,14 @@
     <!-- Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-lg" id="games-grid"></div>
 </main>
+<button id="toggle-view-btn" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-surface-container border border-glass-border shadow-[0_0_15px_rgba(0,255,255,0.3)] flex items-center justify-center hover:border-electric-cyan hover:shadow-[0_0_20px_rgba(0,255,255,0.5)] transition-all duration-300 cursor-pointer" aria-label="Basculer la vue" data-view="grid">
+    <svg id="toggle-view-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+    </svg>
+</button>
 <!-- Console dropdown: direct child of body so position:fixed escapes filtered/transformed ancestors -->
 <div id="console-filter-options" class="hidden rounded bg-surface-container border border-glass-border shadow-xl overflow-hidden w-max max-w-full">
     <button type="button" data-console="" class="console-option block w-full text-left px-md py-sm font-label-caps text-label-caps uppercase text-electric-cyan hover:bg-electric-cyan hover:text-black transition-colors">Toutes</button>
@@ -311,17 +309,11 @@
     document.getElementById('search-input').addEventListener('input', filterAndSortData);
     document.getElementById('console-filter').addEventListener('change', filterAndSortData);
 
-    document.querySelectorAll('.view-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const view = e.target.dataset.view;
-            document.querySelectorAll('.view-btn').forEach(b => {
-                b.classList.remove('border-electric-cyan', 'text-electric-cyan');
-                b.classList.add('border-glass-border', 'text-on-surface-variant');
-            });
-            e.target.classList.remove('border-glass-border', 'text-on-surface-variant');
-            e.target.classList.add('border-electric-cyan', 'text-electric-cyan');
-            setView(view);
-        });
+    document.getElementById('toggle-view-btn').addEventListener('click', () => {
+        const btn = document.getElementById('toggle-view-btn');
+        const newView = currentView === 'grid' ? 'list' : 'grid';
+        btn.dataset.view = newView;
+        setView(newView);
     });
 
     function updateSortArrows() {

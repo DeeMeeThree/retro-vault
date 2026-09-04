@@ -250,12 +250,17 @@ function renderList(data) {
 function setView(view) {
     currentView = view;
     const grid = document.getElementById('games-grid');
+    const btn = document.getElementById('toggle-view-btn');
     if (view === 'list') {
         grid.classList.remove('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg');
         grid.classList.add('flex', 'flex-col', 'gap-md');
+        btn.classList.add('rotate-180');
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>';
     } else {
         grid.classList.remove('flex', 'flex-col', 'gap-md');
         grid.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg');
+        btn.classList.remove('rotate-180');
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>';
     }
     filterAndSortData();
 }
@@ -299,6 +304,13 @@ function filterAndSortData() {
 
         return sortDesc ? -comparison : comparison;
     });
+
+    const countEl = document.getElementById('game-count');
+    if (countEl) {
+        const total = gamesData.filter(cols => cols.length >= 12).length;
+        const shown = filteredData.length;
+        countEl.textContent = shown === total ? `${total} jeux` : `${shown} / ${total} jeux`;
+    }
 
     renderCards(filteredData);
 }
