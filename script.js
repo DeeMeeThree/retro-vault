@@ -2,6 +2,10 @@ let gamesData = [];
 let currentSort = 'year';
 let sortDesc = false;
 let currentView = 'grid';
+const LAZY_BUFFER_PX = window.innerWidth < 640 ? 100 : 400;
+let lazyObserver = null;
+const fullCardHTML = new Map();
+const placeholderHTML = new Map();
 
 function parseCSV(str) {
     const rows = [];
@@ -38,8 +42,10 @@ function renderCards(data) {
     }
     const grid = document.getElementById('games-grid');
     const defaultImg = 'ps1';
+    fullCardHTML.clear();
+    placeholderHTML.clear();
 
-    grid.innerHTML = data.map((cols) => {
+    grid.innerHTML = data.map((cols, idx) => {
         if (cols.length < 12) return '';
         const title = cols[0];
         const year = cols[1];
@@ -60,63 +66,94 @@ function renderCards(data) {
 
         const ratioClass = 'ratio-' + consoleName.toLowerCase();
 
-        return `
-            <div class="w-full xxs:w-[75%] xs:w-[60%] sm:w-full flex items-center justify-center justify-self-center">
-                <div class="flip-card w-full cursor-pointer group ${ratioClass}">
-                <div class="flip-card-inner relative w-full h-full">
-                    <!-- 3D Box Edges -->
-                    <div class="flip-card-spine"><span>${title}</span></div>
-                    <div class="flip-card-edge flip-card-edge-right"></div>
-                    <div class="flip-card-edge flip-card-edge-top"></div>
-                    <div class="flip-card-edge flip-card-edge-bottom"></div>
-                    <!-- Front -->
-                    <div class="flip-card-front bg-[#1a1a1a] overflow-hidden group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)] transition-all duration-300 border border-gray-700">
-                        <div class="plastic-sheen"></div>
-                        <div class="h-full w-full bg-contain bg-no-repeat bg-center relative" style="background-image: url('${pathToImg}')"></div>
-                        <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
-                            <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
-                            <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
-                        </div>
+        fullCardHTML.set(idx, `
+            <div class="flip-card-inner relative w-full h-full">
+                <div class="flip-card-spine"><span>${title}</span></div>
+                <div class="flip-card-edge flip-card-edge-right"></div>
+                <div class="flip-card-edge flip-card-edge-top"></div>
+                <div class="flip-card-edge flip-card-edge-bottom"></div>
+                <div class="flip-card-front bg-[#1a1a1a] overflow-hidden group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)] transition-all duration-300 border border-gray-700">
+                    <div class="plastic-sheen"></div>
+                    <div class="h-full w-full bg-contain bg-no-repeat bg-center relative" style="background-image:url('${pathToImg}')"></div>
+                    <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
+                        <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
+                        <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
                     </div>
-                    <!-- Back -->
-                    <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)]">
-                        <div class="plastic-sheen"></div>
-                        <div class="bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
-                            <h3 class="font-bold text-lg select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
+                </div>
+                <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)]">
+                    <div class="plastic-sheen"></div>
+                    <div class="bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
+                        <h3 class="font-bold text-lg select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
+                        <div class="flex gap-2 mb-3 text-xs flex-wrap">
+                            <span class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm select-none">${year}</span>
+                            <span class="border border-neon-pink text-neon-pink px-2 py-1 rounded-sm select-none">${consoleName}</span>
+                            <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm select-none">${type}</span>
                         </div>
-                        <div class="p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
-                            <div class="flex gap-2 mb-3 text-xs flex-wrap">
-                                <span class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm select-none">${year}</span>
-                                <span class="border border-neon-pink text-neon-pink px-2 py-1 rounded-sm select-none">${consoleName}</span>
-                                <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm select-none">${type}</span>
+                        <div class="relative flex-grow min-h-0 desc-wrap">
+                            <div class="desc-container custom-scrollbar overflow-hidden absolute inset-0">
+                                <p class="text-gray-300 text-sm leading-relaxed select-none desc-text">${desc}</p>
                             </div>
-                            <div class="relative flex-grow min-h-0 desc-wrap">
-                                <div class="desc-container custom-scrollbar overflow-hidden absolute inset-0">
-                                    <p class="text-gray-300 text-sm leading-relaxed select-none desc-text">
-                                        ${desc}
-                                    </p>
-                                </div>
-                                <button type="button" class="desc-toggle hidden" aria-label="Déplier la description">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </button>
-                            </div>
-                            <div class="flex gap-2 mb-3 text-xs flex-wrap">
-                                <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
-                                <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
-                                    <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
-                            </div>
+                            <button type="button" class="desc-toggle hidden" aria-label="Déplier la description">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <div class="flex gap-2 mb-3 text-xs flex-wrap">
+                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
+                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
+                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
                         </div>
                     </div>
                 </div>
             </div>
+        `);
+
+        const placeholder = `
+            <div class="h-full w-full bg-[#1a1a1a] border border-gray-700 rounded-lg overflow-hidden relative flex flex-col justify-end">
+                <div class="h-full w-full bg-contain bg-no-repeat bg-center absolute inset-0" style="background-image:url('${pathToImg}')"></div>
+                <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
+                    <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
+                    <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
+                </div>
             </div>
-            `;
+        `;
+        placeholderHTML.set(idx, placeholder);
+
+        return `
+            <div class="w-full xxs:w-[75%] xs:w-[60%] sm:w-full flex items-center justify-center justify-self-center">
+                <div class="flip-card w-full cursor-pointer group ${ratioClass} placeholder-card" data-idx="${idx}">
+                    ${placeholder}
+                </div>
+            </div>
+        `;
     }).join('');
 
-    requestAnimationFrame(() => requestAnimationFrame(initDescToggles));
+    requestAnimationFrame(() => requestAnimationFrame(() => { observeLazy(); }));
     if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => initDescToggles());
+        document.fonts.ready.then(() => { observeLazy(); });
     }
+}
+
+function hydrateCard(el) {
+    const idx = parseInt(el.dataset.idx);
+    const html = fullCardHTML.get(idx);
+    if (!html) return;
+    el.classList.remove('placeholder-card');
+    el.innerHTML = html;
+    if (el.classList.contains('flipped')) {
+        const inner = el.querySelector('.flip-card-inner');
+        if (inner) inner.style.transform = 'rotateY(180deg)';
+    }
+    initDescToggles();
+}
+
+function dehydrateCard(el) {
+    const idx = parseInt(el.dataset.idx);
+    const html = placeholderHTML.get(idx);
+    if (!html) return;
+    el.classList.add('placeholder-card');
+    el.innerHTML = html;
 }
 
 function initDescToggles() {
@@ -169,7 +206,7 @@ function renderList(data) {
     const grid = document.getElementById('games-grid');
     const defaultImg = 'ps1';
 
-    grid.innerHTML = data.map((cols) => {
+    grid.innerHTML = data.map((cols, idx) => {
         if (cols.length < 12) return '';
         const title = cols[0];
         const year = cols[1];
@@ -190,7 +227,7 @@ function renderList(data) {
 
         return `
             <div class="group flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300">
-                <img src="${pathToImg}" alt="${title}" loading="lazy" class="h-20 w-14 object-cover object-top rounded bg-[#1a1a1a] shrink-0"/>
+                <img data-src="${pathToImg}" alt="${title}" class="lazy-img h-20 w-14 object-cover object-top rounded bg-[#1a1a1a] shrink-0"/>
                 <div class="flex-1 min-w-0">
                     <div class="font-bold text-white text-base tracking-wide leading-tight truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
                     <div class="text-sm text-on-surface-variant mt-1">
@@ -206,6 +243,8 @@ function renderList(data) {
             </div>
             `;
     }).join('');
+
+    requestAnimationFrame(observeLazy);
 }
 
 function setView(view) {
@@ -269,6 +308,40 @@ function numVal(v) {
     return isNaN(n) ? -Infinity : n;
 }
 
+function observeLazy() {
+    if (lazyObserver) lazyObserver.disconnect();
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.placeholder-card').forEach(hydrateCard);
+        document.querySelectorAll('.lazy-img[data-src]').forEach(el => {
+            el.src = el.dataset.src;
+            delete el.dataset.src;
+        });
+        return;
+    }
+    lazyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const el = entry.target;
+            if (entry.isIntersecting) {
+                if (el.classList.contains('placeholder-card')) {
+                    hydrateCard(el);
+                } else if (el.dataset.src) {
+                    if (el.classList.contains('lazy-img')) {
+                        el.src = el.dataset.src;
+                    }
+                    delete el.dataset.src;
+                    lazyObserver.unobserve(el);
+                }
+            } else {
+                if (el.classList.contains('flip-card') && !el.classList.contains('placeholder-card')) {
+                    dehydrateCard(el);
+                }
+            }
+        });
+    }, { rootMargin: `${LAZY_BUFFER_PX}px` });
+    document.querySelectorAll('.placeholder-card').forEach(el => lazyObserver.observe(el));
+    document.querySelectorAll('.lazy-img[data-src]').forEach(el => lazyObserver.observe(el));
+}
+
 function initCardDrag() {
     const grid = document.getElementById('games-grid');
     if (!grid) return;
@@ -308,7 +381,7 @@ function initCardDrag() {
 
     grid.addEventListener('pointerdown', (e) => {
         const card = e.target.closest('.flip-card');
-        if (!card || e.target.closest('a') || e.target.closest('.desc-toggle')) return;
+        if (!card || card.classList.contains('placeholder-card') || e.target.closest('a') || e.target.closest('.desc-toggle')) return;
         if (card._animating) return;
 
         activeCard = card;
