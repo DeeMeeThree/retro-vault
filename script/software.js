@@ -206,7 +206,7 @@ function renderList(data) {
     const grid = document.getElementById('games-grid');
     const defaultImg = 'ps1';
 
-    grid.innerHTML = data.map((cols, idx) => {
+    grid.innerHTML = data.map((cols) => {
         if (cols.length < 12) return '';
         const title = cols[0];
         const year = cols[1];
@@ -544,3 +544,161 @@ function initCardDrag() {
     grid.addEventListener('pointerup', release);
     grid.addEventListener('pointercancel', cancel);
 }
+
+/* ===== Software page: controls (options, console filter, sort, toggle view) ===== */
+const optionsBtn = document.getElementById('options-btn');
+const optionsPanel = document.getElementById('options-panel');
+
+if (optionsBtn && optionsPanel) {
+    const openOptions = () => {
+        requestAnimationFrame(() => {
+            optionsPanel.classList.add('options-open');
+        });
+        optionsBtn.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeOptions = () => {
+        optionsPanel.classList.remove('options-open');
+        optionsBtn.setAttribute('aria-expanded', 'false');
+    };
+
+    optionsBtn.addEventListener('click', () => {
+        if (optionsPanel.classList.contains('options-open')) {
+            closeOptions();
+        } else {
+            openOptions();
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!optionsBtn.contains(e.target) && !optionsPanel.contains(e.target) && optionsPanel.classList.contains('options-open')) {
+            closeOptions();
+        }
+    });
+}
+
+initCardDrag();
+
+const consoleFilterBtn = document.getElementById('console-filter-btn');
+const consoleFilterOptions = document.getElementById('console-filter-options');
+const consoleFilterLabel = document.getElementById('console-filter-label');
+
+if (consoleFilterBtn && consoleFilterOptions) {
+    const openConsoleOptions = () => {
+        const rect = consoleFilterBtn.getBoundingClientRect();
+        consoleFilterOptions.style.top = Math.round(rect.bottom + 4) + 'px';
+        consoleFilterOptions.style.left = Math.round(rect.left) + 'px';
+        consoleFilterOptions.classList.remove('hidden');
+        consoleFilterBtn.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeConsoleOptions = () => {
+        consoleFilterOptions.classList.add('hidden');
+        consoleFilterBtn.setAttribute('aria-expanded', 'false');
+    };
+
+    consoleFilterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (consoleFilterOptions.classList.contains('hidden')) {
+            openConsoleOptions();
+        } else {
+            closeConsoleOptions();
+        }
+    });
+
+    consoleFilterOptions.querySelectorAll('.console-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('console-filter').value = option.dataset.console;
+            consoleFilterLabel.textContent = option.textContent.trim();
+            consoleFilterOptions.querySelectorAll('.console-option').forEach(o => {
+                o.classList.remove('text-electric-cyan');
+                o.classList.add('text-on-surface-variant');
+            });
+            option.classList.remove('text-on-surface-variant');
+            option.classList.add('text-electric-cyan');
+            closeConsoleOptions();
+            filterAndSortData();
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!consoleFilterBtn.contains(e.target) && !consoleFilterOptions.contains(e.target) && !consoleFilterOptions.classList.contains('hidden')) {
+            closeConsoleOptions();
+        }
+    });
+
+    document.addEventListener('scroll', () => {
+        if (!consoleFilterOptions.classList.contains('hidden')) closeConsoleOptions();
+    }, { capture: true, passive: true });
+
+    window.addEventListener('resize', () => {
+        if (!consoleFilterOptions.classList.contains('hidden')) closeConsoleOptions();
+    });
+}
+
+document.getElementById('search-input').addEventListener('input', filterAndSortData);
+document.getElementById('console-filter').addEventListener('change', filterAndSortData);
+
+document.getElementById('toggle-view-btn').addEventListener('click', () => {
+    const btn = document.getElementById('toggle-view-btn');
+    const newView = currentView === 'grid' ? 'list' : 'grid';
+    btn.dataset.view = newView;
+    setView(newView);
+});
+
+function updateSortArrows() {
+    document.querySelectorAll('.sort-arrow').forEach(arrow => {
+        arrow.classList.add('invisible');
+        arrow.classList.remove('rotate-180');
+    });
+    const active = document.querySelector(`.sort-btn[data-sort="${currentSort}"] .sort-arrow`);
+    if (active) {
+        active.textContent = '▲';
+        active.classList.remove('invisible');
+        if (sortDesc) {
+            active.classList.add('rotate-180');
+        }
+    }
+}
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const sortBy = btn.dataset.sort;
+        if (currentSort === sortBy) {
+            sortDesc = !sortDesc;
+        } else {
+            currentSort = sortBy;
+            sortDesc = false;
+        }
+
+        document.querySelectorAll('.sort-btn').forEach(b => {
+            b.classList.remove('border-electric-cyan', 'text-electric-cyan');
+            b.classList.add('border-glass-border', 'text-on-surface-variant');
+        });
+        btn.classList.remove('border-glass-border', 'text-on-surface-variant');
+        btn.classList.add('border-electric-cyan', 'text-electric-cyan');
+
+        updateSortArrows();
+        filterAndSortData();
+    });
+});
+
+updateSortArrows();
+
+// Initialize with CSV from fetch
+fetch('database_archive.csv')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(csvText => {
+        gamesData = parseCSV(csvText.trim()).slice(1);
+        filterAndSortData();
+    })
+    .catch(error => {
+        console.error('Erreur lors du chargement des données CSV:', error);
+        document.getElementById('games-grid').innerHTML = '<div class="col-span-full text-center text-neon-pink font-label-caps">Erreur lors du chargement des données. Assurez-vous que database_archive.csv est présent.</div>';
+    });

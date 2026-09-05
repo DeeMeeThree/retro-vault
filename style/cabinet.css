@@ -1,0 +1,29 @@
+/* ===== Collection cabinet: clickable shelf zones ===== */
+.shelf-hotspot {
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.0);
+	background: transparent;
+	transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+	outline: none;
+}
+.shelf-hotspot .shelf-hotspot-label {
+	position: absolute;
+	top: 4px;
+	right: 6px;
+	font-family: sans-serif;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: rgba(255, 255, 255, 0.0);
+	transition: color 0.25s ease;
+}
+.shelf-hotspot:hover,
+.shelf-hotspot:focus-visible {
+	background: rgba(0, 255, 255, 0.10);
+	border-color: rgba(0, 255, 255, 0.7);
+	box-shadow: 0 0 20px rgba(0, 255, 255, 0.35), inset 0 0 12px rgba(0, 255, 255, 0.2);
+}
+.shelf-hotspot:hover .shelf-hotspot-label,
+.shelf-hotspot:focus-visible .shelf-hotspot-label {
+	color: #00FFFF;
+}

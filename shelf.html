@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>RETRO_VAULT | Étagère</title>
-    <script src="shelf.js"></script>
     <script src="tailwindcss-3.4.17.js"></script>
     <script id="tailwind-config" src="tailwind.js"></script>
-    <link href="style.css" rel="stylesheet"/>
+    <link href="style/style.css" rel="stylesheet"/>
+    <link href="style/shelf.css" rel="stylesheet"/>
     <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
     <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
 </head>
@@ -35,6 +35,7 @@
 <main id="shelf-viewport" class="relative z-10 h-screen w-full pt-[64px] overflow-x-auto overflow-y-hidden flex items-stretch">
     <div id="shelf-track" class="relative h-full flex shrink-0"></div>
 </main>
+<script src="script/shelf.js"></script>
 <script>
     // Mobile Menu / simple helpers are loaded from shelf.js
     window.Shelf.init(document.getElementById('shelf-track'), document.getElementById('shelf-viewport'));

@@ -6,7 +6,8 @@
     <title>RETRO_VAULT | Collection</title>
     <script src="tailwindcss-3.4.17.js"></script>
     <script id="tailwind-config" src="tailwind.js"></script>
-    <link href="style.css" rel="stylesheet"/>
+    <link href="style/style.css" rel="stylesheet"/>
+    <link href="style/cabinet.css" rel="stylesheet"/>
     <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
     <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
 </head>
@@ -140,37 +141,6 @@
         </div>
     </div>
 </footer>
-<script>
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (mobileMenuBtn && mobileMenu) {
-        let closeTimer = null;
-        const openMenu = () => {
-            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-            mobileMenu.classList.remove('hidden');
-            mobileMenu.classList.add('flex');
-            requestAnimationFrame(() => mobileMenu.classList.add('menu-open'));
-            mobileMenuBtn.classList.add('open');
-            mobileMenuBtn.setAttribute('aria-expanded', 'true');
-        };
-        const closeMenu = () => {
-            mobileMenu.classList.remove('menu-open');
-            mobileMenuBtn.classList.remove('open');
-            mobileMenuBtn.setAttribute('aria-expanded', 'false');
-            closeTimer = setTimeout(() => {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('flex');
-                closeTimer = null;
-            }, 300);
-        };
-        mobileMenuBtn.addEventListener('click', () => {
-            if (mobileMenu.classList.contains('menu-open')) closeMenu(); else openMenu();
-        });
-        document.addEventListener('click', (e) => {
-            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && mobileMenu.classList.contains('menu-open')) closeMenu();
-        });
-    }
-</script>
+<script src="script/script.js"></script>
 </body>
 </html>

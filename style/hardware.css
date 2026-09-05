@@ -1,0 +1,21 @@
+.neon-glow-pink {
+	box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+}
+
+.neon-glow-cyan {
+	box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.hardware-card {
+	transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hardware-card:hover {
+	transform: translateY(-5px) scale(1.02);
+	border-color: rgba(0, 255, 255, 0.5);
+	box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2), 0 0 15px rgba(0, 255, 255, 0.4) inset;
+}
+
+.hardware-card:hover .hardware-image {
+	transform: scale(1.05);
+}

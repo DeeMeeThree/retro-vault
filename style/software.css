@@ -1,151 +1,6 @@
-/* fallback */
-@font-face {
-	font-family: sans-serif;
-	font-style: normal;
-	font-weight: 100 700;
-}
-/* Söhne — body text (hardware + software) */
-@font-face {
-	font-family: 'Soehne';
-	font-style: normal;
-	font-weight: 400;
-	src: url('fonts/Soehne-Buch.otf') format('opentype');
-}
-@font-face {
-	font-family: 'Soehne';
-	font-style: italic;
-	font-weight: 400;
-	src: url('fonts/Soehne-BuchItalic.otf') format('opentype');
-}
-@font-face {
-	font-family: 'Soehne';
-	font-style: normal;
-	font-weight: 500;
-	src: url('fonts/Soehne-Medium.otf') format('opentype');
-}
-@font-face {
-	font-family: 'Soehne';
-	font-style: italic;
-	font-weight: 500;
-	src: url('fonts/Soehne-MediumItalic.otf') format('opentype');
-}
-@font-face {
-	font-family: 'Soehne';
-	font-style: normal;
-	font-weight: 600;
-	src: url('fonts/Soehne-Semibold.otf') format('opentype');
-}
-@font-face {
-	font-family: 'Soehne';
-	font-style: normal;
-	font-weight: 700;
-	src: url('fonts/Soehne-Bold.otf') format('opentype');
-}
-
-/* Press Start 2P — retro-futuristic pixel title (homepage hero) */
-@font-face {
-	font-family: 'PressStart2P';
-	font-style: normal;
-	font-weight: 400;
-	src: url('fonts/PressStart2P-Regular.ttf') format('truetype');
-}
-
-/* Pixel arcade title: gradient fill + neon glow */
-.title-arcade {
-	font-family: 'PressStart2P', 'monospace', sans-serif;
-	font-size: clamp(30px, 9vw, 66px);
-	line-height: 1.4;
-	letter-spacing: 0.05em;
-	text-transform: uppercase;
-	background: linear-gradient(180deg, #ffffff 0%, #00ffff 45%, #ff00ff 100%);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.55)) drop-shadow(0 0 22px rgba(255, 0, 255, 0.45));
-}
-.title-arcade-the {
-	font-size: 0.55em;
-	vertical-align: baseline;
-}
-
-.material-symbols-outlined {
-	font-family: system-ui;
-	font-weight: normal;
-	font-style: normal;
-	font-size: 24px;
-	line-height: 1;
-	letter-spacing: normal;
-	text-transform: none;
-	display: inline-block;
-	white-space: nowrap;
-	word-wrap: normal;
-	direction: ltr;
-	-webkit-font-smoothing: antialiased;
-}
-
-body {
-	background-attachment: fixed;
-	min-height: 100vh;
-	color: #f1dcf4;
-}
-
-body {
-	background: radial-gradient(circle at top right, rgba(255, 0, 255, 0.15), transparent 40%),
-				radial-gradient(circle at bottom left, rgba(0, 255, 255, 0.15), transparent 40%),
-				#1a0f1f;
-}
-
-.scanlines {
-	position: fixed;
-	top: 0; left: 0;
-	background: linear-gradient(
-		to bottom,
-		rgba(255,255,255,0),
-		rgba(255,255,255,0) 50%,
-		rgba(0,0,0,0.1) 50%,
-		rgba(0,0,0,0.1)
-	);
-	background-size: 100% 4px;
-	pointer-events: none;
-	z-index: 9999;
-	opacity: 0.5;
-}
-
-@keyframes flicker {
-	0% { opacity: 0.98; }
-	100% { opacity: 1; }
-}
-
-.glass-panel {
-	background: rgba(15, 5, 20, 0.7);
-	backdrop-filter: blur(12px);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.neon-glow-pink {
-	box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
-}
-
-.neon-glow-cyan {
-	box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-}
-
-.hardware-card {
-	transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.hardware-card:hover {
-	transform: translateY(-5px) scale(1.02);
-	border-color: rgba(0, 255, 255, 0.5);
-	box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2), 0 0 15px rgba(0, 255, 255, 0.4) inset;
-}
-
-.hardware-card:hover .hardware-image {
-	transform: scale(1.05);
-}
 .flip-card {
 	position: relative;
-	perspective: 2200px; /* Deeper perspective for a stronger 3D feel */
+	perspective: 2200px;
 	user-select: none;
 	-webkit-user-select: none;
 }
@@ -197,10 +52,11 @@ body {
 }
 
 .flip-card-inner {
-	transition: transform 1.5s cubic-bezier(0.175, 0.885, 1, 1); /* Slow flip so the 3D effect is fully visible */
+	transition: transform 1.5s cubic-bezier(0.175, 0.885, 1, 1);
 	transform-style: preserve-3d;
 	position: relative;
 	will-change: transform;
+	--rot: 0deg;
 }
 .flip-card.flipped .flip-card-inner {
 	transform: rotateY(180deg);
@@ -321,7 +177,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	border-radius: 8px; /* PS5 case rounded corners */
+	border-radius: 8px;
 	box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.12), inset 2px 2px 10px rgba(255,255,255,0.06);
 }
 
@@ -371,7 +227,7 @@ body {
 /* Disc tray hint on the case interior */
 .flip-card-back {
 	transform: rotateY(180deg) translateZ(20px);
-	background: #111; /* Dark plastic back */
+	background: #111;
 }
 .flip-card-back::before {
 	content: '';
@@ -438,67 +294,7 @@ body {
 .desc-wrap.expanded .desc-toggle svg {
 	transform: rotate(180deg);
 }
-.grid-bg {
-	background-image: 
-		linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-	background-size: 40px 40px;
-	transform: perspective(500px) rotateX(60deg);
-	transform-origin: bottom;
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	height: 50vh;
-	z-index: -1;
-}
 
-.ambient-glow-pink {
-	background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
-}
-
-.ambient-glow-cyan {
-	background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
-}
-
-.glass-panel {
-	background: rgba(31, 32, 31, 0.7);
-	backdrop-filter: blur(12px);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.neon-shadow-cyan {
-	box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-.neon-shadow-pink {
-	box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-.crt-flicker {
-	animation: crt 0.15s infinite;
-	opacity: 0.95;
-}
-
-@keyframes crt {
-	0% { opacity: 0.95; }
-	50% { opacity: 1; }
-	100% { opacity: 0.95; }
-}
-
-/* Custom scrollbar for modern feel */
-::-webkit-scrollbar {
-	width: 8px;
-}
-::-webkit-scrollbar-track {
-	background: #564052;
-}
-::-webkit-scrollbar-thumb {
-	background: #3d3042;
-	border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-	background: #a4899d;
-}
 /* Custom Scrollbar for Card Backs */
 .custom-scrollbar::-webkit-scrollbar {
 	width: 4px;
@@ -515,30 +311,6 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
 	background: rgba(255, 0, 255, 0.8);
-}
-
-/* Mobile Menu */
-#mobile-menu {
-	opacity: 0;
-	pointer-events: none;
-	transform: translateY(-10px);
-	transition: opacity 0.3s ease, transform 0.3s ease;
-}
-#mobile-menu.menu-open {
-	opacity: 1;
-	pointer-events: auto;
-	transform: translateY(0);
-}
-
-/* Hamburger -> X animation */
-#mobile-menu-btn.open .ham-line:nth-child(1) {
-	transform: translateY(7px) rotate(45deg);
-}
-#mobile-menu-btn.open .ham-line:nth-child(2) {
-	opacity: 0;
-}
-#mobile-menu-btn.open .ham-line:nth-child(3) {
-	transform: translateY(-7px) rotate(-45deg);
 }
 
 /* Options panel (mobile): height animated so the container border grows smoothly */
@@ -595,81 +367,4 @@ body {
 	color: #000;
 	background: #00FFFF;
 	border-color: #00FFFF;
-}
-
-/* ===== Collection cabinet: clickable shelf zones ===== */
-.shelf-hotspot {
-	border-radius: 6px;
-	border: 1px solid rgba(255, 255, 255, 0.0);
-	background: transparent;
-	transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-	outline: none;
-}
-.shelf-hotspot .shelf-hotspot-label {
-	position: absolute;
-	top: 4px;
-	right: 6px;
-	font-family: sans-serif;
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	color: rgba(255, 255, 255, 0.0);
-	transition: color 0.25s ease;
-}
-.shelf-hotspot:hover,
-.shelf-hotspot:focus-visible {
-	background: rgba(0, 255, 255, 0.10);
-	border-color: rgba(0, 255, 255, 0.7);
-	box-shadow: 0 0 20px rgba(0, 255, 255, 0.35), inset 0 0 12px rgba(0, 255, 255, 0.2);
-}
-.shelf-hotspot:hover .shelf-hotspot-label,
-.shelf-hotspot:focus-visible .shelf-hotspot-label {
-	color: #00FFFF;
-}
-
-/* ===== Shelf page: horizontal scroll + entrance zoom ===== */
-#shelf-viewport {
-	scrollbar-width: thin;
-	scrollbar-color: #00FFFF #271b2c;
-	cursor: grab;
-}
-#shelf-viewport:active {
-	cursor: grabbing;
-}
-
-.shelf-gutter {
-	flex: 0 0 auto;
-	width: 6vw;
-	min-width: 24px;
-	align-self: stretch;
-}
-
-.shelf-image {
-	display: block;
-	align-self: stretch;
-	height: 100%;
-	width: auto;
-	max-width: none;
-	opacity: 0;
-	transform: scale(1.15);
-	transform-origin: center center;
-	box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
-}
-
-.shelf-image.shelf-zoom-in {
-	opacity: 1;
-	transition: transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.6s ease;
-	transform: scale(1);
-}
-
-/* Zoom-out transition when navigating back to the cabinet */
-.shelf-image.shelf-zoom-out {
-	opacity: 0;
-	transform: scale(0.6);
-	transition: transform 0.7s cubic-bezier(0.55, 0, 0.55, 0.2), opacity 0.45s ease;
-}
-
-/* Fade out the browser's native scroll so the photo stays immersive */
-#shelf-viewport::-webkit-scrollbar {
-	height: 0;
 }

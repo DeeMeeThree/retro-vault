@@ -7,7 +7,8 @@
     <title>RETRO_VAULT</title>
     <script src="tailwindcss-3.4.17.js"></script>
     <script id="tailwind-config" src="tailwind.js"></script>
-    <link href="style.css" rel="stylesheet"/>
+    <link href="style/style.css" rel="stylesheet"/>
+    <link href="style/index.css" rel="stylesheet"/>
     <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
     <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
 </head>
@@ -105,16 +106,6 @@
         </div>
     </div>
 </footer>
-<script>
-    // Simple parallax effect for background grid based on mouse movement
-    document.addEventListener('mousemove', (e) => {
-        const grid = document.querySelector('.grid-bg');
-        if (grid) {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 10;
-            grid.style.transform = `perspective(500px) rotateX(60deg) translate(${x}px, ${y}px)`;
-        }
-    });
-</script>
+<script src="script/index.js"></script>
 </body>
 </html>
