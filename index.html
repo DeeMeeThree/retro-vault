@@ -31,7 +31,7 @@
                href="software.html">Software</a>
             <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
                href="hardware.html">Hardware</a>
-            <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+            <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-green hover:drop-shadow-[0_0_8px_#39FF14] transition-all duration-300"
                href="cabinet.html">Collection</a>
         </nav>
     </div>
@@ -48,7 +48,7 @@
         </p>
     </section>
     <!-- Portals Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-lg w-full max-w-5xl mx-auto relative z-20">
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-lg w-full max-w-6xl mx-auto relative z-20">
         <!-- Software Portal -->
         <a class="group relative glass-panel rounded-xl overflow-hidden aspect-[4/3] md:aspect-[3/4] flex flex-col justify-end p-lg transition-transform duration-500 hover:-translate-y-2 hover:neon-shadow-cyan"
            href="software.html">
@@ -92,6 +92,28 @@
             </div>
             <!-- Hover Accent Line -->
             <div class="absolute bottom-0 left-0 w-full h-[4px] bg-primary-fixed transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20"></div>
+        </a>
+        <!-- Collection Portal -->
+        <a class="group relative glass-panel rounded-xl overflow-hidden aspect-[4/3] md:aspect-[3/4] flex flex-col justify-end p-lg transition-transform duration-500 hover:-translate-y-2 hover:neon-shadow-green"
+           href="cabinet.html">
+            <div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>
+            <!-- Background Image Container -->
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                     data-alt="Illustration rétro-futuriste d'un coffre de collection aux étagères néon remplies de boîtiers de jeux, illuminé d'une lumière verte phosphorescente."
+                     style="background-image: url('images/collection.webp')"></div>
+            </div>
+            <div class="relative z-20 transform transition-transform duration-500 group-hover:translate-y-[-8px]">
+                <h2 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface mb-xs uppercase italic tracking-tighter group-hover:text-neon-green transition-colors duration-300">
+                    Collection
+                </h2>
+                <p class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[16px]">shelves >
+                    Browse Physical Vault</span>
+                </p>
+            </div>
+            <!-- Hover Accent Line -->
+            <div class="absolute bottom-0 left-0 w-full h-[4px] bg-neon-green transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20"></div>
         </a>
     </section>
 </main>

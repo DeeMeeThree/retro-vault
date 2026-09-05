@@ -47,6 +47,7 @@ tailwind.config = {
                 "primary": "#ffabf3",
                 "neon-pink": "#FF00FF",
                 "electric-cyan": "#00FFFF",
+                "neon-green": "#39FF14",
                 "surface-bright": "#423447",
                 "tertiary-fixed-dim": "#ffb77d",
                 "secondary-container": "#00fbfb",
