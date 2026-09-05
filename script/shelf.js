@@ -3,7 +3,7 @@
 
     const SHELF_COUNT = 10;
     const BASE_PATH = 'images/shelf/etagere-';
-    const EXT = '.jpg';
+    const EXT = '.webp';
 
     function getShelfParam() {
         const params = new URLSearchParams(window.location.search);
@@ -62,20 +62,7 @@
             });
         }
 
-        // Zoom-out effect when going back to the cabinet.
-        const backBtn = document.getElementById('shelf-back-btn');
-        if (backBtn) {
-            backBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                const href = backBtn.getAttribute('href');
-                img.classList.remove('shelf-zoom-in');
-                img.classList.add('shelf-zoom-out');
-                setTimeout(function () {
-                    window.location.href = href;
-                }, 550);
-            });
         }
-    }
 
     window.Shelf = {
         init: initShelf
