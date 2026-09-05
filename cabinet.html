@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr" style="">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>RETRO_VAULT | Collection</title>
+    <script src="tailwindcss-3.4.17.js"></script>
+    <script id="tailwind-config" src="tailwind.js"></script>
+    <link href="style.css" rel="stylesheet"/>
+    <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
+</head>
+<body class="font-body-md antialiased min-w-[320px] overflow-x-hidden selection:bg-neon-pink selection:text-surface-deep">
+<!-- Ambient Background Effects -->
+<div class="fixed inset-0 scanlines"></div>
+<div class="fixed inset-0 ambient-glow-pink pointer-events-none -z-10"></div>
+<div class="fixed inset-0 ambient-glow-cyan pointer-events-none -z-10"></div>
+<div class="fixed inset-0 grid-bg pointer-events-none -z-10" style="transform: perspective(500px) rotateX(60deg) translate(-9.1875px, 1.19048px);"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-40 bg-surface/70 backdrop-blur-xl border-b border-glass-border shadow-[0_4px_20px_rgba(0,255,255,0.15)]">
+    <div class="relative flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
+        <a class="font-display-lg text-headline-lg tracking-tighter drop-shadow-[0_0_10px_rgba(255,0,255,0.8)] italic -skew-x-12"
+           href="index.html">
+            RETRO_VAULT
+        </a>
+        <div>
+            <div class="hidden sm:flex items-center gap-9">
+                <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-electric-cyan hover:drop-shadow-[0_0_8px_#00FFFF] transition-all duration-300"
+                   href="software.html">Software</a>
+                <a class="text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+                   href="hardware.html">Hardware</a>
+                <a class="text-neon-pink border-b-2 border-neon-pink pb-1 font-label-caps text-label-caps uppercase hover:text-neon-pink hover:drop-shadow-[0_0_8px_#FF00FF] transition-all duration-300"
+                   href="cabinet.html">Collection</a>
+            </div>
+
+            <div class="flex flex-1 justify-end items-center gap-4 md:gap-8">
+                <button class="sm:hidden text-white flex flex-col items-center justify-center gap-[5px] p-1" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false">
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
+                    <span class="ham-line w-6 h-[2px] bg-current transition-transform duration-300"></span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu Overlay -->
+        <div class="absolute top-full right-lg min-w-[220px] bg-surface/70 backdrop-blur-xl border border-glass-border rounded-b-xl shadow-xl overflow-hidden hidden sm:hidden flex-col"
+             id="mobile-menu">
+            <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
+               href="software.html">Software</a>
+            <a class="text-on-surface-variant text-base font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
+               href="hardware.html">Hardware</a>
+            <a class="text-neon-pink border-b-2 border-neon-pink pb-1 font-medium py-4 px-6 hover:bg-electric-cyan/10 transition-colors"
+               href="cabinet.html">Collection</a>
+        </div>
+    </div>
+</header>
+<!-- Main Content -->
+<main class="max-w-container-max mx-auto px-md md:px-lg py-xl pt-[120px] relative z-10 flex flex-col items-center">
+    <!-- Header Section -->
+    <header class="mb-xl md:mb-[80px] text-center md:text-left w-full relative z-10">
+        <h1 class="font-display-lg text-display-lg text-secondary italic uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] overflow-x-auto overflow-y-hidden whitespace-nowrap">
+            COLLECTION
+        </h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-sm border-l-4 border-electric-cyan pl-md">
+            Cliquez sur une étagère pour explorer la collection physique. Défilez horizontalement pour parcourir chaque rayon.
+        </p>
+    </header>
+
+    <!-- Cabinet photo with clickable shelves -->
+    <div id="cabinet-view" class="relative w-full max-w-[480px] mx-auto select-none">
+        <!-- Main photo -->
+        <img src="images/cabinet/armoire.jpg" alt="Armoire de collection rétro"
+             class="block w-full h-auto rounded-xl border border-glass-border shadow-[0_20px_60px_rgba(0,0,0,0.8)]"/>
+
+        <!-- Clickable shelf zones (10 floors). Positions in % so they scale with the photo.
+             To fine-tune, edit the style values below (top / height / left / right). -->
+        <!-- etagere 1 -->
+        <a href="shelf.html?shelf=1" class="shelf-hotspot absolute z-10" style="top: 2.4%; height: 12.4%; left: 21.1%; right: 23.5%;" data-shelf="1" aria-label="Étagère 1">
+            <span class="shelf-hotspot-label">1</span>
+        </a>
+
+        <!-- etagere 2 -->
+        <a href="shelf.html?shelf=2" class="shelf-hotspot absolute z-10" style="top: 32.4%; height: 10.3%; left: 39.9%; right: 25.3%;" data-shelf="2" aria-label="Étagère 2">
+            <span class="shelf-hotspot-label">2</span>
+        </a>
+
+        <!-- etagere 3 -->
+        <a href="shelf.html?shelf=3" class="shelf-hotspot absolute z-10" style="top: 42.6%; height: 10%; left: 23.5%; right: 24.7%;" data-shelf="3" aria-label="Étagère 3">
+            <span class="shelf-hotspot-label">3</span>
+        </a>
+
+        <!-- etagere 4 -->
+        <a href="shelf.html?shelf=4" class="shelf-hotspot absolute z-10" style="top: 53.3%; height: 8.7%; left: 24.7%; right: 26.4%;" data-shelf="4" aria-label="Étagère 4">
+            <span class="shelf-hotspot-label">4</span>
+        </a>
+
+        <!-- etagere 5 -->
+        <a href="shelf.html?shelf=5" class="shelf-hotspot absolute z-10" style="top: 61.9%; height: 10%; left: 41.3%; right: 26.8%;" data-shelf="5" aria-label="Étagère 5">
+            <span class="shelf-hotspot-label">5</span>
+        </a>
+
+        <!-- etagere 6 -->
+        <a href="shelf.html?shelf=6" class="shelf-hotspot absolute z-10" style="top: 72%; height: 8.9%; left: 41%; right: 27.3%;" data-shelf="6" aria-label="Étagère 6">
+            <span class="shelf-hotspot-label">6</span>
+        </a>
+
+        <!-- etagere 7 -->
+        <a href="shelf.html?shelf=7" class="shelf-hotspot absolute z-10" style="top: 81.1%; height: 7.5%; left: 25.2%; right: 27.6%;" data-shelf="7" aria-label="Étagère 7">
+            <span class="shelf-hotspot-label">7</span>
+        </a>
+
+        <!-- etagere 8 -->
+        <a href="shelf.html?shelf=8" class="shelf-hotspot absolute z-10" style="top: 88.6%; height: 6.6%; left: 25.7%; right: 27.2%;" data-shelf="8" aria-label="Étagère 8">
+            <span class="shelf-hotspot-label">8</span>
+        </a>
+
+        <!-- etagere 9 -->
+        <a href="shelf.html?shelf=9" class="shelf-hotspot absolute z-10" style="top: 15.5%; height: 17.5%; left: 22.2%; right: 24.5%;" data-shelf="7" aria-label="Étagère 9">
+            <span class="shelf-hotspot-label">9</span>
+        </a>
+
+        <!-- etagere 10 -->
+        <a href="shelf.html?shelf=10" class="shelf-hotspot absolute z-10" style="top: 62.3%; height: 19.6%; left: 24.7%; right: 60.2%;" data-shelf="8" aria-label="Étagère 10">
+            <span class="shelf-hotspot-label">10</span>
+        </a>
+    </div>
+
+    <!-- Legend -->
+    <p class="font-label-caps text-label-caps text-on-surface-variant/70 text-center mt-lg">
+        ▸ SURVOLEZ LES RAYONS POUR LES METTRE EN ÉVIDENCE ▸ CLIQUEZ POUR EXPLORER
+    </p>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xl bg-surface-container-lowest border-t border-glass-border z-10 relative">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl max-w-container-max mx-auto gap-md">
+        <div class="font-headline-lg text-headline-lg text-secondary italic">
+            RETRO_VAULT
+        </div>
+        <div class="font-label-caps text-label-caps text-neon-pink">
+            © 2026 RETRO_VAULT ARCHIVE. NO RIGHTS RESERVED.
+        </div>
+    </div>
+</footer>
+<script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn && mobileMenu) {
+        let closeTimer = null;
+        const openMenu = () => {
+            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('flex');
+            requestAnimationFrame(() => mobileMenu.classList.add('menu-open'));
+            mobileMenuBtn.classList.add('open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        };
+        const closeMenu = () => {
+            mobileMenu.classList.remove('menu-open');
+            mobileMenuBtn.classList.remove('open');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            closeTimer = setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                closeTimer = null;
+            }, 300);
+        };
+        mobileMenuBtn.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('menu-open')) closeMenu(); else openMenu();
+        });
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && mobileMenu.classList.contains('menu-open')) closeMenu();
+        });
+    }
+</script>
+</body>
+</html>

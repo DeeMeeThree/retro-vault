@@ -596,3 +596,80 @@ body {
 	background: #00FFFF;
 	border-color: #00FFFF;
 }
+
+/* ===== Collection cabinet: clickable shelf zones ===== */
+.shelf-hotspot {
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.0);
+	background: transparent;
+	transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+	outline: none;
+}
+.shelf-hotspot .shelf-hotspot-label {
+	position: absolute;
+	top: 4px;
+	right: 6px;
+	font-family: sans-serif;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: rgba(255, 255, 255, 0.0);
+	transition: color 0.25s ease;
+}
+.shelf-hotspot:hover,
+.shelf-hotspot:focus-visible {
+	background: rgba(0, 255, 255, 0.10);
+	border-color: rgba(0, 255, 255, 0.7);
+	box-shadow: 0 0 20px rgba(0, 255, 255, 0.35), inset 0 0 12px rgba(0, 255, 255, 0.2);
+}
+.shelf-hotspot:hover .shelf-hotspot-label,
+.shelf-hotspot:focus-visible .shelf-hotspot-label {
+	color: #00FFFF;
+}
+
+/* ===== Shelf page: horizontal scroll + entrance zoom ===== */
+#shelf-viewport {
+	scrollbar-width: thin;
+	scrollbar-color: #00FFFF #271b2c;
+	cursor: grab;
+}
+#shelf-viewport:active {
+	cursor: grabbing;
+}
+
+.shelf-gutter {
+	flex: 0 0 auto;
+	width: 6vw;
+	min-width: 24px;
+	align-self: stretch;
+}
+
+.shelf-image {
+	display: block;
+	align-self: stretch;
+	height: 100%;
+	width: auto;
+	max-width: none;
+	opacity: 0;
+	transform: scale(1.15);
+	transform-origin: center center;
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+}
+
+.shelf-image.shelf-zoom-in {
+	opacity: 1;
+	transition: transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.6s ease;
+	transform: scale(1);
+}
+
+/* Zoom-out transition when navigating back to the cabinet */
+.shelf-image.shelf-zoom-out {
+	opacity: 0;
+	transform: scale(0.6);
+	transition: transform 0.7s cubic-bezier(0.55, 0, 0.55, 0.2), opacity 0.45s ease;
+}
+
+/* Fade out the browser's native scroll so the photo stays immersive */
+#shelf-viewport::-webkit-scrollbar {
+	height: 0;
+}

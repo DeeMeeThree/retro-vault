@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr" style="">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>RETRO_VAULT | Étagère</title>
+    <script src="shelf.js"></script>
+    <script src="tailwindcss-3.4.17.js"></script>
+    <script id="tailwind-config" src="tailwind.js"></script>
+    <link href="style.css" rel="stylesheet"/>
+    <link href="images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="images/favicon.png" rel="icon" sizes="1024x1024" type="image/png"/>
+</head>
+<body class="font-body-md antialiased min-w-[320px] overflow-hidden selection:bg-neon-pink selection:text-surface-deep">
+<!-- Ambient Background Effects -->
+<div class="fixed inset-0 scanlines"></div>
+<div class="fixed inset-0 ambient-glow-pink pointer-events-none -z-10"></div>
+<div class="fixed inset-0 ambient-glow-cyan pointer-events-none -z-10"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-40 bg-surface/70 backdrop-blur-xl border-b border-glass-border shadow-[0_4px_20px_rgba(0,255,255,0.15)]">
+    <div class="relative flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
+        <a id="shelf-back-btn" class="inline-flex items-center gap-sm font-label-caps text-label-caps uppercase text-electric-cyan hover:text-white transition-colors"
+           href="cabinet.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Armoire
+        </a>
+        <a class="hidden sm:inline-flex font-display-lg text-headline-lg tracking-tighter drop-shadow-[0_0_10px_rgba(255,0,255,0.8)] italic -skew-x-12"
+           href="index.html">
+            RETRO_VAULT
+        </a>
+        <span id="shelf-title" class="font-label-caps text-label-caps uppercase text-on-surface-variant">Étagère</span>
+    </div>
+</header>
+<!-- Horizontal scroll viewport -->
+<main id="shelf-viewport" class="relative z-10 h-screen w-full pt-[64px] overflow-x-auto overflow-y-hidden flex items-stretch">
+    <div id="shelf-track" class="relative h-full flex shrink-0"></div>
+</main>
+<script>
+    // Mobile Menu / simple helpers are loaded from shelf.js
+    window.Shelf.init(document.getElementById('shelf-track'), document.getElementById('shelf-viewport'));
+</script>
+</body>
+</html>
