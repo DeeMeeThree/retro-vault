@@ -27,3 +27,101 @@
 .shelf-hotspot:focus-visible .shelf-hotspot-label {
 	color: #00FFFF;
 }
+
+/* ===== Shelf modal: fullscreen horizontal scroll, pure CSS zoom =====
+   Open/close are @keyframes animations toggled by .open / .closing.
+   transform+opacity only: GPU-friendly and reliable on mobile. */
+#shelf-modal {
+	display: none;
+	z-index: 50;
+}
+#shelf-modal.open {
+	display: flex;
+	animation: shelf-modal-pop-in 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
+}
+#shelf-modal.open.closing {
+	display: flex;
+	animation: shelf-modal-pop-out 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
+}
+@keyframes shelf-modal-pop-in {
+	from {
+		transform: scale(0.12);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+@keyframes shelf-modal-pop-out {
+	from {
+		transform: scale(1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(0.12);
+		opacity: 0;
+	}
+}
+
+/* Fullscreen backdrop (fades in/out with the modal's own opacity) */
+#shelf-modal-backdrop {
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
+}
+
+#shelf-modal-viewport {
+	scrollbar-width: thin;
+	scrollbar-color: #00FFFF #271b2c;
+	touch-action: pan-x;
+	cursor: grab;
+}
+#shelf-modal-viewport:active {
+	cursor: grabbing;
+}
+#shelf-modal-viewport::-webkit-scrollbar {
+	height: 8px;
+}
+#shelf-modal-viewport::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.05);
+}
+#shelf-modal-viewport::-webkit-scrollbar-thumb {
+	background: rgba(0, 255, 255, 0.5);
+	border-radius: 4px;
+}
+
+.shelf-image {
+	display: block;
+	align-self: center;
+	height: 88%;
+	max-width: none;
+	width: auto;
+	box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+	border-radius: 8px;
+	flex: 0 0 auto;
+	/* Stretch is transform-only (scaleX): GPU-friendly, no width measurement,
+	   so the exact natural width doesn't matter */
+	transform-origin: left center;
+}
+#shelf-modal.open .shelf-image {
+	animation: shelf-stretch-in 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
+}
+#shelf-modal.open.closing .shelf-image {
+	animation: shelf-stretch-out 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
+}
+@keyframes shelf-stretch-in {
+	from {
+		transform: scaleX(0.2);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+@keyframes shelf-stretch-out {
+	from {
+		transform: scaleX(1);
+	}
+	to {
+		transform: scaleX(0.2);
+	}
+}

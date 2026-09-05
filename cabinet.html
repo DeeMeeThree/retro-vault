@@ -75,52 +75,52 @@
         <!-- Clickable shelf zones (10 floors). Positions in % so they scale with the photo.
              To fine-tune, edit the style values below (top / height / left / right). -->
         <!-- etagere 1 -->
-        <a href="shelf.html?shelf=1" class="shelf-hotspot absolute z-10" style="top: 2.4%; height: 12.4%; left: 21.1%; right: 23.5%;" data-shelf="1" aria-label="Étagère 1">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 2.4%; height: 12.4%; left: 21.1%; right: 23.5%;" data-shelf="1" aria-label="Étagère 1">
             <span class="shelf-hotspot-label">1</span>
         </a>
 
         <!-- etagere 2 -->
-        <a href="shelf.html?shelf=2" class="shelf-hotspot absolute z-10" style="top: 32.4%; height: 10.3%; left: 39.9%; right: 25.3%;" data-shelf="2" aria-label="Étagère 2">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 32.4%; height: 10.3%; left: 39.9%; right: 25.3%;" data-shelf="2" aria-label="Étagère 2">
             <span class="shelf-hotspot-label">2</span>
         </a>
 
         <!-- etagere 3 -->
-        <a href="shelf.html?shelf=3" class="shelf-hotspot absolute z-10" style="top: 42.6%; height: 10%; left: 23.5%; right: 24.7%;" data-shelf="3" aria-label="Étagère 3">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 42.6%; height: 10%; left: 23.5%; right: 24.7%;" data-shelf="3" aria-label="Étagère 3">
             <span class="shelf-hotspot-label">3</span>
         </a>
 
         <!-- etagere 4 -->
-        <a href="shelf.html?shelf=4" class="shelf-hotspot absolute z-10" style="top: 53.3%; height: 8.7%; left: 24.7%; right: 26.4%;" data-shelf="4" aria-label="Étagère 4">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 53.3%; height: 8.7%; left: 24.7%; right: 26.4%;" data-shelf="4" aria-label="Étagère 4">
             <span class="shelf-hotspot-label">4</span>
         </a>
 
         <!-- etagere 5 -->
-        <a href="shelf.html?shelf=5" class="shelf-hotspot absolute z-10" style="top: 61.9%; height: 10%; left: 41.3%; right: 26.8%;" data-shelf="5" aria-label="Étagère 5">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 61.9%; height: 10%; left: 41.3%; right: 26.8%;" data-shelf="5" aria-label="Étagère 5">
             <span class="shelf-hotspot-label">5</span>
         </a>
 
         <!-- etagere 6 -->
-        <a href="shelf.html?shelf=6" class="shelf-hotspot absolute z-10" style="top: 72%; height: 8.9%; left: 41%; right: 27.3%;" data-shelf="6" aria-label="Étagère 6">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 72%; height: 8.9%; left: 41%; right: 27.3%;" data-shelf="6" aria-label="Étagère 6">
             <span class="shelf-hotspot-label">6</span>
         </a>
 
         <!-- etagere 7 -->
-        <a href="shelf.html?shelf=7" class="shelf-hotspot absolute z-10" style="top: 81.1%; height: 7.5%; left: 25.2%; right: 27.6%;" data-shelf="7" aria-label="Étagère 7">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 81.1%; height: 7.5%; left: 25.2%; right: 27.6%;" data-shelf="7" aria-label="Étagère 7">
             <span class="shelf-hotspot-label">7</span>
         </a>
 
         <!-- etagere 8 -->
-        <a href="shelf.html?shelf=8" class="shelf-hotspot absolute z-10" style="top: 88.6%; height: 6.6%; left: 25.7%; right: 27.2%;" data-shelf="8" aria-label="Étagère 8">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 88.6%; height: 6.6%; left: 25.7%; right: 27.2%;" data-shelf="8" aria-label="Étagère 8">
             <span class="shelf-hotspot-label">8</span>
         </a>
 
         <!-- etagere 9 -->
-        <a href="shelf.html?shelf=9" class="shelf-hotspot absolute z-10" style="top: 15.5%; height: 17.5%; left: 22.2%; right: 24.5%;" data-shelf="7" aria-label="Étagère 9">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 15.5%; height: 17.5%; left: 22.2%; right: 24.5%;" data-shelf="9" aria-label="Étagère 9">
             <span class="shelf-hotspot-label">9</span>
         </a>
 
         <!-- etagere 10 -->
-        <a href="shelf.html?shelf=10" class="shelf-hotspot absolute z-10" style="top: 62.3%; height: 19.6%; left: 24.7%; right: 60.2%;" data-shelf="8" aria-label="Étagère 10">
+        <a href="#" class="shelf-hotspot absolute z-10" style="top: 62.3%; height: 19.6%; left: 24.7%; right: 60.2%;" data-shelf="10" aria-label="Étagère 10">
             <span class="shelf-hotspot-label">10</span>
         </a>
     </div>
@@ -130,6 +130,30 @@
         ▸ SURVOLEZ LES RAYONS POUR LES METTRE EN ÉVIDENCE ▸ CLIQUEZ POUR EXPLORER
     </p>
 </main>
+<!-- Shelf Modal (fullscreen, horizontally scrollable) -->
+<div id="shelf-modal" class="hidden fixed inset-0 z-50" role="dialog" aria-modal="true"
+     aria-label="Étagère plein écran">
+    <!-- Fullscreen backdrop (fades in while the modal scales up) -->
+    <div id="shelf-modal-backdrop" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+    <!-- Backdrop click target -->
+    <div id="shelf-modal-close" class="absolute inset-0 cursor-zoom-out"></div>
+    <!-- Close button -->
+    <button id="shelf-modal-x" type="button"
+            class="fixed top-5 right-5 z-10 w-12 h-12 rounded-full border border-glass-border bg-surface-container/80 text-white text-xl leading-none flex items-center justify-center hover:border-electric-cyan hover:text-electric-cyan transition-all duration-300"
+            aria-label="Fermer">✕</button>
+    <!-- Title chip -->
+    <div id="shelf-modal-title"
+         class="fixed top-6 left-5 z-10 font-label-caps text-label-caps uppercase text-electric-cyan pointer-events-none">
+    </div>
+    <!-- Horizontally scrollable viewport -->
+    <div id="shelf-modal-viewport" class="absolute inset-0 overflow-x-auto overflow-y-hidden flex items-stretch">
+        <div id="shelf-modal-track" class="relative h-full flex shrink-0 items-center px-8 sm:px-12 gap-4"></div>
+    </div>
+    <!-- Scroll hint -->
+    <p class="fixed bottom-5 left-1/2 -translate-x-1/2 z-10 font-label-caps text-label-caps uppercase text-on-surface-variant/60 pointer-events-none whitespace-nowrap">
+        ▸ Faites défiler horizontalement ▸
+    </p>
+</div>
 <!-- Footer -->
 <footer class="w-full mt-xl bg-surface-container-lowest border-t border-glass-border z-10 relative">
     <div class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-xl max-w-container-max mx-auto gap-md">
@@ -142,5 +166,6 @@
     </div>
 </footer>
 <script src="script/script.js"></script>
+<script src="script/cabinet.js"></script>
 </body>
 </html>
