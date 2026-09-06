@@ -28,40 +28,30 @@
 	color: #00FFFF;
 }
 
-/* ===== Shelf modal: fullscreen horizontal scroll, pure CSS zoom =====
-   Open/close are @keyframes animations toggled by .open / .closing.
-   transform+opacity only: GPU-friendly and reliable on mobile. */
+/* ===== Shelf modal: animate from shelf rect → fullscreen via CSS vars ===== */
 #shelf-modal {
-	display: none;
+	position: fixed;
 	z-index: 50;
+	top: var(--modal-top, 0px);
+	left: var(--modal-left, 0px);
+	width: var(--modal-width, 100vw);
+	height: var(--modal-height, 100vh);
+	opacity: 0;
+	pointer-events: none;
+	overflow: hidden;
+	transition: top 0.55s cubic-bezier(0.22, 0.61, 1, 1),
+				left 0.55s cubic-bezier(0.22, 0.61, 1, 1),
+				width 0.55s cubic-bezier(0.22, 0.61, 1, 1),
+				height 0.55s cubic-bezier(0.22, 0.61, 1, 1),
+				opacity 1s cubic-bezier(0.22, 0.61, 1, 1);
 }
 #shelf-modal.open {
-	display: flex;
-	animation: shelf-modal-pop-in 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
-}
-#shelf-modal.open.closing {
-	display: flex;
-	animation: shelf-modal-pop-out 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
-}
-@keyframes shelf-modal-pop-in {
-	from {
-		transform: scale(0.12);
-		opacity: 0;
-	}
-	to {
-		transform: scale(1);
-		opacity: 1;
-	}
-}
-@keyframes shelf-modal-pop-out {
-	from {
-		transform: scale(1);
-		opacity: 1;
-	}
-	to {
-		transform: scale(0.12);
-		opacity: 0;
-	}
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	opacity: 1;
+	pointer-events: auto;
 }
 
 /* Fullscreen backdrop (fades in/out with the modal's own opacity) */
@@ -94,34 +84,19 @@
 	display: block;
 	align-self: center;
 	height: 88%;
+	width: var(--img-w-start, 100vw);
 	max-width: none;
-	width: auto;
 	box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
 	border-radius: 8px;
 	flex: 0 0 auto;
-	/* Stretch is transform-only (scaleX): GPU-friendly, no width measurement,
-	   so the exact natural width doesn't matter */
-	transform-origin: left center;
+	transform-origin: center center;
+	transition: width 0.55s cubic-bezier(0.1, 0.1, 1, 1);
 }
-#shelf-modal.open .shelf-image {
-	animation: shelf-stretch-in 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
+.shelf-image.loaded {
+	width: var(--img-w-end, auto);
 }
-#shelf-modal.open.closing .shelf-image {
-	animation: shelf-stretch-out 0.55s cubic-bezier(0.22, 0.61, 1, 1) both;
-}
-@keyframes shelf-stretch-in {
-	from {
-		transform: scaleX(0.2);
-	}
-	to {
-		transform: scaleX(1);
-	}
-}
-@keyframes shelf-stretch-out {
-	from {
-		transform: scaleX(1);
-	}
-	to {
-		transform: scaleX(0.2);
-	}
+
+/* Remove the track's left padding while the shelf image is not yet loaded. */
+#shelf-modal-track:has(.shelf-image:not(.loaded)) {
+	padding-left: 0;
 }

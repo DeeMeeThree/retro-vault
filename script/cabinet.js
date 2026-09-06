@@ -1,7 +1,7 @@
 // Shelf modal: opens a fullscreen, horizontally scrollable view of an étagère
 // photo directly on the cabinet page (no separate shelf page).
-// The open/close zoom is done in pure CSS (@keyframes) via the .open/.closing
-// classes; this script only toggles them and wires the inputs.
+// The modal starts at the exact position/size of the clicked shelf
+// and transitions to fullscreen via CSS custom properties.
 (function () {
     'use strict';
 
@@ -17,11 +17,11 @@
     const closeBackdrop = document.getElementById('shelf-modal-close');
 
     let lastFocused = null;
-    let closing = false;
+    let animating = false;
 
     function buildImage(shelf) {
         track.innerHTML = '';
-        const img = document.createElement('img');
+        var img = document.createElement('img');
         img.className = 'shelf-image';
         img.alt = 'Étagère ' + shelf;
         img.src = BASE_PATH + shelf + EXT;
@@ -29,64 +29,97 @@
         return img;
     }
 
-    function openModal(shelf) {
-        if (!modal || modal.classList.contains('open')) return;
-        closing = false;
+    function setImageWidths(img, startW) {
+        img.style.setProperty('--img-w-start', startW + 'px');
+        if (!img.naturalWidth || !img.naturalHeight) return;
+        var renderHeight = window.innerHeight * 0.88;
+        var endW = img.naturalWidth * (renderHeight / img.naturalHeight);
+        img.style.setProperty('--img-w-end', endW + 'px');
+        img.classList.add('loaded');
+    }
+
+    function openModal(shelf, hotspotEl) {
+        if (!modal || modal.classList.contains('open') || animating) return;
+        animating = true;
         lastFocused = document.activeElement;
 
-        buildImage(shelf);
+        var rect = hotspotEl.getBoundingClientRect();
+        var rectWidth = rect.width;
+        modal.style.setProperty('--modal-top', rect.top + 'px');
+        modal.style.setProperty('--modal-left', rect.left + 'px');
+        modal.style.setProperty('--modal-width', rectWidth + 'px');
+        modal.style.setProperty('--modal-height', rect.height + 'px');
+
+        var img = buildImage(shelf);
+        img.style.setProperty('--img-w-start', rectWidth + 'px');
         titleChip.textContent = 'Étagère ' + shelf;
+        viewport.scrollLeft = 0;
+
+        modal.style.display = 'flex';
+        modal.offsetHeight;
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
-        viewport.scrollLeft = 0;
+
+        if (img.complete) {
+            setImageWidths(img, rectWidth);
+        } else {
+            img.addEventListener('load', function onLoad() {
+                img.removeEventListener('load', onLoad);
+                setImageWidths(img, rectWidth);
+            });
+        }
+
+        modal.addEventListener('transitionend', function onOpen(e) {
+            if (e.propertyName !== 'opacity') return;
+            modal.removeEventListener('transitionend', onOpen);
+            animating = false;
+        });
     }
 
     function closeModal() {
-        if (!modal || !modal.classList.contains('open') || closing) return;
-        closing = true;
-        modal.classList.add('closing');
-        document.body.style.overflow = '';
-        if (lastFocused && lastFocused.focus) lastFocused.focus();
+        if (!modal || !modal.classList.contains('open') || animating) return;
+        animating = true;
+        var img = track.querySelector('.shelf-image');
+        if (img) img.classList.remove('loaded');
+        modal.classList.remove('open');
+
+        function onClose(e) {
+            if (e.propertyName !== 'opacity') return;
+            modal.removeEventListener('transitionend', onClose);
+            modal.style.display = '';
+            animating = false;
+            track.innerHTML = '';
+            document.body.style.overflow = '';
+            if (lastFocused && lastFocused.focus) lastFocused.focus();
+        }
+        modal.addEventListener('transitionend', onClose);
     }
 
-    // Hide fully once the close pop has finished
-    function onAnimationEnd(e) {
-        if (e.target !== modal || !closing) return;
-        modal.classList.remove('open', 'closing');
-        track.innerHTML = '';
-        closing = false;
-    }
-
-    // Hotspots → open modal
     document.querySelectorAll('.shelf-hotspot').forEach(function (el) {
         el.addEventListener('click', function (e) {
             e.preventDefault();
-            const shelf = parseInt(el.dataset.shelf, 10);
+            var shelf = parseInt(el.dataset.shelf, 10);
             if (isNaN(shelf) || shelf < 1 || shelf > SHELF_COUNT) return;
-            openModal(shelf);
+            openModal(shelf, el);
         });
     });
 
-    // Close: ✕ button, backdrop click, Escape
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (closeBackdrop) closeBackdrop.addEventListener('click', closeModal);
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') closeModal();
     });
-    if (modal) modal.addEventListener('animationend', onAnimationEnd);
 
-    // Vertical wheel input scrolls the shelf horizontally
     if (viewport) {
         viewport.addEventListener('wheel', function (e) {
             if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
                 e.preventDefault();
-                const step = e.deltaY;
-                const max = viewport.scrollWidth - viewport.clientWidth;
+                var step = e.deltaY;
+                var max = viewport.scrollWidth - viewport.clientWidth;
                 viewport.scrollLeft = Math.max(0, Math.min(max, viewport.scrollLeft + step));
             }
         }, { passive: false });
 
-        // Keep the scroll position valid on resize
         window.addEventListener('resize', function () {
             viewport.scrollLeft = Math.min(viewport.scrollLeft, viewport.scrollWidth - viewport.clientWidth);
         });
