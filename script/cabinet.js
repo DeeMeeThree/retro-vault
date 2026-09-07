@@ -19,12 +19,20 @@
     let lastFocused = null;
     let animating = false;
 
+    // Preload all shelf images once, keep them in a map, and reuse the same
+    // Image object when showing the modal (it is already cached / decoded).
+    var preloaded = {};
+    for (var i = 1; i <= SHELF_COUNT; i++) {
+        var preloader = new Image();
+        preloader.src = BASE_PATH + i + EXT;
+        preloaded[i] = preloader;
+    }
+
     function buildImage(shelf) {
         track.innerHTML = '';
-        var img = document.createElement('img');
+        var img = preloaded[shelf];
         img.className = 'shelf-image';
         img.alt = 'Étagère ' + shelf;
-        img.src = BASE_PATH + shelf + EXT;
         track.appendChild(img);
         return img;
     }
@@ -57,23 +65,31 @@
 
         modal.style.display = 'flex';
         modal.offsetHeight;
-        modal.classList.add('open');
-        document.body.style.overflow = 'hidden';
 
-        if (img.complete) {
+        function startAnimation() {
             setImageWidths(img, rectWidth);
-        } else {
-            img.addEventListener('load', function onLoad() {
-                img.removeEventListener('load', onLoad);
-                setImageWidths(img, rectWidth);
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            modal.addEventListener('transitionend', function onOpen(e) {
+                if (e.propertyName !== 'opacity') return;
+                modal.removeEventListener('transitionend', onOpen);
+                animating = false;
             });
         }
 
-        modal.addEventListener('transitionend', function onOpen(e) {
-            if (e.propertyName !== 'opacity') return;
-            modal.removeEventListener('transitionend', onOpen);
-            animating = false;
-        });
+        if (img.complete && img.naturalWidth) {
+            startAnimation();
+        } else {
+            img.addEventListener('load', function onLoad() {
+                img.removeEventListener('load', onLoad);
+                startAnimation();
+            });
+            img.addEventListener('error', function onError() {
+                img.removeEventListener('error', onError);
+                startAnimation();
+            });
+        }
     }
 
     function closeModal() {
