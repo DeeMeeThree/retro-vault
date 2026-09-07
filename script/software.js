@@ -391,6 +391,34 @@ function initCardDrag() {
         card._lockFallback = setTimeout(unlock, FLIP_DURATION + 300);
     };
 
+    // Single 180deg flip to the right, starting from the current pose.
+    const flipNow = (card, inner) => {
+        card._flipCount = (card._flipCount || 0) + 1;
+        const st = flipStates.get(card) || 0;
+        flipStates.set(card, st === 0 ? 1 : 0);
+        card.classList.toggle('flipped', st === 0);
+        card.classList.remove('flipped-v');
+        if (inner) {
+            inner.style.transition = '';
+            inner.style.transform = `rotateY(${card._flipCount * 180}deg)`;
+            lockDuringFlip(card, inner);
+            const onEnd = (ev) => {
+                if (ev.propertyName !== 'transform') return;
+                inner.removeEventListener('transitionend', onEnd);
+                const newState = flipStates.get(card) || 0;
+                inner.style.transition = 'none';
+                inner.style.transform = newState === 1 ? 'rotateY(180deg)' : '';
+                card._flipCount = newState === 1 ? 1 : 0;
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        inner.style.transition = '';
+                    });
+                });
+            };
+            inner.addEventListener('transitionend', onEnd);
+        }
+    };
+
     grid.addEventListener('pointerdown', (e) => {
         const card = e.target.closest('.flip-card');
         if (!card || card.classList.contains('placeholder-card') || e.target.closest('a') || e.target.closest('.desc-toggle')) return;
@@ -422,7 +450,11 @@ function initCardDrag() {
         const dy = e.clientY - startY;
         if (!moved && Math.hypot(dx, dy) > 6) {
             moved = true;
-            if (activeCard._flipTimer) { clearTimeout(activeCard._flipTimer); activeCard._flipTimer = null; }
+            if (activeCard._flipTimer) {
+                clearTimeout(activeCard._flipTimer);
+                activeCard._flipTimer = null;
+                activeCard.classList.remove('pending-flip');
+            }
             e.preventDefault();
         }
         if (!moved) return;
@@ -462,13 +494,15 @@ function initCardDrag() {
             if (card._flipTimer) {
                 clearTimeout(card._flipTimer);
                 card._flipTimer = null;
+                card.classList.remove('pending-flip');
                 if (inner) {
                     const st = flipStates.get(card) || 0;
-                    if (st === 1) {
-                        inner.style.transition = 'none';
-                        inner.style.transform = 'rotateY(180deg)';
-                    }
+                    // Snap to the resting pose with no transition so removing
+                    // the pending-flip tilt cannot start a rotation of its own.
+                    inner.style.transition = 'none';
+                    inner.style.transform = st === 1 ? 'rotateY(180deg)' : '';
                     requestAnimationFrame(() => {
+                        void inner.offsetWidth;
                         requestAnimationFrame(() => {
                             inner.style.transition = '';
                             inner.style.transform = st === 1 ? 'rotateY(180deg) rotateX(-360deg)' : 'rotateX(360deg)';
@@ -490,32 +524,11 @@ function initCardDrag() {
                     });
                 }
             } else {
+                card.classList.add('pending-flip');
                 card._flipTimer = setTimeout(() => {
+                    card.classList.remove('pending-flip');
                     card._flipTimer = null;
-                    card._flipCount = (card._flipCount || 0) + 1;
-                    const st = flipStates.get(card) || 0;
-                    flipStates.set(card, st === 0 ? 1 : 0);
-                    card.classList.toggle('flipped', st === 0);
-                    card.classList.remove('flipped-v');
-                    if (inner) {
-                        inner.style.transition = '';
-                        inner.style.transform = `rotateY(${card._flipCount * 180}deg)`;
-                        lockDuringFlip(card, inner);
-                        const onEnd = (ev) => {
-                            if (ev.propertyName !== 'transform') return;
-                            inner.removeEventListener('transitionend', onEnd);
-                            const newState = flipStates.get(card) || 0;
-                            inner.style.transition = 'none';
-                            inner.style.transform = newState === 1 ? 'rotateY(180deg)' : '';
-                            card._flipCount = newState === 1 ? 1 : 0;
-                            requestAnimationFrame(() => {
-                                requestAnimationFrame(() => {
-                                    inner.style.transition = '';
-                                });
-                            });
-                        };
-                        inner.addEventListener('transitionend', onEnd);
-                    }
+                    flipNow(card, inner);
                 }, FLIP_DELAY);
             }
         }
@@ -529,6 +542,11 @@ function initCardDrag() {
         activeInner = null;
 
         card.classList.remove('dragging');
+        if (card._flipTimer) {
+            clearTimeout(card._flipTimer);
+            card._flipTimer = null;
+            card.classList.remove('pending-flip');
+        }
         if (inner) {
             inner.style.removeProperty('--rot');
             inner.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.085)';
