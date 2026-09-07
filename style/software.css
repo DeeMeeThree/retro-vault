@@ -71,10 +71,10 @@
 /* Visual feedback while waiting for the delayed single-click flip */
 .flip-card.pending-flip .flip-card-inner {
 	transition: transform 0.2s ease-out;
-	transform: rotateY(15deg);
+	transform: rotateY(45deg);
 }
 .flip-card.flipped.pending-flip .flip-card-inner {
-	transform: rotateY(195deg);
+	transform: rotateY(225deg);
 }
 .flip-card.pending-flip::before {
 	width: 92%;
