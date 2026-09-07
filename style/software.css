@@ -3,6 +3,9 @@
 	perspective: 2200px;
 	user-select: none;
 	-webkit-user-select: none;
+	--case-depth: 20px;
+	--case-edge: 40px;
+	--case-radius: 8px;
 }
 
 /* Card aspect ratio per console — matches the actual cover ratio */
@@ -119,13 +122,13 @@
 .flip-card-spine {
 	top: 0;
 	left: 0;
-	width: 40px;
+	width: var(--case-edge);
 	height: 100%;
 	transform-origin: left center;
-	transform: translateZ(-20px) rotateY(-90deg);
+	transform: translateZ(calc(var(--case-depth) * -1)) rotateY(-90deg);
 	background: linear-gradient(90deg, rgba(140, 160, 160, 1) 0%, rgba(191, 208, 208, 1) 25%, rgba(224, 224, 224, 1) 50%, rgba(171, 194, 194, 1) 75%, rgba(126, 148, 148, 1) 100%);
 	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.35);
-	border-radius: 6px 0 0 6px;
+	border-radius: var(--case-radius) 0 0 var(--case-radius);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -153,13 +156,13 @@
 .flip-card-edge-right {
 	top: 0;
 	right: 0;
-	width: 40px;
+	width: var(--case-edge);
 	height: 100%;
 	transform-origin: right center;
-	transform: translateZ(-20px) rotateY(90deg);
+	transform: translateZ(calc(var(--case-depth) * -1)) rotateY(90deg);
 	background: linear-gradient(90deg, rgba(145, 165, 165, 1) 0%, rgba(196, 208, 208, 1) 50%, rgba(138, 157, 157, 1) 100%);
 	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.3);
-	border-radius: 0 6px 6px 0;
+	border-radius: 0 var(--case-radius) var(--case-radius) 0;
 }
 
 /* Top edge */
@@ -167,12 +170,12 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 40px;
+	height: var(--case-edge);
 	transform-origin: top center;
-	transform: translateZ(20px) rotateX(-90deg);
+	transform: translateZ(var(--case-depth)) rotateX(-90deg);
 	background: linear-gradient(180deg, rgba(196, 208, 208, 1) 0%, rgba(145, 165, 165, 1) 100%);
 	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.3);
-	border-radius: 6px 6px 0 0;
+	border-radius: var(--case-radius) var(--case-radius) 0 0;
 }
 
 /* Bottom edge */
@@ -180,12 +183,12 @@
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 40px;
+	height: var(--case-edge);
 	transform-origin: bottom center;
-	transform: translateZ(20px) rotateX(90deg);
+	transform: translateZ(var(--case-depth)) rotateX(90deg);
 	background: linear-gradient(180deg, rgba(145, 165, 165, 1) 0%, rgba(126, 148, 148, 1) 100%);
 	box-shadow: inset 0 0 14px rgba(0, 255, 255, 0.35);
-	border-radius: 0 0 6px 6px;
+	border-radius: 0 0 var(--case-radius) var(--case-radius);
 }
 
 .flip-card-front, .flip-card-back {
@@ -196,13 +199,13 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	border-radius: 8px;
+	border-radius: var(--case-radius);
 	box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.12), inset 2px 2px 10px rgba(255,255,255,0.06);
 	transition: box-shadow 0.2s ease-out;
 }
 
 .flip-card-front {
-	transform: translateZ(20px);
+	transform: translateZ(var(--case-depth));
 }
 
 /* Plastic sheen overlay with a moving gloss sweep */
@@ -214,7 +217,7 @@
 	height: 100%;
 	background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.05) 100%);
 	pointer-events: none;
-	border-radius: 8px;
+	border-radius: var(--case-radius);
 	overflow: hidden;
 	z-index: 21;
 }
@@ -246,7 +249,7 @@
 
 /* Disc tray hint on the case interior */
 .flip-card-back {
-	transform: rotateY(180deg) translateZ(20px);
+	transform: rotateY(180deg) translateZ(var(--case-depth));
 	background: #111;
 }
 .flip-card-back::before {
@@ -387,4 +390,75 @@
 	color: #000;
 	background: #00FFFF;
 	border-color: #00FFFF;
+}
+
+/* ===== Compact view: same cards, half size ===== */
+.compact-view .flip-card {
+    --case-depth: 10px;
+    --case-edge: 20px;
+    --case-radius: 4px;
+    perspective: 1500px;
+}
+.compact-view .flip-card::before {
+    bottom: -14px;
+    height: 30px;
+    filter: blur(5px);
+}
+.compact-view .flip-card.pending-flip .flip-card-front,
+.compact-view .flip-card.pending-flip .flip-card-back {
+    box-shadow: 0 6px 18px rgba(0, 255, 255, 0.30), 0 0 10px rgba(0, 255, 255, 0.22), inset 0 0 0 1px rgba(0, 255, 255, 0.28);
+}
+.compact-view .cover-caption {
+    padding: 0.4rem 0.45rem;
+}
+.compact-view .cover-title {
+    font-size: 0.7rem;
+    line-height: 1.1;
+    margin-bottom: 0.1rem;
+}
+.compact-view .cover-console {
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+}
+.compact-view .back-head {
+    padding: 0.4rem 0.5rem;
+}
+.compact-view .back-head h3 {
+    font-size: 0.7rem;
+}
+.compact-view .back-body {
+    padding: 0.45rem;
+}
+.compact-view .badges {
+    gap: 0.25rem;
+    margin-bottom: 0.3rem;
+}
+.compact-view .badges span {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.3rem;
+}
+.compact-view .desc-text {
+    font-size: 0.6rem;
+}
+.compact-view .links {
+    gap: 0.25rem;
+    margin-bottom: 0.3rem;
+}
+.compact-view .links a {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.3rem;
+}
+.compact-view .links img {
+    width: 11px;
+    height: auto;
+}
+.compact-view .desc-toggle {
+    width: 18px;
+    height: 18px;
+    bottom: 4px;
+    right: 4px;
+}
+.compact-view .desc-toggle svg {
+    width: 10px;
+    height: 10px;
 }

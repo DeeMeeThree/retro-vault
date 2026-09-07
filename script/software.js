@@ -75,18 +75,18 @@ function renderCards(data) {
                 <div class="flip-card-front bg-[#1a1a1a] overflow-hidden group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)] transition-all duration-300 border border-gray-700">
                     <div class="plastic-sheen"></div>
                     <div class="h-full w-full bg-contain bg-no-repeat bg-center relative" style="background-image:url('${pathToImg}')"></div>
-                    <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
-                        <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
-                        <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
+                    <div class="cover-caption absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
+                        <div class="cover-title font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
+                        <div class="cover-console font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
                     </div>
                 </div>
                 <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)]">
                     <div class="plastic-sheen"></div>
-                    <div class="bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
+                    <div class="back-head bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
                         <h3 class="font-bold text-lg select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
                     </div>
-                    <div class="p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
-                        <div class="flex gap-2 mb-3 text-xs flex-wrap">
+                    <div class="back-body p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
+                        <div class="badges flex gap-2 mb-3 text-xs flex-wrap">
                             <span class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm select-none">${year}</span>
                             <span class="border border-neon-pink text-neon-pink px-2 py-1 rounded-sm select-none">${consoleName}</span>
                             <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm select-none">${type}</span>
@@ -99,7 +99,7 @@ function renderCards(data) {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </button>
                         </div>
-                        <div class="flex gap-2 mb-3 text-xs flex-wrap">
+                        <div class="links flex gap-2 mb-3 text-xs flex-wrap">
                             <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
                             <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
                             <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
@@ -112,9 +112,9 @@ function renderCards(data) {
         const placeholder = `
             <div class="h-full w-full bg-[#1a1a1a] border border-gray-700 rounded-lg overflow-hidden relative flex flex-col justify-end">
                 <div class="h-full w-full bg-contain bg-no-repeat bg-center absolute inset-0" style="background-image:url('${pathToImg}')"></div>
-                <div class="absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
-                    <div class="font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
-                    <div class="font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
+                <div class="cover-caption absolute bottom-0 left-0 w-full backdrop-blur-md bg-black/40 p-4 z-20 flex flex-col justify-end">
+                    <div class="cover-title font-bold text-white text-lg tracking-wide leading-tight mb-1 truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
+                    <div class="cover-console font-bold text-white/80 text-sm uppercase tracking-widest" style="font-family: 'Soehne',sans-serif;">${consoleName}</div>
                 </div>
             </div>
         `;
@@ -247,20 +247,30 @@ function renderList(data) {
     requestAnimationFrame(observeLazy);
 }
 
+const VIEW_ICONS = {
+    grid: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>',
+    compact: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400"><rect x="4" y="4" width="5" height="5"></rect><rect x="11" y="4" width="5" height="5"></rect><rect x="18" y="4" width="5" height="5"></rect><rect x="4" y="11" width="5" height="5"></rect><rect x="11" y="11" width="5" height="5"></rect><rect x="18" y="11" width="5" height="5"></rect><rect x="4" y="18" width="5" height="5"></rect><rect x="11" y="18" width="5" height="5"></rect><rect x="18" y="18" width="5" height="5"></rect></svg>',
+    list: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>'
+};
+
 function setView(view) {
     currentView = view;
     const grid = document.getElementById('games-grid');
     const btn = document.getElementById('toggle-view-btn');
+    const gridClasses = ['grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg',
+        'grid-cols-2', 'sm:grid-cols-4', 'md:grid-cols-6', 'lg:grid-cols-8', 'gap-sm', 'compact-view'];
+    const flexClasses = ['flex', 'flex-col', 'gap-md'];
+    grid.classList.remove(...gridClasses, ...flexClasses);
+
     if (view === 'list') {
-        grid.classList.remove('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg');
-        grid.classList.add('flex', 'flex-col', 'gap-md');
-        btn.classList.add('rotate-180');
-        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>';
+        grid.classList.add(...flexClasses);
+        btn.innerHTML = VIEW_ICONS.list;
+    } else if (view === 'compact') {
+        grid.classList.add('grid', 'grid-cols-2', 'sm:grid-cols-4', 'md:grid-cols-6', 'lg:grid-cols-8', 'gap-sm', 'compact-view');
+        btn.innerHTML = VIEW_ICONS.compact;
     } else {
-        grid.classList.remove('flex', 'flex-col', 'gap-md');
         grid.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg');
-        btn.classList.remove('rotate-180');
-        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-electric-cyan transition-transform duration-400"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>';
+        btn.innerHTML = VIEW_ICONS.grid;
     }
     filterAndSortData();
 }
@@ -660,8 +670,11 @@ document.getElementById('console-filter').addEventListener('change', filterAndSo
 
 document.getElementById('toggle-view-btn').addEventListener('click', () => {
     const btn = document.getElementById('toggle-view-btn');
-    const newView = currentView === 'grid' ? 'list' : 'grid';
+    const order = ['grid', 'compact', 'list'];
+    const idx = order.indexOf(currentView);
+    const newView = order[(idx + 1) % order.length];
     btn.dataset.view = newView;
+    btn.classList.toggle('rotate-180');
     setView(newView);
 });
 
