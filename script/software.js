@@ -220,7 +220,7 @@ function renderList(data) {
     const grid = document.getElementById('games-grid');
     const defaultImg = 'ps1';
 
-    grid.innerHTML = data.map((cols) => {
+    grid.innerHTML = data.map((cols, idx) => {
         if (cols.length < 12) return '';
         const title = cols[0];
         const year = cols[1];
@@ -240,14 +240,14 @@ function renderList(data) {
         const markJVC = cols[10];
 
         return `
-            <div class="group flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300">
+            <div class="group list-row flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300" data-idx="${idx}">
                 <img data-src="${pathToImg}" alt="${title}" class="lazy-img h-20 w-14 object-cover object-top rounded bg-[#1a1a1a] shrink-0"/>
                 <div class="flex-1 min-w-0">
                     <div class="font-bold text-white text-base tracking-wide leading-tight truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
                     <div class="text-sm text-on-surface-variant mt-1">
                         <span class="text-electric-cyan">${year}</span> · ${consoleName} · ${type}
                     </div>
-                    <p class="text-gray-400 text-xs mt-1 leading-relaxed line-clamp-2">${desc}</p>
+                    <p class="list-desc text-gray-400 text-xs mt-1 leading-relaxed">${desc}</p>
                 </div>
                 <div class="flex flex-col items-stretch gap-1 shrink-0">
                     <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors justify-center inline-flex items-center gap-1 ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
@@ -587,6 +587,35 @@ function initCardDrag() {
     grid.addEventListener('pointercancel', cancel);
 }
 
+/* ===== List view: click a row to expand the full description ===== */
+function initListExpand() {
+    const grid = document.getElementById('games-grid');
+    if (!grid) return;
+
+    const setSelected = (item) => {
+        grid.querySelectorAll('.list-row.selected').forEach((el) => {
+            el.classList.remove('selected');
+        });
+        if (item) item.classList.add('selected');
+    };
+
+    grid.addEventListener('click', (e) => {
+        const item = e.target.closest('.list-row');
+        if (!item || e.target.closest('a')) return;
+        if (item.classList.contains('selected')) {
+            setSelected(null);
+        } else {
+            setSelected(item);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.list-row')) {
+            setSelected(null);
+        }
+    });
+}
+
 /* ===== Software page: controls (options, console filter, sort, toggle view) ===== */
 const optionsBtn = document.getElementById('options-btn');
 const optionsPanel = document.getElementById('options-panel');
@@ -620,6 +649,7 @@ if (optionsBtn && optionsPanel) {
 }
 
 initCardDrag();
+initListExpand();
 
 const consoleFilterBtn = document.getElementById('console-filter-btn');
 const consoleFilterOptions = document.getElementById('console-filter-options');

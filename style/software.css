@@ -466,6 +466,24 @@
 	position: fixed;
 	z-index: 50;
 }
+
+/* List view: selected row reveals the full description */
+.list-row {
+	cursor: pointer;
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.list-row.selected {
+	border-color: rgba(0, 255, 255, 0.6);
+	box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
+}
+.list-row .list-desc {
+	max-height: 3.4em;
+	overflow: hidden;
+	transition: max-height 0.35s ease;
+}
+.list-row.selected .list-desc {
+	max-height: 40em;
+}
 /* Attention (hover/focus): filled electric blue, black text — wins over active */
 #console-filter-btn:hover {
 	color: #000;
