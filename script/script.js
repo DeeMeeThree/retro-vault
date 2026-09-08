@@ -21,6 +21,10 @@ function initMobileMenu() {
             mobileMenu.classList.remove('menu-open');
             mobileMenuBtn.classList.remove('open');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            if (closeTimer) {
+                clearTimeout(closeTimer);
+                closeTimer = null;
+            }
             closeTimer = setTimeout(() => {
                 mobileMenu.classList.add('hidden');
                 mobileMenu.classList.remove('flex');

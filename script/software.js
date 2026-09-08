@@ -28,11 +28,17 @@ function parseCSV(str) {
             val += char;
         }
     }
-    if (val || row.length > 0) {
+    
+    // Gérer la fin de fichier : champ non fermé ou ligne incomplète
+    if (inQuotes) {
+        row.push(val);
+        if (row.length > 0) rows.push(row);
+    } else if (val || row.length > 0) {
         row.push(val);
         rows.push(row);
     }
-    return rows;
+    
+    return rows.filter(r => r.length > 0);
 }
 
 function renderCards(data) {
@@ -718,7 +724,26 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 updateSortArrows();
 
 // Initialize with CSV from fetch
-fetch('database_archive.csv')
+const FETCH_TIMEOUT = 10000; // 10 secondes
+const controller = new AbortController();
+
+// Cleanup global event listeners on page unload
+window.addEventListener('beforeunload', () => {
+    if (window.__descResizeBound) {
+        window.removeEventListener('resize', initDescToggles);
+        window.__descResizeBound = false;
+    }
+    if (lazyObserver) {
+        lazyObserver.disconnect();
+        lazyObserver = null;
+    }
+    controller.abort();
+});
+
+Promise.race([
+    fetch('database_archive.csv', { signal: controller.signal }),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), FETCH_TIMEOUT))
+])
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
