@@ -75,7 +75,7 @@ function renderCards(data) {
         fullCardHTML.set(idx, `
             <div class="flip-card-inner relative w-full h-full">
                 <div class="flip-card-spine"><span>${title}</span></div>
-                <div class="flip-card-edge flip-card-edge-right"></div>
+                <div class="flip-card-edge flip-card-edge-right"><span>${title}</span></div>
                 <div class="flip-card-edge flip-card-edge-top"></div>
                 <div class="flip-card-edge flip-card-edge-bottom"></div>
                 <div class="flip-card-front bg-[#1a1a1a] overflow-hidden group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)] transition-all duration-300 border border-gray-700">
