@@ -74,8 +74,14 @@ function renderCards(data) {
 
         fullCardHTML.set(idx, `
             <div class="flip-card-inner relative w-full h-full">
-                <div class="flip-card-spine"><span>${title}</span></div>
-                <div class="flip-card-edge flip-card-edge-right"><span>${title}</span></div>
+                <div class="flip-card-spine">
+                    <div class="spine-console"><span>${consoleName}</span></div>
+                    <div class="spine-title"><span>${title}</span></div>
+                </div>
+                <div class="flip-card-edge flip-card-edge-right">
+                    <div class="spine-console"><span>${consoleName}</span></div>
+                    <div class="spine-title"><span>${title}</span></div>
+                </div>
                 <div class="flip-card-edge flip-card-edge-top"></div>
                 <div class="flip-card-edge flip-card-edge-bottom"></div>
                 <div class="flip-card-front bg-[#1a1a1a] overflow-hidden group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)] transition-all duration-300 border border-gray-700">
@@ -89,7 +95,7 @@ function renderCards(data) {
                 <div class="flip-card-back border border-gray-700 p-0 flex flex-col overflow-hidden text-sm group-hover:shadow-[0_15px_30px_rgba(255,0,255,0.3)]">
                     <div class="plastic-sheen"></div>
                     <div class="back-head bg-gray-800 text-white p-3 border-b border-gray-700 flex justify-between items-center relative z-20">
-                        <h3 class="font-bold text-lg select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
+                        <h3 class="font-bold text-lg leading-none select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
                     </div>
                     <div class="back-body p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
                         <div class="badges flex gap-2 mb-3 text-xs flex-wrap">
@@ -165,7 +171,9 @@ function dehydrateCard(el) {
 function initDescToggles() {
     if (!window.__descResizeBound) {
         window.__descResizeBound = true;
-        window.addEventListener('resize', initDescToggles);
+        window.addEventListener('resize', () => {
+            initDescToggles();
+        });
     }
     document.querySelectorAll('.desc-wrap').forEach((wrap) => {
         const container = wrap.querySelector('.desc-container');
