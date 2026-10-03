@@ -133,7 +133,7 @@ function renderCards(data) {
         placeholderHTML.set(idx, placeholder);
 
         return `
-            <div class="w-full xxs:w-[75%] xs:w-[60%] sm:w-full flex items-center justify-center justify-self-center">
+            <div class="card-cell w-full xxs:w-[75%] xs:w-[60%] sm:w-full flex items-center justify-center justify-self-center">
                 <div class="flip-card w-full cursor-pointer group ${ratioClass} placeholder-card" data-idx="${idx}">
                     ${placeholder}
                 </div>
@@ -272,7 +272,7 @@ function setView(view) {
     const grid = document.getElementById('games-grid');
     const btn = document.getElementById('toggle-view-btn');
     const gridClasses = ['grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg',
-        'grid-cols-2', 'sm:grid-cols-4', 'md:grid-cols-6', 'lg:grid-cols-8', 'gap-sm', 'compact-view'];
+        'grid-cols-2', 'xxs:grid-cols-3', 'sm:grid-cols-4', 'md:grid-cols-6', 'lg:grid-cols-8', 'gap-sm', 'compact-view'];
     const flexClasses = ['flex', 'flex-col', 'gap-md'];
     grid.classList.remove(...gridClasses, ...flexClasses);
 
@@ -280,7 +280,7 @@ function setView(view) {
         grid.classList.add(...flexClasses);
         btn.innerHTML = VIEW_ICONS.list;
     } else if (view === 'compact') {
-        grid.classList.add('grid', 'grid-cols-2', 'sm:grid-cols-4', 'md:grid-cols-6', 'lg:grid-cols-8', 'gap-sm', 'compact-view');
+        grid.classList.add('grid', 'grid-cols-2', 'xxs:grid-cols-3', 'sm:grid-cols-4', 'md:grid-cols-6', 'lg:grid-cols-8', 'gap-sm', 'compact-view');
         btn.innerHTML = VIEW_ICONS.compact;
     } else {
         grid.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-lg');
