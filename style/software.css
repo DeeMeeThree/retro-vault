@@ -1,11 +1,24 @@
 .flip-card {
 	position: relative;
-	perspective: 2200px;
+	perspective: none;
 	user-select: none;
 	-webkit-user-select: none;
+	--case-perspective: 2200px;
 	--case-depth: 20px;
 	--case-edge: 40px;
 	--case-radius: 8px;
+}
+
+/* The perspective is only enabled while the card actually turns. With a
+   permanent perspective the back face is projected at the non-integer scale
+   2200 / (2200 - 20) = 1.00917, and Chrome antialiases the description text in
+   that projected space, which reads as blur once the card stops moving. Flat at
+   rest keeps the text crisp and costs nothing visually: the 0.9% difference in
+   apparent size disappears as the cover sits flush in the card again. */
+.flip-card.dragging,
+.flip-card.animating,
+.flip-card.pending-flip {
+	perspective: var(--case-perspective);
 }
 
 /* Card aspect ratio per console — matches the actual cover ratio */
@@ -499,10 +512,10 @@
 }
 
 .compact-view .flip-card {
+    --case-perspective: 1500px;
     --case-depth: 10px;
     --case-edge: 20px;
     --case-radius: 4px;
-    perspective: 1500px;
 }
 .compact-view .flip-card::before {
     bottom: -14px;
