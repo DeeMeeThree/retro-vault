@@ -84,7 +84,8 @@
                 </button>
             </div>
             <div id="options-panel" class="overflow-hidden">
-                <div class="grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-md justify-end min-h-0">
+                <div class="flex flex-col gap-y-sm md:gap-y-md min-h-0">
+                <div class="grid grid-cols-[auto_auto] items-center gap-x-sm gap-y-sm justify-start md:justify-end md:flex md:items-center md:gap-x-sm">
                 <label for="console-filter-btn" class="font-label-caps text-label-caps text-on-surface-variant uppercase">Console</label>
                 <div class="relative">
                     <button type="button" id="console-filter-btn"
@@ -105,33 +106,48 @@
                     <option value="PS4">PS4</option>
                     <option value="PS5">PS5</option>
                 </select>
+                <span class="font-label-caps text-label-caps text-on-surface-variant uppercase md:border-l md:border-glass-border md:pl-sm">Prêtés</span>
+                <div>
+                    <button type="button" id="loaned-filter-btn" aria-pressed="false"
+                            class="inline-flex items-center justify-between gap-md min-w-[140px] bg-transparent border border-glass-border rounded px-md py-sm text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black transition-all cursor-pointer">
+                        <span id="loaned-filter-label">Tous</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 shrink-0" aria-hidden="true">
+                            <path d="M12 4h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"></path>
+                            <polyline points="8 8 4 12 8 16"></polyline>
+                            <line x1="4" y1="12" x2="17" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+                </div>
+                <div class="grid grid-cols-[auto_auto] items-center gap-x-sm justify-end md:flex md:items-center md:gap-x-sm">
                 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Trier</span>
                 <div class="flex gap-sm flex-wrap">
-                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                    <button class="sort-btn inline-flex items-center gap-1 min-h-[34px] px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="title">
                         Titre
                         <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
-                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                    <button class="sort-btn inline-flex items-center gap-1 min-h-[34px] px-md py-sm rounded border border-electric-cyan text-electric-cyan font-label-caps text-label-caps uppercase hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="year">
                         Année
                         <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
-                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                    <button class="sort-btn inline-flex items-center gap-1 min-h-[34px] px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="note">
                         Metacritic
                         <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
-                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                    <button class="sort-btn inline-flex items-center gap-1 min-h-[34px] px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="ign">
                         IGN
                         <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
-                    <button class="sort-btn inline-flex items-center gap-1 px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
+                    <button class="sort-btn inline-flex items-center gap-1 min-h-[34px] px-md py-sm rounded border border-glass-border text-on-surface-variant font-label-caps text-label-caps uppercase hover:border-electric-cyan hover:bg-electric-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.8)] transition-all"
                             data-sort="jvc">
                         JVC
                         <span class="sort-arrow invisible text-[10px] leading-none inline-block transition-transform duration-300">▲</span>
                     </button>
+                </div>
                 </div>
                 </div>
             </div>

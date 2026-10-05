@@ -7,6 +7,27 @@ let lazyObserver = null;
 const fullCardHTML = new Map();
 const placeholderHTML = new Map();
 
+// Colonne 13 du CSV : initiales de la personne à qui le jeu est prêté.
+function getLoanedTo(cols) {
+    return cols.length > 12 && cols[12] ? cols[12].trim() : '';
+}
+
+// Badge « prêté » : même chip que les liens de notes (bordure grise, texte blanc),
+// seule la flèche de sortie garde la couleur d'accent.
+function loanedBadge(loanedTo, extraClass = '') {
+    if (!loanedTo) return '';
+    return `
+            <span class="loaned-badge inline-flex items-center gap-1 border border-gray-500 text-white px-2 py-1 rounded-sm select-none ${extraClass}" title="Prêté à ${loanedTo}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="text-sunset-orange" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 4h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"></path>
+                    <polyline points="8 8 4 12 8 16"></polyline>
+                    <line x1="4" y1="12" x2="17" y2="12"></line>
+                </svg>
+                ${loanedTo}
+            </span>
+        `;
+}
+
 function parseCSV(str) {
     const rows = [];
     let row = [];
@@ -52,7 +73,7 @@ function renderCards(data) {
     placeholderHTML.clear();
 
     grid.innerHTML = data.map((cols, idx) => {
-        if (cols.length < 12) return '';
+        if (cols.length < 13) return '';
         const title = cols[0];
         const year = cols[1];
         const type = cols[2];
@@ -69,6 +90,7 @@ function renderCards(data) {
         const linkJVC = cols[9];
         const classJVC = cols[9] === "" ? "hidden" : "";
         const markJVC = cols[10];
+        const loanedTo = getLoanedTo(cols);
 
         const ratioClass = 'ratio-' + consoleName.toLowerCase();
 
@@ -98,10 +120,11 @@ function renderCards(data) {
                         <h3 class="font-bold text-lg leading-none select-none truncate font-headline-lg text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" title="${title}">${title}</h3>
                     </div>
                     <div class="back-body p-4 flex-grow flex flex-col relative z-20 bg-surface/90 backdrop-blur-md">
-                        <div class="badges flex gap-2 mb-3 text-xs flex-wrap">
+                        <div class="badges flex gap-2 mb-3 text-xs flex-wrap items-center">
                             <span class="border border-electric-cyan text-electric-cyan px-2 py-1 rounded-sm select-none">${year}</span>
                             <span class="border border-neon-pink text-neon-pink px-2 py-1 rounded-sm select-none">${consoleName}</span>
                             <span class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm select-none">${type}</span>
+                            ${loanedBadge(loanedTo)}
                         </div>
                         <div class="relative flex-grow min-h-0 desc-wrap">
                             <div class="desc-container custom-scrollbar overflow-hidden absolute inset-0">
@@ -221,7 +244,7 @@ function renderList(data) {
     const defaultImg = 'ps1';
 
     grid.innerHTML = data.map((cols, idx) => {
-        if (cols.length < 12) return '';
+        if (cols.length < 13) return '';
         const title = cols[0];
         const year = cols[1];
         const type = cols[2];
@@ -238,14 +261,16 @@ function renderList(data) {
         const linkJVC = cols[9];
         const classJVC = cols[9] === "" ? "hidden" : "";
         const markJVC = cols[10];
+        const loanedTo = getLoanedTo(cols);
 
         return `
             <div class="group list-row flex items-center gap-4 bg-surface-container/60 backdrop-blur-md p-3 rounded-lg border border-glass-border hover:border-electric-cyan hover:shadow-[0_0_12px_rgba(0,255,255,0.15)] transition-all duration-300" data-idx="${idx}">
                 <img data-src="${pathToImg}" alt="${title}" class="lazy-img h-20 w-14 object-cover object-top rounded bg-[#1a1a1a] shrink-0"/>
                 <div class="flex-1 min-w-0">
                     <div class="font-bold text-white text-base tracking-wide leading-tight truncate" style="font-family: 'Soehne',sans-serif;">${title}</div>
-                    <div class="text-sm text-on-surface-variant mt-1">
-                        <span class="text-electric-cyan">${year}</span> · ${consoleName} · ${type}
+                    <div class="text-sm text-on-surface-variant mt-1 flex items-center gap-2 flex-wrap">
+                        <span class="flex items-center gap-2 flex-wrap"><span class="text-electric-cyan">${year}</span> · ${consoleName} · ${type}</span>
+                        ${loanedBadge(loanedTo, 'text-xs')}
                     </div>
                     <p class="list-desc text-gray-400 text-xs mt-1 leading-relaxed">${desc}</p>
                 </div>
@@ -292,12 +317,15 @@ function setView(view) {
 function filterAndSortData() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     const consoleFilter = document.getElementById('console-filter').value.toLowerCase();
+    const loanedFilterBtn = document.getElementById('loaned-filter-btn');
+    const showOnlyLoaned = loanedFilterBtn ? loanedFilterBtn.getAttribute('aria-pressed') === 'true' : false;
 
     let filteredData = gamesData.filter(cols => {
-        if(cols.length < 12) return false;
+        if(cols.length < 13) return false;
         const titleMatch = cols[0].toLowerCase().includes(searchTerm);
         const consoleMatch = consoleFilter === '' || (cols[4] && cols[4].toLowerCase().includes(consoleFilter));
-        return titleMatch && consoleMatch;
+        const loanedMatch = !showOnlyLoaned || getLoanedTo(cols) !== '';
+        return titleMatch && consoleMatch && loanedMatch;
     });
 
     filteredData.sort((a, b) => {
@@ -331,7 +359,7 @@ function filterAndSortData() {
 
     const countEl = document.getElementById('game-count');
     if (countEl) {
-        const total = gamesData.filter(cols => cols.length >= 12).length;
+        const total = gamesData.filter(cols => cols.length >= 13).length;
         const shown = filteredData.length;
         countEl.textContent = shown === total ? `${total} jeux` : `${shown} / ${total} jeux`;
     }
@@ -445,7 +473,7 @@ function initCardDrag() {
 
     grid.addEventListener('pointerdown', (e) => {
         const card = e.target.closest('.flip-card');
-        if (!card || card.classList.contains('placeholder-card') || e.target.closest('a') || e.target.closest('.desc-toggle')) return;
+        if (!card || card.classList.contains('placeholder-card') || e.target.closest('a') || e.target.closest('.desc-toggle') || e.target.closest('.loaned-badge')) return;
         if (card._animating) return;
 
         activeCard = card;
@@ -711,6 +739,24 @@ if (consoleFilterBtn && consoleFilterOptions) {
 
 document.getElementById('search-input').addEventListener('input', filterAndSortData);
 document.getElementById('console-filter').addEventListener('change', filterAndSortData);
+
+// Toggle « Prêtés » : ne montre que les jeux dont la colonne 13 est remplie.
+// L'état vit dans aria-pressed, donc il survit aux changements de vue et aux
+// re-rendus ; il se combine avec la recherche et le filtre console.
+const loanedFilterBtn = document.getElementById('loaned-filter-btn');
+if (loanedFilterBtn) {
+    const ON = ['border-electric-cyan', 'text-electric-cyan', 'bg-electric-cyan/10'];
+    const OFF = ['border-glass-border', 'text-on-surface-variant', 'bg-transparent'];
+
+    loanedFilterBtn.addEventListener('click', () => {
+        const isOn = loanedFilterBtn.getAttribute('aria-pressed') === 'true';
+        loanedFilterBtn.setAttribute('aria-pressed', isOn ? 'false' : 'true');
+        loanedFilterBtn.classList.remove(...(isOn ? ON : OFF));
+        loanedFilterBtn.classList.add(...(isOn ? OFF : ON));
+        document.getElementById('loaned-filter-label').textContent = isOn ? 'Tous' : 'Oui';
+        filterAndSortData();
+    });
+}
 
 document.getElementById('toggle-view-btn').addEventListener('click', () => {
     const btn = document.getElementById('toggle-view-btn');

@@ -91,15 +91,15 @@ Map the platform to the console tag used in the CSV and the CSS ratio class:
 | PS5 | PS5 | `ratio-ps5` (0.80/1) |
 | Sega Mega Drive | SEGA | `ratio-sega` (0.73/1) |
 
-If the game's cover aspect ratio significantly differs from the default ratio for that console, add a 13th column override in the CSV: `[ratio-width c-ratio-height]` (e.g. `[60c-1]` means aspect-ratio: 60/100). Only do this if the cover is clearly non-standard.
+If the game's cover aspect ratio significantly differs from the default ratio for that console, add a 14th column override in the CSV: `[ratio-width c-ratio-height]` (e.g. `[60c-1]` means aspect-ratio: 60/100). Only do this if the cover is clearly non-standard.
 
 ## Step 5: Add to CSV
 
 Insert a new line in `C:/Users/incor/WebstormProjects/retro-games/database_archive.csv`.
 
-CSV format (12 columns, no header row for new entries):
+CSV format (13 columns, no header row for new entries):
 ```
-Titre,Année de sortie,Type de jeu,Description,Console,Cover,Lien IGN,Note IGN,Lien Metacritic,Lien Jeuxvideo.com,Note Jeuxvideo.com,Note Metacritic
+Titre,Année de sortie,Type de jeu,Description,Console,Cover,Lien IGN,Note IGN,Lien Metacritic,Lien Jeuxvideo.com,Note Jeuxvideo.com,Note Metacritic,Prêté à
 ```
 
 Rules:
@@ -110,10 +110,11 @@ Rules:
 - Description is the only field likely to contain commas — always wrap it in quotes.
 - Cover column: just the filename slug WITHOUT the `.webp` extension.
 - Notes: use the numeric values (IGN as decimal like `9.7`, JVC and Metacritic as integer like `18`, `95`).
+- `Prêté à` (13th column): initials of the person the game is lent to. **Always leave it empty** when adding a game — the line must still end with the trailing comma. A non-empty value renders an amber "lent out" badge on the card; an empty value renders nothing.
 
 Example line:
 ```
-Crash Bandicoot,1996,Action,"Sorti en 1996 sur PS1, Crash Bandicoot est un platformer emblématique dans lequel le joueur incarne un marsupial coloré devant traverser des niveaux fills de pièges et d'ennemis pour sauver son frère et affronter le Dr Neo Cortex.",PS1,crash-bandicoot,https://www.ign.com/games/crash-bandicoot,8.9,https://www.metacritic.com/game/crash-bandicoot,https://www.jeuxvideo.com/jeux/ps2/jeu-XXXXX/,16,81
+Crash Bandicoot,1996,Action,"Sorti en 1996 sur PS1, Crash Bandicoot est un platformer emblématique dans lequel le joueur incarne un marsupial coloré devant traverser des niveaux fills de pièges et d'ennemis pour sauver son frère et affronter le Dr Neo Cortex.",PS1,crash-bandicoot,https://www.ign.com/games/crash-bandicoot,8.9,https://www.metacritic.com/game/crash-bandicoot,https://www.jeuxvideo.com/jeux/ps2/jeu-XXXXX/,16,81,
 ```
 
 ## Step 6: Verify
@@ -121,7 +122,8 @@ Crash Bandicoot,1996,Action,"Sorti en 1996 sur PS1, Crash Bandicoot est un platf
 After adding the entry:
 1. Confirm the webp file exists in `images/covers/`
 2. Confirm the CSV line was inserted in the correct console block (read the rows before and after to verify)
-3. Report back to the user with a summary: game name, platform, scores found, cover filename
+3. Confirm the line has exactly 13 comma-separated fields — a naive `split(',')` is misleading because the quoted description contains commas, so use the `parseCSV` from `script/software.js` to validate
+4. Report back to the user with a summary: game name, platform, scores found, cover filename
 
 ## Notes
 - Do NOT modify `script.js` or `style.css`
