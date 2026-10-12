@@ -99,12 +99,14 @@ Insert a new line in `C:/Users/incor/WebstormProjects/retro-games/database_archi
 
 CSV format (13 columns, no header row for new entries):
 ```
-Titre,Année de sortie,Type de jeu,Description,Console,Cover,Lien IGN,Note IGN,Lien Metacritic,Lien Jeuxvideo.com,Note Jeuxvideo.com,Note Metacritic,Prêté à
+Titre,Sortie,Type de jeu,Description,Console,Cover,Lien IGN,Note IGN,Lien Metacritic,Lien Jeuxvideo.com,Note Jeuxvideo.com,Note Metacritic,Prêté à
 ```
+
+The `Sortie` column (2nd) uses the `YYYY-MM` release-date format (month zero-padded); use `YYYY` alone only when the month is unknown.
 
 Rules:
 - **IMPORTANT — group by console**: do NOT blindly append at the end of the file. Locate the existing block of rows with the same Console tag (all PS1 rows together, all PS2 rows together, all PS3 rows together, etc.) and insert the new row inside that block.
-- Within a console block, insert the row at its chronological position (rows are sorted by release year, oldest first).
+- Within a console block, insert the row at its chronological position (rows are sorted by release date `YYYY-MM`, oldest first).
 - If you notice orphaned rows for that console sitting outside their block (e.g. appended at the end of the file after other consoles), point it out to the user before moving them.
 - Fields containing commas must be wrapped in double quotes.
 - Description is the only field likely to contain commas — always wrap it in quotes.

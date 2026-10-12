@@ -75,7 +75,7 @@ function renderCards(data) {
     grid.innerHTML = data.map((cols, idx) => {
         if (cols.length < 13) return '';
         const title = cols[0];
-        const year = cols[1];
+        const year = formatSortie(cols[1]);
         const type = cols[2];
         const desc = cols[3];
         const mark = cols[11];
@@ -135,9 +135,9 @@ function renderCards(data) {
                             </button>
                         </div>
                         <div class="links flex gap-2 mb-3 text-xs flex-wrap">
-                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
-                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
-                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
+                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm hover:border-electric-cyan transition-colors ${classMetaCritic}" href="${linkMetaCritic}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
+                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm hover:border-electric-cyan transition-colors ${classIGN}" href="${linkIGN}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
+                            <a class="inline-flex items-center gap-1 border border-gray-500 text-gray-300 px-2 py-1 rounded-sm hover:border-electric-cyan transition-colors ${classJVC}" href="${linkJVC}" onclick="arguments[0].stopPropagation()" target="_blank"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
                         </div>
                     </div>
                 </div>
@@ -246,7 +246,7 @@ function renderList(data) {
     grid.innerHTML = data.map((cols, idx) => {
         if (cols.length < 13) return '';
         const title = cols[0];
-        const year = cols[1];
+        const year = formatSortie(cols[1]);
         const type = cols[2];
         const desc = cols[3];
         const mark = cols[11];
@@ -276,8 +276,8 @@ function renderList(data) {
                 </div>
                 <div class="flex flex-col items-stretch gap-1 shrink-0">
                     <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors justify-center inline-flex items-center gap-1 ${classMetaCritic}" href="${linkMetaCritic}" target="_blank" rel="noopener"><img src="images/metacritic.png" style="display: inline" width="20" alt="metacritic"/> ${mark}</a>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors justify-center inline-flex items-center gap-1 ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
-                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-neon-pink hover:text-neon-pink transition-colors justify-center inline-flex items-center gap-1 ${classJVC}" href="${linkJVC}" target="_blank" rel="noopener"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors justify-center inline-flex items-center gap-1 ${classIGN}" href="${linkIGN}" target="_blank" rel="noopener"><img src="images/ign.png" style="display: inline" width="20" alt="IGN"/> ${markIGN}</a>
+                    <a class="border border-gray-500 text-gray-300 px-2 py-1 rounded-sm text-xs hover:border-electric-cyan hover:text-electric-cyan transition-colors justify-center inline-flex items-center gap-1 ${classJVC}" href="${linkJVC}" target="_blank" rel="noopener"><img src="images/jvc.svg" style="display: inline" width="20" alt="jeuxvideo.com"/> ${markJVC}</a>
                 </div>
             </div>
             `;
@@ -334,8 +334,8 @@ function filterAndSortData() {
             valA = a[0];
             valB = b[0];
         } else if (currentSort === 'year') {
-            valA = parseInt(a[1]);
-            valB = parseInt(b[1]);
+            valA = dateVal(a[1]);
+            valB = dateVal(b[1]);
         } else if (currentSort === 'note') {
             valA = numVal(a[11]);
             valB = numVal(b[11]);
@@ -370,6 +370,23 @@ function filterAndSortData() {
 function numVal(v) {
     const n = parseFloat(v);
     return isNaN(n) ? -Infinity : n;
+}
+
+// Colonne 2 : date de sortie « YYYY-MM » (ou « YYYY » si le mois est inconnu).
+// Convertie en entier triable : année * 100 + mois (mois 0 si absent).
+function dateVal(v) {
+    const m = String(v).trim().match(/^(\d{4})(?:-(\d{1,2}))?/);
+    if (!m) return -Infinity;
+    return parseInt(m[1], 10) * 100 + (m[2] ? parseInt(m[2], 10) : 0);
+}
+
+// Affichage français de la date de sortie : « MM/YYYY » (ex. 11/1996),
+// ou juste « YYYY » quand le mois est inconnu. Le tri reste basé sur dateVal().
+function formatSortie(v) {
+    const m = String(v).trim().match(/^(\d{4})(?:-(\d{1,2}))?$/);
+    if (!m) return v;
+    if (!m[2]) return m[1];
+    return `${m[2].padStart(2, '0')} / ${m[1]}`;
 }
 
 function observeLazy() {
