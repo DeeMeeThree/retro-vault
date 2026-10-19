@@ -39,6 +39,7 @@ const clear = flag('--clear');
 const derive = flag('--derive');
 const game = opt('--game');
 const to = opt('--to');
+const consoleFilter = opt('--console');
 
 // --- csv helpers (parseCSV mirrors script/software.js) ---------------------
 function parseCSV(str) {
@@ -165,7 +166,12 @@ const exact = data.filter(d => normalize(d.title) === needle);
 let targets = exact;
 
 if (!targets.length) {
-  const scored = data
+  let data2 = data;
+  if (consoleFilter) {
+    const nf = normalize(consoleFilter);
+    data2 = data.filter(d => normalize(d.row[4]).includes(nf));
+  }
+  const scored = data2
     .map(d => {
       const t = normalize(d.title);
       const score = t.includes(needle) || needle.includes(t) ? 0 : levenshtein(needle, t);
@@ -175,7 +181,7 @@ if (!targets.length) {
   const best = scored[0];
   if (best && best.score <= Math.max(3, Math.floor(needle.length / 3))) {
     console.error(`ABORT: no game titled exactly "${game}". Closest matches — re-run with the exact title:`);
-    scored.slice(0, 8).forEach(d => console.error(`  line ${String(d.line).padStart(3)}  ${d.title}  (distance ${d.score})`));
+    scored.slice(0, 8).forEach(d => console.error(`  line ${String(d.line).padStart(3)}  ${d.title}  [${(d.row[4] || '').trim()}] (distance ${d.score})`));
     process.exit(2);
   }
   console.error(`ABORT: no game matches "${game}". Run \`node set-loan.js --list\` or check the title spelling.`);
@@ -183,9 +189,22 @@ if (!targets.length) {
 }
 
 if (targets.length > 1) {
-  console.error(`ABORT: "${game}" matches ${targets.length} rows. Disambiguate with the exact title:`);
-  targets.forEach(d => console.error(`  line ${d.line}  ${d.title}  [${(d.row[4] || '').trim()}]`));
-  process.exit(2);
+  let narrow = targets;
+  if (consoleFilter) {
+    const nf = normalize(consoleFilter);
+    narrow = targets.filter(d => normalize(d.row[4]).includes(nf));
+  }
+  if (narrow.length > 1 || (consoleFilter && narrow.length === 0)) {
+    console.error(`ABORT: "${game}" matches ${targets.length} rows. Disambiguate with the exact title or --console:`);
+    targets.forEach(d => console.error(`  line ${d.line}  ${d.title}  [${(d.row[4] || '').trim()}]`));
+    process.exit(2);
+  }
+  if (narrow.length === 1 && consoleFilter) targets = narrow;
+  else {
+    console.error(`ABORT: "${game}" matches ${targets.length} rows. Disambiguate with the exact title or --console:`);
+    targets.forEach(d => console.error(`  line ${d.line}  ${d.title}  [${(d.row[4] || '').trim()}]`));
+    process.exit(2);
+  }
 }
 
 const target = targets[0];
@@ -213,7 +232,7 @@ fs.writeFileSync(CSV_PATH, (hasBOM ? '\uFEFF' : '') + updated.join(eol) + (trail
 
 // --- post-write verification ----------------------------------------------
 const after = parseCSV(fs.readFileSync(CSV_PATH, 'utf8'));
-const afterRow = after.find(r => r[0] === target.title);
+const afterRow = after[target.idx];
 const problems = [];
 if (after.length !== rows.length) problems.push(`record count changed: ${rows.length} -> ${after.length}`);
 if (afterRow.length !== 13) problems.push(`row now has ${afterRow.length} fields, expected 13`);

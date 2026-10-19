@@ -24,7 +24,7 @@ Search the web for the game on the following sites and collect:
 - Search: `site:jeuxvideo.com "[game name]" [platform]`
 - Fetch the game page and extract:
   - **JVC URL**: the canonical game page URL (format: `https://www.jeuxvideo.com/jeux/[platform-slug]/[id]-[game-slug].htm` or `https://www.jeuxvideo.com/jeux/[id]-[game-slug]/`)
-  - **JVC Note**: the reader score (note des lecteurs), e.g. "18/20". Use the score out of 20 displayed prominently on the page.
+  - **JVC Note**: the test score (Note de la rédaction), e.g. "18/20". Use the score out of 20 displayed prominently on the page.
 
 ### 1b. Metacritic
 - Search: `site:metacritic.com "[game name]" [platform]`
